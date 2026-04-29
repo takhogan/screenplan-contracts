@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://screenplan.local/schemas/script-action.schema.json",
   "title": "ScriptAction",
-  "description": "A single ScriptAction node as authored in script-studio and consumed by ScriptEngine. The concrete shape of `actionData` varies per `actionName` (41 known subtypes); we capture the common envelope here and leave the per-subtype payload open. TODO: split per-subtype actionData schemas.",
+  "description": "A single ScriptAction node as authored in script-studio and consumed by ScriptEngine. The shape of `actionData` is discriminated on `actionName`; per-subtype payloads are defined in script-action-data.schema.json.",
   "type": "object",
   "required": [
     "actionName",
@@ -53,10 +53,12 @@
         "exceptionAction",
         "navigateAction",
         "ImageToTextAction",
+        "imageToTextAction",
         "scale",
         "sendMessageAction",
         "codeBlock",
         "forLoopAction",
+        "configurationAction",
         "ADBConfigurationAction",
         "colorCompareAction",
         "returnStatement",
@@ -73,16 +75,13 @@
       ]
     },
     "actionIcon": {
-      "description": "UI-only: icon descriptor. TODO: tighten once ActionIcon/SymbolIcon shapes are stabilised.",
+      "description": "UI-only: icon descriptor (one of imageIcon|symbolIcon|svgIcon|textIcon|customIcon|blankIcon|gridIcon). Image references are persisted as relative paths or null.",
       "type": ["object", "string", "null"]
     },
     "actionData": {
       "type": "object",
-      "description": "Per-actionName payload. Always carries at least targetSystem; ScriptEngine reads other keys based on actionName. TODO: per-subtype schemas.",
-      "additionalProperties": true,
-      "properties": {
-        "targetSystem": { "$ref": "common.schema.json#/$defs/SystemName" }
-      }
+      "description": "Per-actionName payload. Structure is selected by the oneOf below using actionName as discriminator.",
+      "additionalProperties": true
     },
     "actionGroup": { "type": "integer" },
     "actionGroups": {
@@ -124,5 +123,49 @@
     "draggable": { "type": "boolean" },
     "highlight": { "type": "string" },
     "helpTipExpanded": { "type": "boolean" }
-  }
+  },
+  "allOf": [
+    { "if": { "properties": { "actionName": { "const": "jointAction"             } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/JointActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "clickAction"             } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/ClickActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "mouseScrollAction"       } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/MouseScrollActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "declareScene"            } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/DeclareSceneData" } } } },
+    { "if": { "properties": { "actionName": { "const": "conditionalStatement"    } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/ConditionalStatementData" } } } },
+    { "if": { "properties": { "actionName": { "const": "shellScript"             } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/ShellScriptActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "logAction"               } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/LogActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "sleepStatement"          } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/SleepStatementData" } } } },
+    { "if": { "properties": { "actionName": { "const": "variableAssignment"      } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/VariableAssignmentData" } } } },
+    { "if": { "properties": { "actionName": { "const": "timeAction"              } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/TimeActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "randomVariable"          } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/RandomVariableData" } } } },
+    { "if": { "properties": { "actionName": { "const": "scriptReference"         } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/ScriptReferenceData" } } } },
+    { "if": { "properties": { "actionName": { "const": "dragLocationSource"      } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/DragLocationData" } } } },
+    { "if": { "properties": { "actionName": { "const": "dragLocationTarget"      } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/DragLocationData" } } } },
+    { "if": { "properties": { "actionName": { "const": "detectObject"            } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/DetectObjectData" } } } },
+    { "if": { "properties": { "actionName": { "const": "keyboardAction"          } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/KeyboardActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "searchPatternStartAction"} } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/SearchPatternStartActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "searchPatternContinueAction" } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/SearchPatternContinueActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "searchPatternEndAction"  } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/SearchPatternEndActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "randomizerAction"        } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/RandomizerActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "jsonFileAction"          } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/JSONFileActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "exceptionAction"         } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/ExceptionActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "navigateAction"          } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/NavigateActionData" } } } },
+    { "if": { "properties": { "actionName": { "enum": ["ImageToTextAction", "imageToTextAction"] } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/ImageToTextActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "scale"                   } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/ScaleData" } } } },
+    { "if": { "properties": { "actionName": { "const": "sendMessageAction"       } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/SendMessageActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "codeBlock"               } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/CodeBlockActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "forLoopAction"           } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/ForLoopActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "configurationAction"     } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/ConfigurationActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "ADBConfigurationAction"  } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/ADBConfigurationData" } } } },
+    { "if": { "properties": { "actionName": { "const": "colorCompareAction"      } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/ColorCompareActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "returnStatement"         } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/ReturnStatementActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "imageTransformationAction" } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/ImageTransformationActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "countToThresholdAction"  } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/CountToThresholdActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "fileIOAction"            } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/FileIOActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "maskMergeAction"         } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/MaskMergeActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "mouseMoveAction"         } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/MouseMoveActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "mouseInteractionAction"  } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/MouseInteractionActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "userPromptAction"        } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/UserPromptActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "calendarAction"          } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/CalendarActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "userSecretManagementAction" } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/UserSecretManagementActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "interactApplicationAction" } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/InteractApplicationActionData" } } } }
+  ]
 }

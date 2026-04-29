@@ -1,0 +1,735 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://screenplan.local/schemas/script-action-data.schema.json",
+  "title": "ScriptActionData",
+  "description": "Per-subtype `actionData` payload schemas for every ScriptAction subtype. Mirrors the TypeScript ActionData union in script-studio's editor/interfaces/script-action-types.ts. On-disk representations differ from authoring-time types in two ways: (1) Blob/SafeUrl/ImageData fields are persisted as relative file-path strings (or null) — see ScriptImportExportUtils in script-studio; (2) historic scripts may carry legacy fields no longer authored, so each subtype keeps additionalProperties:true and a small `required` list.",
+  "$defs": {
+    "ProgrammingLanguage": {
+      "type": "string",
+      "enum": ["python"]
+    },
+    "BoundType": {
+      "type": "string",
+      "enum": ["fullScreen", "fullWindow", "customBounds"]
+    },
+    "TargetContext": {
+      "type": "string",
+      "enum": ["screen", "searchArea", "detectResult"]
+    },
+    "Point2D": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "number" }
+    },
+    "Rect2D": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "$ref": "#/$defs/Point2D" }
+    },
+    "RGB": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": { "type": "number" }
+    },
+    "ImageRef": {
+      "description": "On-disk persisted image reference: relative path (string), embedded data, or null. Authoring-time Blob/ImageData is unloaded to a path before serialisation.",
+      "type": ["string", "null"]
+    },
+    "CanvasShape": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["shape", "shapeX", "shapeY", "radius", "fillType"],
+          "additionalProperties": true,
+          "properties": {
+            "shape": { "const": "circle" },
+            "shapeX": { "type": "number" },
+            "shapeY": { "type": "number" },
+            "radius": { "type": "number" },
+            "fillType": { "const": "fill" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["shape", "shapeX", "shapeY", "width", "height", "fillType"],
+          "additionalProperties": true,
+          "properties": {
+            "shape": { "const": "rectangle" },
+            "shapeX": { "type": "number" },
+            "shapeY": { "type": "number" },
+            "width": { "type": "number" },
+            "height": { "type": "number" },
+            "fillType": { "const": "fill" }
+          }
+        }
+      ]
+    },
+    "CanvasShapeRows": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/CanvasShape" }
+      }
+    },
+    "RandomVariableTypeData": {
+      "description": "Distribution sampling parameters. Newer fields (normalDist*/uniformDist*) coexist with legacy fields (min/max/mean/stddev/distType) on disk.",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "distributionType": { "type": "string", "enum": ["uniform", "normal"] },
+        "normalDistMin":    { "type": ["number", "string"] },
+        "normalDistMax":    { "type": ["number", "string"] },
+        "normalDistMean":   { "type": ["number", "string"] },
+        "normalDistStdDev": { "type": ["number", "string"] },
+        "uniformDistMin":   { "type": ["number", "string"] },
+        "uniformDistMax":   { "type": ["number", "string"] },
+        "outputVarName":    { "type": "string" }
+      }
+    },
+    "DetectTypeImageMaskPair": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "detectType":         { "type": "string" },
+        "pairIndex":          { "type": "integer" },
+        "img":                { "$ref": "#/$defs/ImageRef" },
+        "mask":               { "$ref": "#/$defs/ImageRef" },
+        "containedAreaMask":  { "$ref": "#/$defs/ImageRef" },
+        "icon":               { "$ref": "#/$defs/ImageRef" },
+        "centerPoint":        { "$ref": "#/$defs/Point2D" },
+        "sourceScreenWidth":  { "type": "number" },
+        "sourceScreenHeight": { "type": "number" }
+      }
+    },
+    "DetectTypePositiveExamplePair": {
+      "description": "One capture: floating and/or fixed positive examples. Some legacy entries carry the bare DetectTypeImageMaskPair shape directly.",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "type":            { "type": "string" },
+        "floatingObject":  { "$ref": "#/$defs/DetectTypeImageMaskPair" },
+        "fixedObject":     { "$ref": "#/$defs/DetectTypeImageMaskPair" }
+      }
+    },
+    "DetectTypeData": {
+      "description": "Detector configuration shared by detectObject, click/drag/mouse-* actions, etc. Image fields persist as relative paths or null.",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "icon":                                { "$ref": "#/$defs/ImageRef" },
+        "detectorName":                        { "type": "string", "enum": ["pixelDifference", "logisticClassifier", "convNet"] },
+        "includeContainedAreaInOutput":        { "type": "boolean" },
+        "excludeMatchedAreaFromOutput":        { "type": "boolean" },
+        "threshold":                           { "type": ["number", "string"] },
+        "inputExpression":                     { "type": ["string", "null"] },
+        "outputVarName":                       { "type": "string" },
+        "resuseScreenshotBetweenActions":      { "type": "boolean" },
+        "useColor":                            { "type": "boolean" },
+        "useOriginalImageOnly":                { "type": "boolean" },
+        "useImageRescaledToScreenOnly":        { "type": "boolean" },
+        "detectorMode":                        { "type": "string", "enum": ["training", "active", "inactive"] },
+        "srcImg":                              { "$ref": "#/$defs/ImageRef" },
+        "srcShape":                            { "$ref": "#/$defs/CanvasShapeRows" },
+        "srcScaleFactor":                      { "type": "number" },
+        "positiveExamples":                    { "type": "array", "items": { "$ref": "#/$defs/DetectTypePositiveExamplePair" } },
+        "negativeExamples":                    { "type": "array", "items": { "$ref": "#/$defs/DetectTypeImageMaskPair" } },
+        "sceneLocation":                       { "type": ["array", "null"], "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/Point2D" } },
+        "maskLocation":                        { "type": ["array", "null"], "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/Point2D" } },
+        "matchMode":                           { "type": "string", "enum": ["firstMatch", "bestMatch"] },
+        "detectActionType":                    { "type": "string", "enum": ["floatingObject", "fixedObject"] },
+        "skipDetection":                       { "type": "boolean" }
+      }
+    },
+
+    "ClickActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "allOf": [{ "$ref": "#/$defs/DetectTypeData" }, { "$ref": "#/$defs/RandomVariableTypeData" }],
+      "properties": {
+        "targetSystem":     { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetContext":    { "$ref": "#/$defs/TargetContext" },
+        "pointList":        { "type": "array", "items": { "$ref": "#/$defs/Point2D" } },
+        "icon":             { "$ref": "#/$defs/ImageRef" },
+        "inputExpression":  { "type": ["string", "null"] },
+        "clickCount":       { "type": ["integer", "string"] },
+        "mouseButton":      { "type": "string", "enum": ["left", "right"] },
+        "postActionDelay":  { "type": ["string", "number"] }
+      }
+    },
+
+    "MouseScrollActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "allOf": [{ "$ref": "#/$defs/DetectTypeData" }],
+      "properties": {
+        "targetSystem":    { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetContext":   { "$ref": "#/$defs/TargetContext" },
+        "pointList":       { "type": "array", "items": { "$ref": "#/$defs/Point2D" } },
+        "icon":            { "$ref": "#/$defs/ImageRef" },
+        "inputExpression": { "type": ["string", "null"] },
+        "scrollDistance":  { "type": ["number", "string"] }
+      }
+    },
+
+    "DeclareSceneData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "allOf": [{ "$ref": "#/$defs/DetectTypeData" }],
+      "properties": {
+        "targetSystem":  { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetContext": { "$ref": "#/$defs/TargetContext" },
+        "location":      { "$ref": "#/$defs/Point2D" },
+        "searchArea":    { "$ref": "#/$defs/Rect2D" },
+        "boundType":     { "$ref": "#/$defs/BoundType" },
+        "icon":          { "$ref": "#/$defs/ImageRef" },
+        "maskLocation":  { "type": ["array", "null"], "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/Point2D" } }
+      }
+    },
+
+    "ConditionalStatementData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem", "condition"],
+      "properties": {
+        "targetSystem":      { "$ref": "common.schema.json#/$defs/SystemName" },
+        "condition":         { "type": "string" },
+        "conditionLanguage": { "$ref": "#/$defs/ProgrammingLanguage" }
+      }
+    },
+
+    "JointActionData": {
+      "type": "object",
+      "additionalProperties": true
+    },
+
+    "ShellScriptActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem", "shellScript"],
+      "properties": {
+        "targetSystem":           { "$ref": "common.schema.json#/$defs/SystemName" },
+        "cwd":                    { "type": "string" },
+        "shellScript":            { "type": "string" },
+        "awaitScript":            { "type": "boolean" },
+        "pipeOutputVarName":      { "type": ["string", "null"] },
+        "returnCodeOutputVarName":{ "type": ["string", "null"] },
+        "openInNewWindow":        { "type": "boolean" }
+      }
+    },
+
+    "LogActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem": { "$ref": "common.schema.json#/$defs/SystemName" },
+        "logType":      { "type": "string", "enum": ["logVariable", "logImage"] },
+        "logValue":     { "type": "string" },
+        "logFile":      { "type": "string" }
+      }
+    },
+
+    "SleepStatementData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":    { "$ref": "common.schema.json#/$defs/SystemName" },
+        "inputExpression": { "type": ["string", "number"] }
+      }
+    },
+
+    "VariableAssignmentData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":       { "$ref": "common.schema.json#/$defs/SystemName" },
+        "outputVarName":      { "type": "string" },
+        "inputExpression":    { "type": "string" },
+        "expressionLanguage": { "$ref": "#/$defs/ProgrammingLanguage" },
+        "inputParser":        { "type": "string", "enum": ["eval", "jsonload"] },
+        "setIfNull":          { "type": "boolean" }
+      }
+    },
+
+    "TimeActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":   { "$ref": "common.schema.json#/$defs/SystemName" },
+        "timeActionType": { "type": "string", "enum": ["getCurrentDateTime"] },
+        "timezone":       { "type": "string", "enum": ["local", "utc"] },
+        "outputVarName":  { "type": "string" }
+      }
+    },
+
+    "RandomVariableData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "allOf": [{ "$ref": "#/$defs/RandomVariableTypeData" }],
+      "properties": {
+        "targetSystem": { "$ref": "common.schema.json#/$defs/SystemName" }
+      }
+    },
+
+    "ScriptReferenceData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem", "scriptName"],
+      "properties": {
+        "targetSystem":           { "$ref": "common.schema.json#/$defs/SystemName" },
+        "scriptName":             { "type": "string" },
+        "scriptAttributes":       { "type": "array", "items": { "type": "string", "enum": ["searchAreaErrorHandler", "searchAreaObjectHandler", "searchAreaExcluded"] } },
+        "branchingBehavior":      { "type": "string", "enum": ["firstMatch", "attemptAllBranches"] },
+        "runMode":                { "type": "string", "enum": ["run", "runOne", "runToFailure"] },
+        "actionOrder":            { "type": "string", "enum": ["sequential", "random"] },
+        "scriptMaxActionAttempts":{ "type": ["string", "number"] },
+        "onOutOfActionAttempts":  { "type": "string" },
+        "libraryScript":          { "type": "boolean" },
+        "postActionDelay":        { "type": ["string", "number"] }
+      }
+    },
+
+    "DragLocationData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "allOf": [{ "$ref": "#/$defs/DetectTypeData" }],
+      "properties": {
+        "targetSystem":    { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetContext":   { "$ref": "#/$defs/TargetContext" },
+        "pointList":       { "type": "array", "items": { "$ref": "#/$defs/Point2D" } },
+        "icon":             { "$ref": "#/$defs/ImageRef" },
+        "inputExpression":  { "type": ["string", "null"] },
+        "dragType":         { "type": ["string", "null"], "enum": ["slow", "fast", null] },
+        "postActionDelay":  { "type": ["string", "number"] }
+      }
+    },
+
+    "DetectObjectData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "allOf": [{ "$ref": "#/$defs/DetectTypeData" }],
+      "properties": {
+        "targetSystem":  { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetContext": { "$ref": "#/$defs/TargetContext" },
+        "searchArea":    { "$ref": "#/$defs/Rect2D" },
+        "maxMatches":    { "type": ["integer", "string"] },
+        "heightScale":   { "type": ["string", "number"] },
+        "widthScale":    { "type": ["string", "number"] }
+      }
+    },
+
+    "KeyboardActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "allOf": [{ "$ref": "#/$defs/RandomVariableTypeData" }],
+      "properties": {
+        "targetSystem":       { "$ref": "common.schema.json#/$defs/SystemName" },
+        "keyboardExpression": { "type": "string" },
+        "keyboardActionType": { "type": "string", "enum": ["keyPress", "keyDown", "keyUp", "hotkey"] },
+        "postActionDelay":    { "type": ["string", "number"] }
+      }
+    },
+
+    "SearchPatternStartActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem", "searchPatternID"],
+      "properties": {
+        "targetSystem":               { "$ref": "common.schema.json#/$defs/SystemName" },
+        "searchPatternID":            { "type": "string" },
+        "searchPatterns":             { "type": "array", "items": { "type": "string" } },
+        "searchPatternProbabilities": { "type": "array", "items": { "type": "number" } },
+        "inputExpression":            { "type": ["string", "null"] },
+        "draggableArea":              { "$ref": "#/$defs/ImageRef" },
+        "gridMode":                   { "type": "string", "enum": ["training", "active", "inactive"] }
+      }
+    },
+
+    "SearchPatternContinueActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem", "searchPatternID"],
+      "properties": {
+        "targetSystem":         { "$ref": "common.schema.json#/$defs/SystemName" },
+        "searchPatternID":      { "type": "string" },
+        "gridMode":             { "type": "string", "enum": ["training", "active", "inactive"] },
+        "recordSearchAreaMap":  { "type": "boolean" }
+      }
+    },
+
+    "SearchPatternEndActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem", "searchPatternID"],
+      "properties": {
+        "targetSystem":           { "$ref": "common.schema.json#/$defs/SystemName" },
+        "searchPatternID":        { "type": "string" },
+        "gridMode":               { "type": "string", "enum": ["training", "active", "inactive"] },
+        "generateSearchAreaMap":  { "type": "boolean" }
+      }
+    },
+
+    "RandomizerActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":      { "$ref": "common.schema.json#/$defs/SystemName" },
+        "randomizerBehavior":{ "type": "string", "enum": ["randomizer", "randomQueue"] },
+        "preferences":       { "type": "string" }
+      }
+    },
+
+    "JSONFileActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem": { "$ref": "common.schema.json#/$defs/SystemName" },
+        "mode":         { "type": "string", "enum": ["read", "write"] },
+        "fileName":     { "type": "string" },
+        "varName":      { "type": "string" },
+        "fileContents": { "type": "string" }
+      }
+    },
+
+    "ExceptionActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":     { "$ref": "common.schema.json#/$defs/SystemName" },
+        "exceptionMessage": { "type": "string" },
+        "takeScreenshot":   { "type": "boolean" },
+        "exceptionID":      { "type": "string" },
+        "exitProgram":      { "type": "boolean" }
+      }
+    },
+
+    "NavigateActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":         { "$ref": "common.schema.json#/$defs/SystemName" },
+        "inputExpression":      { "type": "string" },
+        "maxNavigateAttempts":  { "type": ["integer", "string"] }
+      }
+    },
+
+    "ImageToTextActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":        { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetContext":       { "$ref": "#/$defs/TargetContext" },
+        "inputExpression":     { "type": "string" },
+        "outputVarName":       { "type": "string" },
+        "conversionEngine":    { "type": "string", "enum": ["tesseractOCR", "easyOCR"] },
+        "characterWhiteList":  { "type": "string" },
+        "targetType":          { "type": "string", "enum": ["character", "word", "sentence", "page", "rawLine"] },
+        "runMode":             { "type": "string", "enum": ["normal", "debug"] },
+        "increaseContrast":    { "type": "boolean" },
+        "invertColors":        { "type": "boolean" },
+        "blur":                { "type": "string", "enum": ["false", "medianBlur", "gaussianBlur", "bilateralFilter"] },
+        "binarize":            { "type": "string", "enum": ["false", "regular", "adaptive"] },
+        "makeBorder":          { "type": "boolean" }
+      }
+    },
+
+    "ScaleData": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "dataRows":         { "type": "array", "items": { "type": "array", "items": { "type": "number" } } },
+        "sourceWidth":      { "type": "number" },
+        "sourceHeight":     { "type": "number" },
+        "dataLabels":       { "type": "object", "additionalProperties": true,
+          "properties": {
+            "heightLabels": { "type": "array", "items": { "type": "number" } },
+            "widthLabels":  { "type": "array", "items": { "type": "number" } }
+          }
+        },
+        "xCoefficient":     { "type": "number" },
+        "useXCoefficient":  { "type": "boolean" },
+        "yCoefficient":     { "type": "number" },
+        "useYCoefficient":  { "type": "boolean" },
+        "constantTerm":     { "type": "number" },
+        "scaleTarget":      { "type": "string", "enum": ["height", "width"] }
+      }
+    },
+
+    "SendMessageActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "targetSystem":         { "$ref": "common.schema.json#/$defs/SystemName" },
+        "subject":              { "type": "string" },
+        "messagingProvider":    { "type": "string", "enum": ["viber", "email"] },
+        "inputExpression":      { "type": "string" },
+        "messageType":          { "type": "string", "enum": ["image", "text"] },
+        "messagingChannelName": { "type": "string" }
+      }
+    },
+
+    "CodeBlockActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":          { "$ref": "common.schema.json#/$defs/SystemName" },
+        "codeBlock":             { "type": "string" },
+        "interpreter":           { "type": "string", "enum": ["python"] },
+        "expandedVisualization": { "type": "boolean" },
+        "expandedWidthCols":     { "type": "number" },
+        "expandedHeightRows":    { "type": "number" }
+      }
+    },
+
+    "ForLoopActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem": { "$ref": "common.schema.json#/$defs/SystemName" },
+        "forVariables": { "type": "string" },
+        "inVariables":  { "type": "string" },
+        "operatorType": { "type": "string", "enum": ["startLoop", "endLoop"] }
+      }
+    },
+
+    "ConfigurationActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["configurationType"],
+      "properties": {
+        "configurationType": { "type": "string" }
+      }
+    },
+
+    "ADBConfigurationData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["configurationType"],
+      "properties": {
+        "configurationType":  { "const": "adb" },
+        "adbPath":            { "type": "string" },
+        "emulatorType":       { "type": "string", "enum": ["bluestacks"] },
+        "deviceName":         { "type": "string" },
+        "windowName":         { "type": "string" },
+        "adbPort":            { "type": ["string", "number"] },
+        "emulatorPath":       { "type": "string" },
+        "autoDetectAdbPort":  { "type": "boolean" },
+        "targetSystem":       { "const": "adb" }
+      }
+    },
+
+    "ColorCompareActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "targetSystem":           { "$ref": "common.schema.json#/$defs/SystemName" },
+        "icon":                   { "$ref": "#/$defs/ImageRef" },
+        "inputExpression":        { "type": "string" },
+        "outputVarName":          { "type": "string" },
+        "threshold":              { "type": ["number", "string"] },
+        "referenceColor":         { "$ref": "#/$defs/RGB" },
+        "referenceImage":         { "type": "string" },
+        "compareMode":            { "type": "string", "enum": ["mean", "mode"] },
+        "sourceDetectTypeData":   { "$ref": "#/$defs/DetectTypeData" }
+      }
+    },
+
+    "ReturnStatementActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "targetSystem":        { "$ref": "common.schema.json#/$defs/SystemName" },
+        "returnStatementType": { "type": "string", "enum": ["exitIteration", "exitScript", "exitProgram"] },
+        "returnStatus":        { "type": "string", "enum": ["success", "failure"] }
+      }
+    },
+
+    "ImageTransformationActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":          { "$ref": "common.schema.json#/$defs/SystemName" },
+        "transformationType":    { "type": "string", "enum": ["blur", "binarize", "antialias", "resize", "erode", "dilate", "convertColor"] },
+        "inputExpression":       { "type": "string" },
+        "outputVarName":         { "type": "string" },
+        "blurType":              { "type": "string", "enum": ["false", "medianBlur", "gaussianBlur", "bilateralFilter"] },
+        "blurKernelSize":        { "type": ["number", "string"] },
+        "binarizeType":          { "type": "string", "enum": ["false", "regular", "adaptive"] },
+        "antialiasScaleFactor":  { "type": ["number", "string"] },
+        "resizeScaleFactor":     { "type": ["number", "string"] },
+        "erodeKernelSize":       { "type": ["number", "string"] },
+        "erodeIterations":       { "type": ["number", "string"] },
+        "dilateKernelSize":      { "type": ["number", "string"] },
+        "dilateIterations":      { "type": ["number", "string"] },
+        "convertColorType":      { "type": "string", "enum": ["none", "BGRtoGrayScale", "invert"] }
+      }
+    },
+
+    "CountToThresholdActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":               { "$ref": "common.schema.json#/$defs/SystemName" },
+        "counterVarName":             { "type": "string" },
+        "counterThreshold":           { "type": ["string", "number"] },
+        "incrementBy":                { "type": ["string", "number"] },
+        "initialValue":               { "type": ["string", "number"] },
+        "thresholdType":              { "type": "string", "enum": ["counter", "timer"] },
+        "counterThresholdSeconds":    { "type": ["string", "number"] },
+        "resetCounterAfterBreached":  { "type": "boolean" }
+      }
+    },
+
+    "FileIOActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":   { "$ref": "common.schema.json#/$defs/SystemName" },
+        "fileActionType": { "type": "string", "enum": ["w", "r", "wb", "rb", "a"] },
+        "fileType":       { "type": "string", "enum": ["image", "text", "json"] },
+        "inputExpression":{ "type": "string" },
+        "outputVarName":  { "type": "string" },
+        "filePath":       { "type": "string" },
+        "async":          { "type": "boolean" }
+      }
+    },
+
+    "MaskMergeActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":              { "$ref": "common.schema.json#/$defs/SystemName" },
+        "leftInputExpression":       { "type": "string" },
+        "rightInputExpression":      { "type": "string" },
+        "joinLeftAt":                { "type": "string", "enum": ["angle", "topLeft", "top", "topRight", "right", "bottomRight", "bottom", "bottomLeft", "left"] },
+        "joinLeftAngle":             { "type": ["string", "number"] },
+        "joinRightAt":               { "type": "string", "enum": ["angle", "topLeft", "top", "topRight", "right", "bottomRight", "bottom", "bottomLeft", "left"] },
+        "joinRightAngle":            { "type": ["string", "number"] },
+        "leftMaskPositioning":       { "type": "string", "enum": ["floating", "fixed"] },
+        "rightMaskPositioning":      { "type": "string", "enum": ["floating", "fixed"] },
+        "includeLeftMask":           { "type": "boolean" },
+        "includeRightMask":          { "type": "boolean" },
+        "includeSpaceBetween":       { "type": "boolean" },
+        "fillSpaceBetweenUsing":     { "type": "string", "enum": ["horizontalOverlap", "verticalOverlap", "linear"] },
+        "fillAccordingToBoundariesOf":{ "type": "string", "enum": ["leftMask", "rightMask", "both"] },
+        "outputVarName":             { "type": "string" }
+      }
+    },
+
+    "MouseMoveActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "targetSystem":           { "$ref": "common.schema.json#/$defs/SystemName" },
+        "dragMouse":              { "type": "boolean" },
+        "releaseMouseOnCompletion":{ "type": "boolean" },
+        "sourceDetectTypeData":   { "$ref": "#/$defs/DetectTypeData" },
+        "targetDetectTypeData":   { "$ref": "#/$defs/DetectTypeData" },
+        "sourcePointList":        { "type": ["array", "string"], "items": { "$ref": "#/$defs/Point2D" } },
+        "targetPointList":        { "type": ["array", "string"], "items": { "$ref": "#/$defs/Point2D" } },
+        "postActionDelay":        { "type": ["string", "number"] }
+      }
+    },
+
+    "MouseInteractionActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "allOf": [{ "$ref": "#/$defs/RandomVariableTypeData" }],
+      "properties": {
+        "targetSystem":          { "$ref": "common.schema.json#/$defs/SystemName" },
+        "sourceDetectTypeData":  { "$ref": "#/$defs/DetectTypeData" },
+        "sourcePointList":       { "type": ["array", "string"], "items": { "$ref": "#/$defs/Point2D" } },
+        "clickCount":            { "type": ["integer", "string"] },
+        "mouseButton":           { "type": "string", "enum": ["left", "right"] },
+        "postActionDelay":       { "type": ["string", "number"] },
+        "scrollDistance":        { "type": ["number", "string"] },
+        "mouseActionType":       { "type": "string", "enum": ["click", "mouseDown", "mouseUp", "scroll"] },
+        "betweenClickDelay":     { "type": "boolean" },
+        "randomVariableTypeData":{ "$ref": "#/$defs/RandomVariableTypeData" }
+      }
+    },
+
+    "UserPromptActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "targetSystem":         { "$ref": "common.schema.json#/$defs/SystemName" },
+        "promptMessage":        { "type": "string" },
+        "promptType":           { "type": "string", "enum": ["text", "yesno", "okcancel"] },
+        "defaultValue":         { "type": "string" },
+        "outputVarName":        { "type": "string" },
+        "messagingProvider":    { "type": "string", "enum": ["viber", "web"] },
+        "messagingChannelName": { "type": "string" },
+        "inputExpression":      { "type": "string" }
+      }
+    },
+
+    "CalendarActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":       { "$ref": "common.schema.json#/$defs/SystemName" },
+        "calendarActionType": { "type": "string", "enum": ["create", "update", "delete", "list"] },
+        "calendarId":         { "type": "string" },
+        "eventTitle":         { "type": "string" },
+        "eventDescription":   { "type": "string" },
+        "eventStart":         { "type": "string" },
+        "eventEnd":           { "type": "string" },
+        "searchListStart":    { "type": "string" },
+        "searchListEnd":      { "type": "string" },
+        "outputVarName":      { "type": "string" }
+      }
+    },
+
+    "UserSecretManagementActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":           { "$ref": "common.schema.json#/$defs/SystemName" },
+        "inputExpression":        { "type": "string" },
+        "outputVarName":          { "type": "string" },
+        "secretName":             { "type": "string" },
+        "userSecretActionType":   { "type": "string", "enum": ["getSecret", "updateSecret"] }
+      }
+    },
+
+    "InteractApplicationActionData": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["targetSystem"],
+      "properties": {
+        "targetSystem":    { "$ref": "common.schema.json#/$defs/SystemName" },
+        "actionType":      { "type": "string", "enum": ["start", "stop", "list"] },
+        "actionPayload":   { "type": "string" },
+        "applicationName": { "type": "string" }
+      }
+    }
+  }
+}

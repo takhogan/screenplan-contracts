@@ -12,5 +12,8 @@
   "exports": {
     "./schemas/*": "./schemas/*",
     "./package.json": "./package.json"
+  },
+  "scripts": {
+    "deploy": "git add -A && git commit -m \"npm run deploy commit $(date '+%Y-%m-%d %H:%M:%S')\" && git push origin main"
   }
 }
