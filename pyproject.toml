@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "screenplan-contracts-schemas"
+version = "0.1.0"
+description = "Canonical ScreenPlan JSON Schemas (Script, ScriptAction, ScriptActionLog, queue entries) shipped as package data."
+requires-python = ">=3.9"
+license = { text = "ISC" }
+
+[tool.setuptools]
+packages = ["screenplan_contracts_schemas"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+screenplan_contracts_schemas = ["schemas/*.json"]

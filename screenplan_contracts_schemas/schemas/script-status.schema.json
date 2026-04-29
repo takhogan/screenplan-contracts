@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://screenplan.local/schemas/script-status.schema.json",
+  "title": "ScriptStatus",
+  "description": "Entry shape used in running_scripts.json and completed_scripts.json (Script-Engine-Controller queues, read by script-studio host-data service).",
+  "type": "object",
+  "required": [
+    "script_id",
+    "script_name",
+    "status",
+    "script_duration"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "script_id": {
+      "type": "string",
+      "description": "UUID assigned when the script enters the queue."
+    },
+    "script_name": {
+      "description": "Script name, or null for legacy/system entries that lacked a name.",
+      "type": ["string", "null"]
+    },
+    "status": {
+      "$ref": "common.schema.json#/$defs/QueueStatus"
+    },
+    "script_duration": {
+      "type": "string",
+      "description": "Format: `<H>h<M>m`, e.g. \"0h30m\"."
+    },
+    "start_time_str": {
+      "description": "UTC \"YYYY-MM-DD HH:MM:SS\" — null until the script starts.",
+      "type": ["string", "null"]
+    },
+    "end_time_str": {
+      "type": ["string", "null"]
+    },
+    "log_level": { "type": "string" },
+    "notification_level": { "type": "string" },
+    "device_details": {
+      "description": "Either a structured object or a legacy device-id string (e.g. 'avd:Small_Phone_API_34'), or null.",
+      "type": ["object", "string", "null"],
+      "additionalProperties": true
+    },
+    "system_script": { "type": "boolean" },
+    "args": {
+      "type": "array",
+      "description": "Script constants/arguments. TODO: tighten once arg shape is finalized."
+    },
+    "parallel": { "type": "boolean" },
+    "script_log_folder": { "type": ["string", "null"] },
+    "showDetails": {
+      "type": "boolean",
+      "description": "UI-only field added by script-studio. Should not be relied on server-side."
+    }
+  }
+}

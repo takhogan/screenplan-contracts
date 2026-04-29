@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://screenplan.local/schemas/common.schema.json",
+  "title": "CommonEnums",
+  "description": "Shared enums and small helpers used across other schemas.",
+  "$defs": {
+    "SystemName": {
+      "type": "string",
+      "enum": ["python", "adb", "kvm", "none"],
+      "description": "Target execution system for a Script/ScriptAction."
+    },
+    "RunStatus": {
+      "type": "string",
+      "enum": ["RUNNING", "SUCCESS", "FAILURE", "ERROR"],
+      "description": "Status reported by ScriptEngine for a running or finished action/script."
+    },
+    "QueueStatus": {
+      "type": "string",
+      "description": "Status used in Script-Engine-Controller queue files (running_scripts/completed_scripts).",
+      "examples": ["pending", "started", "SUCCESS", "FAILURE", "ERROR", "completed", "waiting"]
+    },
+    "FileType": {
+      "type": "string",
+      "enum": ["text", "image", "video", "directory"],
+      "description": "Type of a ScriptActionLog artifact file."
+    },
+    "ScriptModePropEnum": {
+      "type": "string",
+      "enum": ["train", "test", "prod"]
+    },
+    "EditorStatusEnum": {
+      "type": "string",
+      "enum": ["dirty", "clean", "error"]
+    },
+    "FilePair": {
+      "description": "ScriptActionLog file reference pair (file_type + file_path). Empty object {} means no file is attached.",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "file_type": { "$ref": "#/$defs/FileType" },
+            "file_path": { "type": "string" }
+          },
+          "required": ["file_type", "file_path"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "maxProperties": 0,
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

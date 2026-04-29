@@ -1,0 +1,15 @@
+{
+  "script_id": "70750b37-5efd-49f6-8bbf-622bd6df202a",
+  "script_name": "Blocks_playGame",
+  "status": "ERROR",
+  "script_duration": "0h30m",
+  "start_time_str": "2026-04-25 03:01:43",
+  "end_time_str": "2026-04-25 03:05:27",
+  "log_level": "info",
+  "notification_level": "none",
+  "args": [],
+  "device_details": null,
+  "system_script": false,
+  "parallel": false,
+  "script_log_folder": "logs/00000-Blocks_playGame-2026-04-24 23-01-43/"
+}

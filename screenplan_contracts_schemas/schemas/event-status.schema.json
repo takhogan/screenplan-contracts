@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://screenplan.local/schemas/event-status.schema.json",
+  "title": "EventStatus",
+  "description": "Entry shape used in running_events.json and completed_events.json. Each event is a 'sequence' tree composed of commands, variables, scripts, and nested sequences.",
+  "type": "object",
+  "required": ["event_id", "type", "sequence_name", "status", "sequence"],
+  "additionalProperties": true,
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "description": "UUID assigned by the controller."
+    },
+    "type": {
+      "type": "string",
+      "const": "sequence"
+    },
+    "sequence_name": { "type": "string" },
+    "status": { "$ref": "common.schema.json#/$defs/QueueStatus" },
+    "start_time": {
+      "description": "ISO-8601 string (e.g. 2026-04-29T06:00:00Z). May be absent on freshly-created entries.",
+      "type": ["string", "null"]
+    },
+    "timeout": {
+      "description": "ISO-8601 timestamp at which the event will time out, OR a duration string. TODO: pin to one form.",
+      "type": ["string", "null"]
+    },
+    "end_time_str": {
+      "type": ["string", "null"]
+    },
+    "sequence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/SequenceItem" }
+    },
+    "sequences": {
+      "type": "object",
+      "description": "Map of named sub-sequences referenced by 'script'/'sequence' items. TODO: confirm shape of values.",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "SequenceItem": {
+      "oneOf": [
+        { "$ref": "#/$defs/CommandItem" },
+        { "$ref": "#/$defs/VariableItem" },
+        { "$ref": "#/$defs/ScriptItem" },
+        { "$ref": "#/$defs/NestedSequenceItem" }
+      ]
+    },
+    "CommandItem": {
+      "type": "object",
+      "required": ["type", "key", "value", "status"],
+      "additionalProperties": true,
+      "properties": {
+        "type": { "type": "string", "const": "command" },
+        "key": { "type": "string" },
+        "value": { "type": ["string", "number", "boolean", "null"] },
+        "status": { "$ref": "common.schema.json#/$defs/QueueStatus" }
+      }
+    },
+    "VariableItem": {
+      "type": "object",
+      "required": ["type", "key", "value", "status"],
+      "additionalProperties": true,
+      "properties": {
+        "type": { "type": "string", "const": "variable" },
+        "key": { "type": "string" },
+        "value": {},
+        "status": { "$ref": "common.schema.json#/$defs/QueueStatus" }
+      }
+    },
+    "ScriptItem": {
+      "type": "object",
+      "required": ["type", "script_name", "status"],
+      "additionalProperties": true,
+      "properties": {
+        "type": { "type": "string", "const": "script" },
+        "script_name": { "type": "string" },
+        "status": { "$ref": "common.schema.json#/$defs/QueueStatus" }
+      }
+    },
+    "NestedSequenceItem": {
+      "type": "object",
+      "required": ["type", "sequence_name", "sequence", "status"],
+      "additionalProperties": true,
+      "properties": {
+        "type": { "type": "string", "const": "sequence" },
+        "sequence_name": { "type": "string" },
+        "sequence": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/SequenceItem" }
+        },
+        "sequences": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "status": { "$ref": "common.schema.json#/$defs/QueueStatus" }
+      }
+    }
+  }
+}

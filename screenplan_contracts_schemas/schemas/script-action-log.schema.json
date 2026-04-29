@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://screenplan.local/schemas/script-action-log.schema.json",
+  "title": "ScriptActionLog",
+  "description": "Per-action log document written by ScriptEngine (action-log.json) and consumed by script-studio's log-tree viewer. Source of truth: ScriptEngine/common/logging/script_action_log.py::_flush.",
+  "type": "object",
+  "required": [
+    "base_path",
+    "action_log_path",
+    "id",
+    "name",
+    "target_system",
+    "script_counter",
+    "log_object_type",
+    "tree_entity_type",
+    "status",
+    "start_time",
+    "elapsed",
+    "pre_file",
+    "post_file",
+    "supporting_files",
+    "children",
+    "attributes"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "base_path": { "type": "string" },
+    "action_log_path": { "type": "string" },
+    "id": {
+      "type": "string",
+      "description": "UUID for this action log entry."
+    },
+    "name": {
+      "type": "string",
+      "description": "Format: `<actionName>-<actionGroup>`."
+    },
+    "target_system": { "$ref": "common.schema.json#/$defs/SystemName" },
+    "script_name": { "type": ["string", "null"] },
+    "script_log_folder": { "type": ["string", "null"] },
+    "script_counter": { "type": "integer" },
+    "log_object_type": {
+      "type": "string",
+      "enum": ["action", "script"]
+    },
+    "tree_entity_type": {
+      "type": "string",
+      "enum": ["node", "child"]
+    },
+    "status": { "$ref": "common.schema.json#/$defs/RunStatus" },
+    "summary": { "type": "string" },
+    "start_time": {
+      "type": "string",
+      "description": "UTC `YYYY-MM-DD HH:MM:SS.ffffff`."
+    },
+    "elapsed": {
+      "type": "number",
+      "description": "Seconds between start_time and the sync end (or now if still running)."
+    },
+    "async_elapsed": {
+      "type": "number",
+      "description": "Seconds between start_time and serialisation time (always real-time)."
+    },
+    "pre_file": { "$ref": "common.schema.json#/$defs/FilePair" },
+    "post_file": { "$ref": "common.schema.json#/$defs/FilePair" },
+    "supporting_files": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/FilePair" }
+    },
+    "children": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ChildStub" }
+    },
+    "attributes": {
+      "type": "object",
+      "description": "Action-specific attributes. Currently set for scriptReference and detectObject. See artifacts spec for known keys.",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "ChildStub": {
+      "type": "object",
+      "required": ["id", "script_counter", "log_object_type", "tree_entity_type", "action_log_path"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "script_counter": { "type": "integer" },
+        "log_object_type": {
+          "type": "string",
+          "enum": ["action", "script"]
+        },
+        "tree_entity_type": {
+          "type": "string",
+          "const": "child"
+        },
+        "action_log_path": { "type": "string" }
+      }
+    }
+  }
+}

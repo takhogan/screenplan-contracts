@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://screenplan.local/schemas/script-action.schema.json",
+  "title": "ScriptAction",
+  "description": "A single ScriptAction node as authored in script-studio and consumed by ScriptEngine. The concrete shape of `actionData` varies per `actionName` (41 known subtypes); we capture the common envelope here and leave the per-subtype payload open. TODO: split per-subtype actionData schemas.",
+  "type": "object",
+  "required": [
+    "actionName",
+    "actionData",
+    "actionGroup",
+    "actionVersion",
+    "actionVersionCode",
+    "actionLabel",
+    "actionRowRowIndex",
+    "actionRowActionIndex",
+    "visualizerRowIndex",
+    "visualizerActionIndex",
+    "visualizerX",
+    "visualizerY",
+    "childGroups",
+    "parentGroups",
+    "displayables",
+    "configurables",
+    "linkingBehaviors"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "actionName": {
+      "type": "string",
+      "description": "Discriminator for the ScriptAction subtype.",
+      "enum": [
+        "jointAction",
+        "clickAction",
+        "mouseScrollAction",
+        "declareScene",
+        "conditionalStatement",
+        "shellScript",
+        "logAction",
+        "sleepStatement",
+        "variableAssignment",
+        "timeAction",
+        "randomVariable",
+        "scriptReference",
+        "dragLocationSource",
+        "dragLocationTarget",
+        "detectObject",
+        "keyboardAction",
+        "searchPatternStartAction",
+        "searchPatternContinueAction",
+        "searchPatternEndAction",
+        "randomizerAction",
+        "jsonFileAction",
+        "exceptionAction",
+        "navigateAction",
+        "ImageToTextAction",
+        "scale",
+        "sendMessageAction",
+        "codeBlock",
+        "forLoopAction",
+        "ADBConfigurationAction",
+        "colorCompareAction",
+        "returnStatement",
+        "imageTransformationAction",
+        "countToThresholdAction",
+        "fileIOAction",
+        "maskMergeAction",
+        "mouseMoveAction",
+        "mouseInteractionAction",
+        "userPromptAction",
+        "calendarAction",
+        "userSecretManagementAction",
+        "interactApplicationAction"
+      ]
+    },
+    "actionIcon": {
+      "description": "UI-only: icon descriptor. TODO: tighten once ActionIcon/SymbolIcon shapes are stabilised.",
+      "type": ["object", "string", "null"]
+    },
+    "actionData": {
+      "type": "object",
+      "description": "Per-actionName payload. Always carries at least targetSystem; ScriptEngine reads other keys based on actionName. TODO: per-subtype schemas.",
+      "additionalProperties": true,
+      "properties": {
+        "targetSystem": { "$ref": "common.schema.json#/$defs/SystemName" }
+      }
+    },
+    "actionGroup": { "type": "integer" },
+    "actionGroups": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "Only used by jointAction."
+    },
+    "actionVersion": { "type": "integer" },
+    "actionVersionCode": { "type": "string" },
+    "actionLabel": { "type": "string" },
+    "actionRowRowIndex": { "type": "integer" },
+    "actionRowActionIndex": { "type": "integer" },
+    "visualizerRowIndex": { "type": "integer" },
+    "visualizerActionIndex": { "type": "integer" },
+    "visualizerX": { "type": "number" },
+    "visualizerY": { "type": "number" },
+    "childGroups": {
+      "type": "array",
+      "description": "ActionLink array; concrete shape varies by branchingBehavior.",
+      "items": { "type": "object", "additionalProperties": true }
+    },
+    "parentGroups": {
+      "type": "array",
+      "items": { "type": "integer" }
+    },
+    "displayables": {
+      "type": "array",
+      "items": { "type": "object", "additionalProperties": true }
+    },
+    "configurables": {
+      "type": "array",
+      "items": { "type": "object", "additionalProperties": true }
+    },
+    "linkingBehaviors": {
+      "type": "array",
+      "items": { "type": "object", "additionalProperties": true }
+    },
+    "selected": { "type": "boolean" },
+    "draggable": { "type": "boolean" },
+    "highlight": { "type": "string" },
+    "helpTipExpanded": { "type": "boolean" }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "$schema": "./script-action-artifacts.schema.json",
+  "version": 1,
+  "_TODO": "Inferred from ScriptEngine source + script-studio log-tree usage. Several entries are best-effort and marked optional. Tighten by adding executor-side assertions that emit each declared file.",
+  "actions": {
+    "scriptReference": {
+      "pre_file":  { "file_type": "text",  "presence": "never" },
+      "post_file": { "file_type": "text",  "presence": "never" },
+      "supporting_files": [],
+      "attributes": {
+        "branchingBehavior":      { "presence": "always", "enum": ["firstMatch", "attemptAllBranches"] },
+        "runMode":                { "presence": "always", "enum": ["run", "runOne", "runToFailure"] },
+        "actionOrder":            { "presence": "always", "enum": ["sequential", "random"] },
+        "scriptMaxActionAttempts":{ "presence": "always", "description": "Stringified integer expression." }
+      }
+    },
+
+    "detectObject": {
+      "pre_file":  { "file_type": "image", "presence": "always", "name_suffix": "screenshot-pre.png", "description": "Screen capture before the detection." },
+      "post_file": { "file_type": "image", "presence": "optional", "name_suffix": "detection-matches.png", "description": "Source with detection bounding boxes drawn." },
+      "supporting_files": [
+        { "file_type": "text", "presence": "optional", "name_suffix": "detection-confidence.txt" }
+      ],
+      "attributes": {
+        "detectActionType": { "presence": "always", "enum": ["floatingObject", "fixedObject"] }
+      }
+    },
+
+    "clickAction":            { "pre_file": { "file_type": "image", "presence": "optional", "name_suffix": "screenshot-pre.png" }, "post_file": { "file_type": "text", "presence": "never" }, "supporting_files": [] },
+    "mouseScrollAction":      { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "never" }, "supporting_files": [] },
+    "mouseMoveAction":        { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "never" }, "supporting_files": [] },
+    "mouseInteractionAction": { "pre_file": { "file_type": "image", "presence": "optional", "name_suffix": "screenshot-pre.png" }, "post_file": { "file_type": "text", "presence": "never" }, "supporting_files": [] },
+    "dragLocationSource":     { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "never" }, "supporting_files": [] },
+    "dragLocationTarget":     { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "never" }, "supporting_files": [] },
+
+    "ImageToTextAction": {
+      "pre_file":  { "file_type": "image", "presence": "always", "name_suffix": "source-image.png" },
+      "post_file": { "file_type": "text",  "presence": "always", "name_suffix": "ocr-result.txt" },
+      "supporting_files": []
+    },
+
+    "imageTransformationAction": {
+      "pre_file":  { "file_type": "image", "presence": "always", "name_suffix": "source-image.png" },
+      "post_file": { "file_type": "image", "presence": "always", "name_suffix": "transformed-image.png" },
+      "supporting_files": []
+    },
+
+    "colorCompareAction": {
+      "pre_file":  { "file_type": "image", "presence": "optional", "name_suffix": "source-image.png" },
+      "post_file": { "file_type": "text",  "presence": "always",   "name_suffix": "color-compare.txt" },
+      "supporting_files": []
+    },
+
+    "maskMergeAction": {
+      "pre_file":  { "file_type": "image", "presence": "optional", "name_suffix": "source-mask.png" },
+      "post_file": { "file_type": "image", "presence": "always",   "name_suffix": "merged-mask.png" },
+      "supporting_files": []
+    },
+
+    "conditionalStatement": {
+      "pre_file":  { "file_type": "text", "presence": "never" },
+      "post_file": { "file_type": "text", "presence": "always", "name_suffix": "condition-result.txt" },
+      "supporting_files": []
+    },
+    "forLoopAction":      { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "optional", "name_suffix": "loop-state.txt" }, "supporting_files": [] },
+    "returnStatement":    { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "optional", "name_suffix": "return-log.txt" }, "supporting_files": [] },
+    "exceptionAction":    { "pre_file": { "file_type": "image", "presence": "optional", "name_suffix": "screenshot-pre.png" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "exception.txt" }, "supporting_files": [] },
+    "randomizerAction":   { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "optional", "name_suffix": "randomizer.txt" }, "supporting_files": [] },
+
+    "variableAssignment":   { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "variableAssignment-log.txt" }, "supporting_files": [] },
+    "timeAction":           { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "time-log.txt" }, "supporting_files": [] },
+    "randomVariable":       { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "random-log.txt" }, "supporting_files": [] },
+    "countToThresholdAction":{ "pre_file":{ "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "counter-log.txt" }, "supporting_files": [] },
+    "scale":                { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "optional", "name_suffix": "scale-log.txt" }, "supporting_files": [] },
+
+    "logAction":         { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "log-output.txt" }, "supporting_files": [] },
+    "jsonFileAction":    { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "json-operation.txt" }, "supporting_files": [] },
+    "fileIOAction":      { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "file-io.txt" }, "supporting_files": [] },
+    "shellScript":       { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "shell-output.txt" }, "supporting_files": [] },
+    "codeBlock":         { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "code-output.txt" }, "supporting_files": [] },
+
+    "sleepStatement":               { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "never" }, "supporting_files": [] },
+    "declareScene":                 { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "never" }, "supporting_files": [] },
+    "jointAction":                  { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "never" }, "supporting_files": [] },
+    "keyboardAction":               { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "never" }, "supporting_files": [] },
+    "navigateAction":               { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "optional", "name_suffix": "navigate-log.txt" }, "supporting_files": [] },
+    "searchPatternStartAction":     { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "never" }, "supporting_files": [] },
+    "searchPatternContinueAction":  { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "never" }, "supporting_files": [] },
+    "searchPatternEndAction":       { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "never" }, "supporting_files": [] },
+
+    "sendMessageAction":            { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "message-log.txt" }, "supporting_files": [] },
+    "userPromptAction":             { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "user-prompt.txt" }, "supporting_files": [] },
+    "calendarAction":               { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "calendar-operation.txt" }, "supporting_files": [] },
+    "userSecretManagementAction":   { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "secret-operation.txt" }, "supporting_files": [] },
+    "interactApplicationAction":    { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "app-operation.txt" }, "supporting_files": [] },
+    "ADBConfigurationAction":       { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "optional", "name_suffix": "adb-config.txt" }, "supporting_files": [] }
+  }
+}

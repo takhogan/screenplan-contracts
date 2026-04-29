@@ -1,0 +1,15 @@
+{
+  "event_id": "092ea0e0-b698-4a8d-ac9f-c34ee4851c92",
+  "type": "sequence",
+  "sequence_name": "DoHourlyTasks",
+  "status": "completed",
+  "start_time": "2026-04-29T06:00:00Z",
+  "timeout": "2026-04-29T07:00:00Z",
+  "end_time_str": "2026-04-29 06:04:49",
+  "sequences": {},
+  "sequence": [
+    { "type": "command",  "key": "delayStart",   "value": "0,240",        "status": "waiting" },
+    { "type": "variable", "key": "TROOP_POWER",  "value": 8500000,        "status": "waiting" },
+    { "type": "script",   "script_name": "Windows_DoHourlyTasksForAccount", "status": "waiting" }
+  ]
+}

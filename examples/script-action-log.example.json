@@ -1,0 +1,24 @@
+{
+  "base_path": "logs/00000-test-2026-04-29 12-00-00/",
+  "action_log_path": "logs/00000-test-2026-04-29 12-00-00/00002-detectObject-1-action-log.json",
+  "id": "0d2bb5ef-3a55-4d12-9b2e-7c2b7c7ebed0",
+  "name": "detectObject-1",
+  "target_system": "python",
+  "script_name": null,
+  "script_log_folder": "logs/00000-test-2026-04-29 12-00-00/",
+  "script_counter": 2,
+  "log_object_type": "action",
+  "tree_entity_type": "node",
+  "status": "SUCCESS",
+  "summary": "Detected target",
+  "start_time": "2026-04-29 12:00:01.123456",
+  "elapsed": 0.42,
+  "async_elapsed": 0.42,
+  "pre_file":  { "file_type": "image", "file_path": "logs/00000-test-2026-04-29 12-00-00/00002-detectObject-1-screenshot-pre.png" },
+  "post_file": {},
+  "supporting_files": [
+    { "file_type": "text", "file_path": "logs/00000-test-2026-04-29 12-00-00/00002-detectObject-1-detection-confidence.txt" }
+  ],
+  "children": [],
+  "attributes": { "detectActionType": "fixedObject" }
+}

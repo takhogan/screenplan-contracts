@@ -1,0 +1,16 @@
+{
+  "name": "@screenplan/contracts-schemas",
+  "version": "0.1.0",
+  "description": "Canonical ScreenPlan JSON Schemas (Script, ScriptAction, ScriptActionLog, queue entries).",
+  "license": "ISC",
+  "files": [
+    "schemas",
+    "screenplan_contracts_schemas",
+    "examples",
+    "README.md"
+  ],
+  "exports": {
+    "./schemas/*": "./schemas/*",
+    "./package.json": "./package.json"
+  }
+}

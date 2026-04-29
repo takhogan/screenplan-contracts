@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://screenplan.local/schemas/script.schema.json",
+  "title": "Script",
+  "description": "Top-level Script document as edited in script-studio and executed by ScriptEngine.",
+  "type": "object",
+  "required": [
+    "scriptName",
+    "actionRows",
+    "props",
+    "dependencies",
+    "inputs",
+    "outputs",
+    "scriptMeta",
+    "id",
+    "interfaceVersion"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "scriptName": { "type": "string" },
+    "actionRows": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ScriptActionRow" }
+    },
+    "props": { "$ref": "#/$defs/ScriptProps" },
+    "dependencies": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "inputs": {
+      "type": "array",
+      "description": "Tuples of [name, type, required].",
+      "items": {
+        "type": "array",
+        "minItems": 3,
+        "maxItems": 3,
+        "prefixItems": [
+          { "type": "string" },
+          { "type": "string" },
+          { "type": "boolean" }
+        ]
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "minItems": 3,
+        "maxItems": 3,
+        "prefixItems": [
+          { "type": "string" },
+          { "type": "string" },
+          { "type": "boolean" }
+        ]
+      }
+    },
+    "scriptMeta": {
+      "type": "object",
+      "required": ["editorStatus"],
+      "additionalProperties": false,
+      "properties": {
+        "editorStatus": { "$ref": "common.schema.json#/$defs/EditorStatusEnum" }
+      }
+    },
+    "id": { "type": "string" },
+    "interfaceVersion": { "type": "integer" },
+    "lastLoadedTimestamp": { "type": "number" }
+  },
+  "$defs": {
+    "ScriptActionRow": {
+      "type": "object",
+      "required": ["actions", "actionRowIndex", "rowID", "selected"],
+      "additionalProperties": false,
+      "properties": {
+        "actions": {
+          "type": "array",
+          "items": { "$ref": "script-action.schema.json" }
+        },
+        "actionRowIndex": { "type": "integer" },
+        "rowID": { "type": "integer" },
+        "selected": { "type": "boolean" }
+      }
+    },
+    "ScriptProps": {
+      "type": "object",
+      "required": ["targetSystem", "width", "height", "scriptMode", "deploymentToLibrary"],
+      "additionalProperties": true,
+      "properties": {
+        "targetSystem": { "$ref": "common.schema.json#/$defs/SystemName" },
+        "width": { "type": "number" },
+        "height": { "type": "number" },
+        "scriptMode": { "$ref": "common.schema.json#/$defs/ScriptModePropEnum" },
+        "deploymentToLibrary": { "type": "boolean" },
+        "scriptReference": {
+          "description": "Embedded scriptReference props for nested scripts. TODO: tighten once ScriptReference shape is stable.",
+          "type": ["object", "null"]
+        }
+      }
+    }
+  }
+}

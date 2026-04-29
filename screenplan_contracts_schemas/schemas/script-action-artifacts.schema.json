@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://screenplan.local/schemas/script-action-artifacts.schema.json",
+  "title": "ScriptActionArtifactsSpec",
+  "description": "Declarative mapping from each ScriptAction.actionName to the predictable set of pre/post/supplementary files that ScriptEngine is expected to attach to its ScriptActionLog. script-studio uses this to drive the Action Details viewer; ScriptEngine should use this as a contract when authoring new actions. TODO: cross-validate against actual executor implementations and fail CI on drift.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "actions"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "_TODO": { "type": "string" },
+    "version": { "type": "integer" },
+    "actions": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/ActionArtifactSpec" }
+    }
+  },
+  "$defs": {
+    "FileSlot": {
+      "type": "object",
+      "required": ["file_type", "presence"],
+      "additionalProperties": false,
+      "properties": {
+        "file_type": { "$ref": "common.schema.json#/$defs/FileType" },
+        "presence": {
+          "type": "string",
+          "enum": ["always", "optional", "never"],
+          "description": "always = engine MUST emit; optional = MAY emit; never = engine MUST NOT emit (slot is empty {})."
+        },
+        "name_suffix": {
+          "type": "string",
+          "description": "Conventional filename suffix appended after the `<counter>-<actionName>-<group>-` log header."
+        },
+        "description": { "type": "string" }
+      }
+    },
+    "ActionArtifactSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pre_file", "post_file", "supporting_files"],
+      "properties": {
+        "pre_file": { "$ref": "#/$defs/FileSlot" },
+        "post_file": { "$ref": "#/$defs/FileSlot" },
+        "supporting_files": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/FileSlot" }
+        },
+        "attributes": {
+          "type": "object",
+          "description": "Keys this action is expected to set in ScriptActionLog.attributes.",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["presence"],
+            "additionalProperties": false,
+            "properties": {
+              "presence": {
+                "type": "string",
+                "enum": ["always", "optional"]
+              },
+              "enum": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "description": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
