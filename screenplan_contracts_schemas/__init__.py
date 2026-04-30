@@ -20,7 +20,12 @@ def schema_text(name: str) -> str:
 
 
 def list_schemas() -> Iterable[str]:
-    """Yield filenames of all packaged schema/data JSON files."""
+    """Yield filenames of all packaged JSON Schema documents (``*.schema.json``).
+
+    Mirrors the TypeScript ``listSchemas()`` helper in @screenplan/contracts.
+    Companion data files (e.g. ``script-action-artifacts.json``) are excluded —
+    use ``schema_text(name)`` directly to read those.
+    """
     for entry in resources.files(__name__).joinpath("schemas").iterdir():
-        if entry.name.endswith(".json"):
+        if entry.name.endswith(".schema.json"):
             yield entry.name
