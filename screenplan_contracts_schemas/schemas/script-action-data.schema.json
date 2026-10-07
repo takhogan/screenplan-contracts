@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://screenplan.local/schemas/script-action-data.schema.json",
   "title": "ScriptActionData",
-  "description": "Per-subtype `actionData` payload schemas for every ScriptAction subtype. Mirrors the TypeScript ActionData union in script-studio's editor/interfaces/script-action-types.ts. On-disk representations differ from authoring-time types in two ways: (1) Blob/SafeUrl/ImageData fields are persisted as relative file-path strings (or null) — see ScriptImportExportUtils in script-studio; (2) historic scripts may carry legacy fields no longer authored, so each subtype keeps additionalProperties:true and a small `required` list.",
+  "description": "Per-subtype `actionData` payload schemas for every ScriptAction subtype. Mirrors the TypeScript ActionData union in script-studio's editor/interfaces/script-action-types.ts. On-disk representations differ from authoring-time types: (1) at interfaceVersion >= 21 (flat-assets format), Blob/SafeUrl/ImageData fields and JSON-asset fields (e.g. sourcePointList) are persisted as null on the action — the file lives under `assets/` and is registered in the per-action `actionAssets` array; (2) at older interfaceVersion, those fields hold relative file-path strings pointing into the legacy `actions/N-row/M-action/assets/...` tree; (3) historic scripts may carry legacy fields no longer authored, so each subtype keeps additionalProperties:true and a small `required` list.",
   "$defs": {
     "ProgrammingLanguage": {
       "type": "string",
@@ -35,7 +35,7 @@
       "items": { "type": "number" }
     },
     "ImageRef": {
-      "description": "On-disk persisted image reference: relative path (string), embedded data, or null. Authoring-time Blob/ImageData is unloaded to a path before serialisation.",
+      "description": "On-disk persisted image reference. At interfaceVersion >= 21 this is null on the action's actionData; the file lives under `assets/` and is registered in the action's `actionAssets[]`. At older versions it is a relative path string pointing into `actions/N-row/M-{actionName}/assets/...`. Authoring-time Blob/ImageData is unloaded to either form before serialisation.",
       "type": ["string", "null"]
     },
     "CanvasShape": {
@@ -345,6 +345,8 @@
 
     "SearchPatternStartActionData": {
       "type": "object",
+      "deprecated": true,
+      "description": "DEPRECATED: searchPattern* actions are deprecated. Schema retained for loading legacy scripts; do not author new uses.",
       "additionalProperties": true,
       "required": ["targetSystem", "searchPatternID"],
       "properties": {
@@ -360,6 +362,8 @@
 
     "SearchPatternContinueActionData": {
       "type": "object",
+      "deprecated": true,
+      "description": "DEPRECATED: searchPattern* actions are deprecated. Schema retained for loading legacy scripts; do not author new uses.",
       "additionalProperties": true,
       "required": ["targetSystem", "searchPatternID"],
       "properties": {
@@ -372,6 +376,8 @@
 
     "SearchPatternEndActionData": {
       "type": "object",
+      "deprecated": true,
+      "description": "DEPRECATED: searchPattern* actions are deprecated. Schema retained for loading legacy scripts; do not author new uses.",
       "additionalProperties": true,
       "required": ["targetSystem", "searchPatternID"],
       "properties": {
@@ -494,6 +500,7 @@
         "targetSystem":          { "$ref": "common.schema.json#/$defs/SystemName" },
         "codeBlock":             { "type": "string" },
         "interpreter":           { "type": "string", "enum": ["python"] },
+        "async":                 { "type": "boolean" },
         "expandedVisualization": { "type": "boolean" },
         "expandedWidthCols":     { "type": "number" },
         "expandedHeightRows":    { "type": "number" }

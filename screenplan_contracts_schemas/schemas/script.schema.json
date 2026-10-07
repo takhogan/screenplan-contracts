@@ -63,7 +63,10 @@
       }
     },
     "id": { "type": "string" },
-    "interfaceVersion": { "type": "integer" },
+    "interfaceVersion": {
+      "type": "integer",
+      "description": "Schema/feature version of this script. Version 21 introduces the flat `assets/` folder, the per-action `actionAssets[]` registry, and the `tmp/` runtime folder (renamed from `scriptAssets/`). Readers branch on this value; older scripts use the nested `actions/N-row/M-{actionName}/assets/...` layout."
+    },
     "lastLoadedTimestamp": { "type": "number" }
   },
   "$defs": {
