@@ -47,6 +47,10 @@
       "description": "Script constants/arguments. TODO: tighten once arg shape is finalized."
     },
     "parallel": { "type": "boolean" },
+    "restart_device_on_crash": {
+      "type": "boolean",
+      "description": "Set by ScriptScheduler restartDeviceOnCrash(): the controller runs the engine with --restart-device-on-crash, restarting the device when reconnecting to it fails."
+    },
     "script_log_folder": { "type": ["string", "null"] },
     "showDetails": {
       "type": "boolean",
