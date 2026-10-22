@@ -72,7 +72,7 @@
   "$defs": {
     "ScriptActionRow": {
       "type": "object",
-      "required": ["actions", "actionRowIndex", "rowID", "selected"],
+      "required": ["actions", "actionRowIndex", "rowID"],
       "additionalProperties": false,
       "properties": {
         "actions": {
@@ -97,6 +97,16 @@
         "scriptReference": {
           "description": "Embedded scriptReference props for nested scripts. TODO: tighten once ScriptReference shape is stable.",
           "type": ["object", "null"]
+        },
+        "actionGroupCounter": {
+          "description": "Interface version 22+: the next actionGroup to allocate. Never goes down, so a deleted action's id is never reused (VERSIONING.md §4.7). Absent before v22.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "rowIDCounter": {
+          "description": "Interface version 22+: the next rowID to allocate. Never goes down (VERSIONING.md §4.7). Absent before v22.",
+          "type": "integer",
+          "minimum": 0
         }
       }
     }

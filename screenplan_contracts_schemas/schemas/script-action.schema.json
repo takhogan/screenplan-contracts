@@ -15,13 +15,8 @@
     "actionRowActionIndex",
     "visualizerRowIndex",
     "visualizerActionIndex",
-    "visualizerX",
-    "visualizerY",
     "childGroups",
-    "parentGroups",
-    "displayables",
-    "configurables",
-    "linkingBehaviors"
+    "parentGroups"
   ],
   "additionalProperties": true,
   "properties": {
