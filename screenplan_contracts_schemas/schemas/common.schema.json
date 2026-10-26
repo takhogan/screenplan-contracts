@@ -21,8 +21,8 @@
     },
     "FileType": {
       "type": "string",
-      "enum": ["text", "image", "video", "directory"],
-      "description": "Type of a ScriptActionLog artifact file."
+      "enum": ["text", "image", "video", "directory", "overlay"],
+      "description": "Type of a ScriptActionLog artifact file. overlay is a *.overlay.html log overlay: drawing instructions over a stored screenshot that render to the annotated image (see ScriptEngine common/logging/log_overlay.py)."
     },
     "ScriptModePropEnum": {
       "type": "string",
