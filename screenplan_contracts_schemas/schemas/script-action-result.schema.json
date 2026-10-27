@@ -1,0 +1,312 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://screenplan.local/schemas/script-action-result.schema.json",
+  "title": "ScriptActionResult",
+  "description": "What one action did, as fields: written by ScriptEngine for every action at info and debug level as {counter}-{actionName}-{actionGroup}-result.json, next to its action-log.json, and listed among the action log's supporting_files. The action log is the same for every action; this carries what is specific to each (detect matches, click points, colour scores, OCR text). Source of truth: ScriptEngine/common/logging/action_result.py. Coordinates are pixels of the action's input screenshot unless a field says it is in device coordinates. Every action writes the envelope; an action with nothing of its own has empty fields.",
+  "oneOf": [
+    { "$ref": "#/$defs/DetectObjectResult" },
+    { "$ref": "#/$defs/MouseInteractionResult" },
+    { "$ref": "#/$defs/MouseMoveResult" },
+    { "$ref": "#/$defs/ColorCompareResult" },
+    { "$ref": "#/$defs/ImageToTextResult" },
+    { "$ref": "#/$defs/OtherActionResult" }
+  ],
+  "$defs": {
+    "Format": { "type": "string", "const": "screenplan.action-result" },
+    "Version": { "type": "integer", "const": 1 },
+    "ActionGroup": { "type": "integer", "description": "The action's actionGroup in its script." },
+    "ScriptCounter": { "type": "integer", "description": "The action's counter in the run, as in its log file names." },
+
+    "Point": {
+      "type": "object",
+      "required": ["x", "y"],
+      "additionalProperties": false,
+      "properties": { "x": { "type": "number" }, "y": { "type": "number" } }
+    },
+    "Size": {
+      "type": "object",
+      "required": ["width", "height"],
+      "additionalProperties": false,
+      "properties": { "width": { "type": "number" }, "height": { "type": "number" } }
+    },
+    "Box": {
+      "type": "object",
+      "required": ["x", "y", "width", "height"],
+      "additionalProperties": false,
+      "properties": {
+        "x": { "type": "number" }, "y": { "type": "number" },
+        "width": { "type": "number" }, "height": { "type": "number" }
+      }
+    },
+    "Color": {
+      "type": "array",
+      "description": "RGB, 0-255. A measured mean colour can be fractional.",
+      "items": { "type": "number" },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "InputArea": {
+      "type": "object",
+      "description": "Where an image action took its input from.",
+      "required": ["source"],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": ["screenshot", "expression", "missing", "blank", "unparsed"],
+          "description": "screenshot: no input expression, so a screenshot was taken (or reused). expression: an earlier action's output. missing: the named input is not in the state. blank: it is in the state but empty. unparsed: it is not an image result."
+        },
+        "expression": { "type": ["string", "null"] },
+        "area": {
+          "anyOf": [{ "$ref": "#/$defs/Box" }, { "type": "null" }],
+          "description": "For source expression: where the input sits in its screenshot."
+        }
+      }
+    },
+    "ClickTarget": {
+      "type": "object",
+      "description": "How a mouse action chose its point.",
+      "required": ["source", "point"],
+      "additionalProperties": false,
+      "properties": {
+        "source": { "type": "string", "enum": ["expression", "point_list", "none"] },
+        "expression": { "type": ["string", "null"], "description": "For source expression: the input expression." },
+        "input_type": { "type": ["string", "null"], "description": "For source expression: shape or rectangle." },
+        "selection": { "type": ["string", "null"], "description": "How the point was picked from the candidates (interior-weighted, uniform, ...)." },
+        "candidate_count": { "type": ["integer", "null"], "description": "For source point_list: how many points it chose from." },
+        "point": {
+          "anyOf": [{ "$ref": "#/$defs/Point" }, { "type": "null" }],
+          "description": "Device coordinates: where the action clicked or moved."
+        },
+        "source_point": {
+          "anyOf": [{ "$ref": "#/$defs/Point" }, { "type": "null" }],
+          "description": "The point before remapping to the device screen: in the input's screenshot (expression) or the screen the script was written on (point_list)."
+        },
+        "source_screen": { "anyOf": [{ "$ref": "#/$defs/Size" }, { "type": "null" }] },
+        "device_screen": { "anyOf": [{ "$ref": "#/$defs/Size" }, { "type": "null" }] },
+        "remapped": { "type": "boolean", "description": "Whether the point was scaled from source_screen to device_screen." },
+        "screenshot_point": {
+          "anyOf": [{ "$ref": "#/$defs/Point" }, { "type": "null" }],
+          "description": "Where the point is drawn on the action's logged screenshot (its pre_file)."
+        }
+      }
+    },
+    "Match": {
+      "type": "object",
+      "required": ["x", "y", "width", "height", "score"],
+      "additionalProperties": false,
+      "properties": {
+        "x": { "type": "number" }, "y": { "type": "number" },
+        "width": { "type": "number" }, "height": { "type": "number" },
+        "score": { "type": "number" }
+      }
+    },
+
+    "DetectObjectFields": {
+      "type": "object",
+      "description": "screenshot is the size of the image searched (the input).",
+      "additionalProperties": false,
+      "properties": {
+        "detect_type": { "type": "string", "enum": ["floatingObject", "fixedObject"] },
+        "match_mode": { "type": ["string", "null"], "description": "floatingObject: bestMatch, or firstMatch (try the fixed scene first)." },
+        "threshold": { "type": "number" },
+        "skipped_detection": { "type": "boolean", "description": "skipDetection was set: the match is the template's own location, not a search." },
+        "input": { "$ref": "#/$defs/InputArea" },
+        "screenshot": { "$ref": "#/$defs/Size" },
+        "scene": {
+          "type": "object",
+          "description": "The fixed-location comparison (fixedObject, or the first try of firstMatch).",
+          "additionalProperties": false,
+          "properties": {
+            "score": { "type": "number" },
+            "passed": { "type": "boolean" },
+            "rescaled": { "type": "boolean", "description": "The input was resized to the scene's size first." },
+            "location": { "$ref": "#/$defs/Point" }
+          }
+        },
+        "template": {
+          "type": "object",
+          "description": "The template search (floatingObject).",
+          "additionalProperties": false,
+          "properties": {
+            "use_color": { "type": "boolean" },
+            "use_mask": { "type": "boolean" },
+            "resized": { "type": "boolean", "description": "The search ran on the input resized to the screen the template came from." },
+            "initial_match_count": { "type": "integer", "description": "Positions at or above the threshold, before nearby ones were merged." },
+            "match_count": { "type": "integer", "description": "Matches after merging." }
+          }
+        },
+        "matched": { "type": "boolean" },
+        "matches": {
+          "type": "array",
+          "description": "Every match at or above the threshold, best first.",
+          "items": { "$ref": "#/$defs/Match" }
+        },
+        "best": {
+          "anyOf": [
+            {
+              "type": "object",
+              "required": ["x", "y", "score"],
+              "additionalProperties": false,
+              "properties": { "x": { "type": "number" }, "y": { "type": "number" }, "score": { "type": "number" } }
+            },
+            { "type": "null" }
+          ],
+          "description": "The best-scoring position, even when it is below the threshold. Null when nothing could be scored."
+        },
+        "max_matches": { "type": "integer" },
+        "excess_matches": { "type": "integer", "description": "Matches dropped because there were more than max_matches." },
+        "output_var": { "type": ["string", "null"] }
+      }
+    },
+    "MouseInteractionFields": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mouse_action": { "type": "string", "description": "click, mouseDown, mouseUp or scroll." },
+        "button": { "type": ["string", "null"] },
+        "click_count": { "type": ["integer", "null"] },
+        "target": { "$ref": "#/$defs/ClickTarget" }
+      }
+    },
+    "MouseMoveFields": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "drag": { "type": "boolean", "description": "Moved with the mouse down (a drag), rather than just moving." },
+        "mouse_down": { "type": "boolean", "description": "The mouse was down when the move started." },
+        "released": { "type": ["boolean", "null"], "description": "Whether the mouse was released at the end of a drag." },
+        "source": { "$ref": "#/$defs/ClickTarget" },
+        "target": { "$ref": "#/$defs/ClickTarget" },
+        "path": {
+          "type": "array",
+          "description": "The path the device moved along, on the logged screenshot. Empty for a move with the mouse up.",
+          "items": { "$ref": "#/$defs/Point" }
+        }
+      }
+    },
+    "ColorCompareFields": {
+      "type": "object",
+      "description": "area is the area measured, in its screenshot.",
+      "additionalProperties": false,
+      "properties": {
+        "compare_mode": { "type": "string", "enum": ["mean", "mode"] },
+        "reference_color": { "$ref": "#/$defs/Color" },
+        "measured_color": { "$ref": "#/$defs/Color" },
+        "score": { "type": "number", "description": "1 - DeltaE/100 between the two colours in LAB." },
+        "threshold": { "type": "number" },
+        "passed": { "type": "boolean" },
+        "input": { "$ref": "#/$defs/InputArea" },
+        "area": { "$ref": "#/$defs/Box" }
+      }
+    },
+    "ImageToTextFields": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "engine": { "type": "string", "enum": ["tesseractOCR", "easyOCR"] },
+        "input": { "$ref": "#/$defs/InputArea" },
+        "preprocessing": {
+          "type": "array",
+          "description": "The steps applied to the input before OCR, in order.",
+          "items": { "type": "string" }
+        },
+        "runs": {
+          "type": "array",
+          "description": "Each OCR pass: its settings and what it read.",
+          "items": {
+            "type": "object",
+            "required": ["settings", "output"],
+            "additionalProperties": false,
+            "properties": { "settings": { "type": "string" }, "output": { "type": "string" } }
+          }
+        },
+        "text": { "type": "string", "description": "The text the action returned." }
+      }
+    },
+    "EmptyFields": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {}
+    },
+
+    "DetectObjectResult": {
+      "type": "object",
+      "required": ["format", "version", "action", "action_group", "script_counter", "fields"],
+      "additionalProperties": false,
+      "properties": {
+        "format": { "$ref": "#/$defs/Format" }, "version": { "$ref": "#/$defs/Version" },
+        "action": { "const": "detectObject" },
+        "action_group": { "$ref": "#/$defs/ActionGroup" }, "script_counter": { "$ref": "#/$defs/ScriptCounter" },
+        "fields": { "$ref": "#/$defs/DetectObjectFields" }
+      }
+    },
+    "MouseInteractionResult": {
+      "type": "object",
+      "required": ["format", "version", "action", "action_group", "script_counter", "fields"],
+      "additionalProperties": false,
+      "properties": {
+        "format": { "$ref": "#/$defs/Format" }, "version": { "$ref": "#/$defs/Version" },
+        "action": { "const": "mouseInteractionAction" },
+        "action_group": { "$ref": "#/$defs/ActionGroup" }, "script_counter": { "$ref": "#/$defs/ScriptCounter" },
+        "fields": { "$ref": "#/$defs/MouseInteractionFields" }
+      }
+    },
+    "MouseMoveResult": {
+      "type": "object",
+      "required": ["format", "version", "action", "action_group", "script_counter", "fields"],
+      "additionalProperties": false,
+      "properties": {
+        "format": { "$ref": "#/$defs/Format" }, "version": { "$ref": "#/$defs/Version" },
+        "action": { "const": "mouseMoveAction" },
+        "action_group": { "$ref": "#/$defs/ActionGroup" }, "script_counter": { "$ref": "#/$defs/ScriptCounter" },
+        "fields": { "$ref": "#/$defs/MouseMoveFields" }
+      }
+    },
+    "ColorCompareResult": {
+      "type": "object",
+      "required": ["format", "version", "action", "action_group", "script_counter", "fields"],
+      "additionalProperties": false,
+      "properties": {
+        "format": { "$ref": "#/$defs/Format" }, "version": { "$ref": "#/$defs/Version" },
+        "action": { "const": "colorCompareAction" },
+        "action_group": { "$ref": "#/$defs/ActionGroup" }, "script_counter": { "$ref": "#/$defs/ScriptCounter" },
+        "fields": { "$ref": "#/$defs/ColorCompareFields" }
+      }
+    },
+    "ImageToTextResult": {
+      "type": "object",
+      "required": ["format", "version", "action", "action_group", "script_counter", "fields"],
+      "additionalProperties": false,
+      "properties": {
+        "format": { "$ref": "#/$defs/Format" }, "version": { "$ref": "#/$defs/Version" },
+        "action": { "const": "imageToTextAction" },
+        "action_group": { "$ref": "#/$defs/ActionGroup" }, "script_counter": { "$ref": "#/$defs/ScriptCounter" },
+        "fields": { "$ref": "#/$defs/ImageToTextFields" }
+      }
+    },
+    "OtherActionResult": {
+      "type": "object",
+      "description": "Actions that do not record fields of their own yet.",
+      "required": ["format", "version", "action", "action_group", "script_counter", "fields"],
+      "additionalProperties": false,
+      "properties": {
+        "format": { "$ref": "#/$defs/Format" }, "version": { "$ref": "#/$defs/Version" },
+        "action": {
+          "type": "string",
+          "enum": [
+            "calendarAction", "codeBlock", "conditionalStatement", "contextSwitchAction",
+            "countToThresholdAction", "databaseCRUD", "exceptionAction", "fileIOAction",
+            "forLoopAction", "imageTransformationAction", "interactApplicationAction", "jsonFileAction",
+            "keyboardAction", "logAction", "matchMergeAction", "randomVariable", "returnStatement",
+            "scriptReference", "searchPatternContinueAction", "searchPatternEndAction",
+            "searchPatternStartAction", "sendMessageAction", "shellScript", "sleepStatement",
+            "timeAction", "userSecretManagementAction", "variableAssignment"
+          ]
+        },
+        "action_group": { "$ref": "#/$defs/ActionGroup" }, "script_counter": { "$ref": "#/$defs/ScriptCounter" },
+        "fields": { "$ref": "#/$defs/EmptyFields" }
+      }
+    }
+  }
+}

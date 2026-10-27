@@ -1,0 +1,47 @@
+{
+  "format": "screenplan.action-result",
+  "version": 1,
+  "action": "detectObject",
+  "action_group": 1,
+  "script_counter": 2,
+  "fields": {
+    "input": {
+      "source": "screenshot",
+      "expression": null,
+      "area": null
+    },
+    "detect_type": "floatingObject",
+    "match_mode": "bestMatch",
+    "threshold": 0.7,
+    "skipped_detection": false,
+    "screenshot": {
+      "width": 720,
+      "height": 1280
+    },
+    "output_var": "detectObject_0",
+    "template": {
+      "use_color": false,
+      "use_mask": true,
+      "resized": false,
+      "initial_match_count": 14,
+      "match_count": 1
+    },
+    "matched": true,
+    "max_matches": 1,
+    "excess_matches": 0,
+    "matches": [
+      {
+        "x": 546,
+        "y": 161,
+        "width": 69,
+        "height": 74,
+        "score": 0.909
+      }
+    ],
+    "best": {
+      "x": 546,
+      "y": 161,
+      "score": 0.909
+    }
+  }
+}
