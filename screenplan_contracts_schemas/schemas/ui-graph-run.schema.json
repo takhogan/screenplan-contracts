@@ -302,7 +302,19 @@
                 {
                   "type": "null"
                 }
-              ]
+              ],
+              "description": "Device coordinates."
+            },
+            "screenshot_point": {
+              "anyOf": [
+                {
+                  "$ref": "script-action-result.schema.json#/$defs/Point"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The point on the capture, the frame anchor_box is in."
             },
             "to": {
               "anyOf": [
@@ -330,7 +342,8 @@
                 {
                   "type": "null"
                 }
-              ]
+              ],
+              "description": "The box of the matched detect the point was chosen from, on the capture."
             },
             "keys": {
               "type": [
