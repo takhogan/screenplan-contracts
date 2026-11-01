@@ -252,7 +252,8 @@
         "additionalProperties": true,
         "properties": {
           "state": {
-            "type": "string"
+            "type": "string",
+            "description": "\"*\" for a model fitted over every state the anchor was clicked on."
           },
           "anchor": {
             "type": "string"
@@ -275,6 +276,33 @@
           }
         }
       }
+    },
+    "placement": {
+      "type": "object",
+      "description": "How a capture is placed on the states (UI_MAPPER.md §3.7): the tile-change threshold, the temperature dividing the observation log-likelihood, and the fingerprint grid [rows, cols, thumb, thumb] the medians are in.",
+      "required": [
+        "floor",
+        "temperature",
+        "grid"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "floor": {
+          "type": "number"
+        },
+        "temperature": {
+          "type": "number"
+        },
+        "grid": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      }
     }
-  }
+  },
+  "$defs": {}
 }
