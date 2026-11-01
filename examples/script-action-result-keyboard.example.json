@@ -1,0 +1,13 @@
+{
+  "format": "screenplan.action-result",
+  "version": 2,
+  "action": "keyboardAction",
+  "action_group": 9,
+  "script_counter": 15,
+  "fields": {
+    "keyboard_action": "keyPress",
+    "keys": null,
+    "masked": true,
+    "input_at": "2026-11-01T17:00:09.002Z"
+  }
+}

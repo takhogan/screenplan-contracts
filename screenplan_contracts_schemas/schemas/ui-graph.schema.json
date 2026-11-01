@@ -1,0 +1,280 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://screenplan.local/schemas/ui-graph.schema.json",
+  "title": "UIGraph",
+  "description": "One app's screen graph in one workspace (UI_MAPPER.md §2), built by ScreenPlanUIMapper from run tables and written to {dataRoot}/ui-graphs/{workspace}/{appKey}/graph.json. The simulated device (§4), the controller and the MCP tools read it; only the mapper writes it. Version 0 is a draft: fields may still change until slice A of the build order ships.",
+  "type": "object",
+  "required": [
+    "format",
+    "version",
+    "workspace",
+    "app",
+    "built_at",
+    "runs",
+    "anchors",
+    "states",
+    "edges"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format": {
+      "const": "screenplan.ui-graph"
+    },
+    "version": {
+      "const": 0
+    },
+    "workspace": {
+      "type": "string"
+    },
+    "app": {
+      "type": "object",
+      "required": [
+        "key",
+        "source"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "The graph's folder name: the label, lower-cased, or an inferred id."
+        },
+        "label": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The props.json app label, when scripts have one."
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "label",
+            "detected",
+            "inferred"
+          ]
+        },
+        "scripts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The scripts that drive it."
+        }
+      }
+    },
+    "built_at": {
+      "$ref": "script-action-result.schema.json#/$defs/Timestamp"
+    },
+    "builder": {
+      "type": "string",
+      "description": "The mapper's version."
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "{host}/{runFolder} of each run table the graph was built from."
+    },
+    "anchors": {
+      "type": "array",
+      "description": "Vocabulary entries (§3.2): a template and its detect parameters, with entries linked across recuts.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "md5"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "md5": {
+            "type": "string",
+            "description": "The template asset's md5."
+          },
+          "params": {
+            "type": "object",
+            "description": "threshold, mask md5, use_color, resized, detector."
+          },
+          "uses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "{script}:{actionGroup} of every action that uses it."
+          },
+          "same_as": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Entries merged into this one (recuts, other scripts' cuts of the same element)."
+          }
+        }
+      }
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "members",
+          "exemplars"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "A name given through label_ui_state."
+          },
+          "members": {
+            "type": "integer",
+            "description": "Captures assigned to it."
+          },
+          "exemplars": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Files under exemplars/, full resolution."
+          },
+          "signature": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            },
+            "description": "Anchor id -> match rate on the state's captures."
+          },
+          "median": {
+            "type": "string",
+            "description": "Base64 fingerprint tiles of the state's median, as in UIGraphRun.Capture.fingerprint.tiles."
+          },
+          "tile_rates": {
+            "type": "string",
+            "description": "Base64 uint8 per tile: 255 x the rate at which members differ from the median (§3.7's observation model)."
+          },
+          "dynamic": {
+            "type": "string",
+            "description": "Base64 bitmap per tile: dynamic within the state (§3.3.2)."
+          },
+          "fixed_region": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "For a context screen (§3.3.4): base64 bitmap of its fixed tiles."
+          },
+          "dwell": {
+            "type": "object",
+            "description": "Spontaneous-leave statistics (§10.5)."
+          }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "description": "Timed edges (§3.6): per (state, anchor, action), the state seen in each time bin after the input, with counts.",
+      "items": {
+        "type": "object",
+        "required": [
+          "from",
+          "action",
+          "bins"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "anchor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Null: a point-list input, or no input at all (a spontaneous change)."
+          },
+          "action": {
+            "type": "string"
+          },
+          "bins": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "until",
+                "to"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "until": {
+                  "type": "number",
+                  "description": "The bin's upper edge, in seconds after the input."
+                },
+                "to": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "number"
+                  },
+                  "description": "State id (or \"new\") -> count."
+                }
+              }
+            }
+          },
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Recorded paths the sim samples whole: {host}/{runFolder}#{counter}."
+          }
+        }
+      }
+    },
+    "hit_models": {
+      "type": "array",
+      "description": "Diagnostics and priors (§3.5): per (state, anchor, action).",
+      "items": {
+        "type": "object",
+        "required": [
+          "state",
+          "anchor",
+          "action"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "state": {
+            "type": "string"
+          },
+          "anchor": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "region": {
+            "$ref": "script-action-result.schema.json#/$defs/Box",
+            "description": "Posterior median, in the anchor frame (u, v in 0..1)."
+          },
+          "tau0": {
+            "type": "number"
+          },
+          "epsilon": {
+            "type": "number"
+          },
+          "n": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

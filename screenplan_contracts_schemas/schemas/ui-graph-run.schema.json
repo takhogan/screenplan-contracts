@@ -1,0 +1,368 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://screenplan.local/schemas/ui-graph-run.schema.json",
+  "title": "UIGraphRun",
+  "description": "A run table: what ScreenPlanUIMapper extracts from one run folder (UI_MAPPER.md §3.1, §5.1), written to {dataRoot}/ui-graphs/runs/{runFolder}.json. It holds only what does not depend on any graph (§3.6): the event stream, each distinct capture's fingerprint, and template scores. States, beliefs and edges are derived when a graph is built. Version 0 is a draft: fields may still change until slice A of the build order ships.",
+  "type": "object",
+  "required": [
+    "format",
+    "version",
+    "extractor",
+    "run",
+    "captures",
+    "events"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format": {
+      "const": "screenplan.ui-graph-run"
+    },
+    "version": {
+      "const": 0
+    },
+    "extractor": {
+      "type": "string",
+      "description": "The extractor's version. A table written by another version is re-extracted."
+    },
+    "run": {
+      "type": "object",
+      "required": [
+        "folder",
+        "host",
+        "workspace",
+        "root",
+        "completed_mtime"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "folder": {
+          "type": "string",
+          "description": "The run folder's name under logs/."
+        },
+        "host": {
+          "type": "string",
+          "description": "{hostname}-{certSerialNumber} of the host that ran it."
+        },
+        "workspace": {
+          "type": "string"
+        },
+        "root": {
+          "type": "string",
+          "description": "The script the run started."
+        },
+        "versions": {
+          "$ref": "script-versions.schema.json#/properties/versions"
+        },
+        "device": {
+          "$ref": "script-versions.schema.json#/properties/device"
+        },
+        "apps": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Script name -> the app label from its props.json at the run's commit, for scripts that have one."
+        },
+        "completed_mtime": {
+          "type": "number",
+          "description": "completed.txt's mtime, in seconds: with extractor, what makes this table current."
+        },
+        "result_version": {
+          "type": "integer",
+          "description": "The highest result-file version in the run. Below 2, captures have no captured_at and times are proxies."
+        }
+      }
+    },
+    "captures": {
+      "type": "array",
+      "description": "Each distinct capture once, by sha.",
+      "items": {
+        "$ref": "#/$defs/Capture"
+      }
+    },
+    "events": {
+      "type": "array",
+      "description": "Every action that reads the screen or acts on the device, in counter order.",
+      "items": {
+        "$ref": "#/$defs/Event"
+      }
+    }
+  },
+  "$defs": {
+    "Capture": {
+      "type": "object",
+      "required": [
+        "sha",
+        "path",
+        "width",
+        "height",
+        "fingerprint"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "sha": {
+          "$ref": "script-action-result.schema.json#/$defs/Capture/properties/sha"
+        },
+        "path": {
+          "type": "string",
+          "description": "The image file, relative to the data root."
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "captured_at": {
+          "anyOf": [
+            {
+              "$ref": "script-action-result.schema.json#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "taken_by": {
+          "$ref": "script-action-result.schema.json#/$defs/Capture/properties/taken_by"
+        },
+        "taken_in": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "fingerprint": {
+          "type": "object",
+          "description": "The coarse visual fingerprint (§3.2): mean grey per tile.",
+          "required": [
+            "cols",
+            "rows",
+            "tiles"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "cols": {
+              "type": "integer"
+            },
+            "rows": {
+              "type": "integer"
+            },
+            "tiles": {
+              "type": "string",
+              "description": "Base64 of rows x cols x thumb x thumb uint8 grey values, row-major."
+            },
+            "thumb": {
+              "type": "integer",
+              "description": "Pixels per tile side in tiles. Default 2."
+            }
+          }
+        },
+        "scores": {
+          "type": "array",
+          "description": "Template re-evaluation (§3.2 step 2): the best score of each vocabulary entry on this capture.",
+          "items": {
+            "type": "object",
+            "required": [
+              "entry",
+              "score"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "entry": {
+                "type": "string",
+                "description": "A vocabulary entry key: template md5 plus a hash of its detect parameters."
+              },
+              "score": {
+                "type": "number"
+              },
+              "box": {
+                "anyOf": [
+                  {
+                    "$ref": "script-action-result.schema.json#/$defs/Box"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "Event": {
+      "type": "object",
+      "required": [
+        "counter",
+        "script",
+        "action",
+        "group",
+        "status",
+        "start",
+        "elapsed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "counter": {
+          "type": "integer"
+        },
+        "script": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string",
+          "description": "actionName."
+        },
+        "group": {
+          "type": "integer",
+          "description": "actionGroup."
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/RunStatus"
+        },
+        "start": {
+          "type": "number",
+          "description": "Seconds since the epoch."
+        },
+        "elapsed": {
+          "type": "number"
+        },
+        "capture": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The sha of the capture the action read."
+        },
+        "input_at": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "For an input: when it reached the device, in seconds since the epoch."
+        },
+        "entry": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "For a detect: its vocabulary entry."
+        },
+        "matched": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "score": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "box": {
+          "anyOf": [
+            {
+              "$ref": "script-action-result.schema.json#/$defs/Box"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "For a detect: its best match."
+        },
+        "input": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "For an input: what it did, in device coordinates.",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "click",
+                "mouseDown",
+                "mouseUp",
+                "scroll",
+                "drag",
+                "move",
+                "key",
+                "startApplication",
+                "stopApplication"
+              ]
+            },
+            "point": {
+              "anyOf": [
+                {
+                  "$ref": "script-action-result.schema.json#/$defs/Point"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "to": {
+              "anyOf": [
+                {
+                  "$ref": "script-action-result.schema.json#/$defs/Point"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "For a drag: its end."
+            },
+            "anchor": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "The vocabulary entry the point was chosen from, when it came from a detect."
+            },
+            "anchor_box": {
+              "anyOf": [
+                {
+                  "$ref": "script-action-result.schema.json#/$defs/Box"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "keys": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "application": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "scroll_distance": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "For OCR: what it read, unmasked (§5.4)."
+        }
+      }
+    }
+  }
+}

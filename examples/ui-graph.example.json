@@ -1,0 +1,92 @@
+{
+  "format": "screenplan.ui-graph",
+  "version": 0,
+  "workspace": "WAO",
+  "app": {
+    "key": "wao",
+    "label": "WAO",
+    "source": "label",
+    "scripts": [
+      "Example"
+    ]
+  },
+  "built_at": "2026-11-01T18:00:00.000Z",
+  "builder": "0.1.0",
+  "runs": [
+    "MacBook-02/00012-Example-2026-11-01 17-00-00"
+  ],
+  "anchors": [
+    {
+      "id": "85d6aabc8dc4:1a2b",
+      "md5": "85d6aabc8dc4",
+      "params": {
+        "threshold": 0.7,
+        "use_color": true
+      },
+      "uses": [
+        "Example:3"
+      ]
+    }
+  ],
+  "states": [
+    {
+      "id": "s0001",
+      "label": "home",
+      "members": 12,
+      "exemplars": [
+        "s0001-0.png"
+      ],
+      "signature": {
+        "85d6aabc8dc4:1a2b": 0.92
+      }
+    },
+    {
+      "id": "s0002",
+      "label": null,
+      "members": 4,
+      "exemplars": [
+        "s0002-0.png"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "s0001",
+      "anchor": "85d6aabc8dc4:1a2b",
+      "action": "click",
+      "bins": [
+        {
+          "until": 2,
+          "to": {
+            "s0001": 1
+          }
+        },
+        {
+          "until": 8,
+          "to": {
+            "s0002": 3
+          }
+        }
+      ],
+      "paths": [
+        "MacBook-02/00012-Example-2026-11-01 17-00-00#7"
+      ]
+    }
+  ],
+  "hit_models": [
+    {
+      "state": "s0001",
+      "anchor": "85d6aabc8dc4:1a2b",
+      "action": "click",
+      "region": {
+        "x": 0.05,
+        "y": 0.1,
+        "width": 0.9,
+        "height": 0.8
+      },
+      "tau0": 0.4,
+      "epsilon": 0.02,
+      "n": 12
+    }
+  ]
+}

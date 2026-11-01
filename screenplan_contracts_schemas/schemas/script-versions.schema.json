@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://screenplan.local/schemas/script-versions.schema.json",
+  "title": "ScriptVersions",
+  "description": "script_versions.json, written into a run folder by Script-Engine-Controller before the engine starts (recordRunStart in src/vcs/hostVcs.mjs; VERSIONING.md §8.2, \"Run provenance\"): the commit of every script the run could load, and the device it ran on.",
+  "type": "object",
+  "required": [
+    "root",
+    "workspace",
+    "versions",
+    "drift"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "root": {
+      "type": "string",
+      "description": "The script the run started."
+    },
+    "workspace": {
+      "type": "string",
+      "description": "The folder the run's scripts were read from: a workspace, or a branch's folder .{workspace}.{branch}."
+    },
+    "branch": {
+      "type": "string",
+      "description": "For a run in a branch's folder: the branch."
+    },
+    "branchOf": {
+      "type": "string",
+      "description": "For a run in a branch's folder: the workspace it branches."
+    },
+    "versions": {
+      "type": "object",
+      "description": "Per script name.",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "commit",
+          "scriptVersionId"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "commit": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The commit in the workspace's .vcs store. Null for an untracked script: it ran from the folder on disk."
+          },
+          "scriptVersionId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The deploy's id.txt."
+          },
+          "version": {
+            "type": "string",
+            "description": "From V2: the published version number, or {base}+{sha} for a drift commit."
+          }
+        }
+      }
+    },
+    "drift": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Scripts whose commit is a drift commit: an edit made on disk, not a deploy."
+    },
+    "dynamic": {
+      "const": true,
+      "description": "The run has a dynamic reference, so versions lists every tracked script of the workspace."
+    },
+    "device": {
+      "description": "The device the run was given (UI_MAPPER.md §8, C1). Null when it ran with none. Absent in runs from before 2026-11.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RunDevice"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "RunDevice": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "sim"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The device id the run was started with: a key of host_devices_config.json (avd:..., adb:..., pikvm:..., ios:..., sim:...) or file:{path}."
+        },
+        "type": {
+          "type": "string",
+          "description": "The device record's type (avd, bluestacks, adb, pikvm, ios, sim), else the id's prefix; file for a file device."
+        },
+        "sim": {
+          "type": "boolean",
+          "description": "A simulated device (UI_MAPPER.md §4). The UI mapper never learns from these runs."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "format": "screenplan.ui-graph-run",
+  "version": 0,
+  "extractor": "0.1.0",
+  "run": {
+    "folder": "00012-Example-2026-11-01 17-00-00",
+    "host": "MacBook-02",
+    "workspace": "WAO",
+    "root": "Example",
+    "device": {
+      "id": "avd:Small_Phone_API_34",
+      "type": "avd",
+      "sim": false
+    },
+    "apps": {
+      "Example": "WAO"
+    },
+    "completed_mtime": 1793638900.5,
+    "result_version": 2
+  },
+  "captures": [
+    {
+      "sha": "3f786850e387550fdab836ed7e6dc881de23001b",
+      "path": "logs/00012-Example-2026-11-01 17-00-00/00006-detectObject-3-capture.png",
+      "width": 720,
+      "height": 1280,
+      "captured_at": "2026-11-01T17:00:04.512Z",
+      "taken_by": "action",
+      "taken_in": 6,
+      "fingerprint": {
+        "cols": 30,
+        "rows": 53,
+        "thumb": 2,
+        "tiles": "AAAA"
+      },
+      "scores": [
+        {
+          "entry": "85d6aabc8dc4:1a2b",
+          "score": 0.91,
+          "box": {
+            "x": 546,
+            "y": 161,
+            "width": 69,
+            "height": 74
+          }
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "counter": 6,
+      "script": "Example",
+      "action": "detectObject",
+      "group": 3,
+      "status": "SUCCESS",
+      "start": 1793638804.4,
+      "elapsed": 0.3,
+      "capture": "3f786850e387550fdab836ed7e6dc881de23001b",
+      "entry": "85d6aabc8dc4:1a2b",
+      "matched": true,
+      "score": 0.91,
+      "box": {
+        "x": 546,
+        "y": 161,
+        "width": 69,
+        "height": 74
+      }
+    },
+    {
+      "counter": 7,
+      "script": "Example",
+      "action": "mouseInteractionAction",
+      "group": 4,
+      "status": "SUCCESS",
+      "start": 1793638804.8,
+      "elapsed": 0.2,
+      "capture": "3f786850e387550fdab836ed7e6dc881de23001b",
+      "input_at": 1793638804.871,
+      "input": {
+        "kind": "click",
+        "point": {
+          "x": 580,
+          "y": 198
+        },
+        "anchor": "85d6aabc8dc4:1a2b",
+        "anchor_box": {
+          "x": 546,
+          "y": 161,
+          "width": 69,
+          "height": 74
+        }
+      }
+    }
+  ]
+}
