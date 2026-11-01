@@ -686,13 +686,12 @@
       "additionalProperties": true,
       "properties": {
         "targetSystem":         { "$ref": "common.schema.json#/$defs/SystemName" },
+        "promptMethod":         { "type": "string", "enum": ["web"] },
         "promptMessage":        { "type": "string" },
         "promptType":           { "type": "string", "enum": ["text", "yesno", "okcancel"] },
         "defaultValue":         { "type": "string" },
-        "outputVarName":        { "type": "string" },
-        "messagingProvider":    { "type": "string", "enum": ["viber", "web"] },
-        "messagingChannelName": { "type": "string" },
-        "inputExpression":      { "type": "string" }
+        "timeoutSeconds":       { "type": "string" },
+        "outputVarName":        { "type": "string" }
       }
     },
 
