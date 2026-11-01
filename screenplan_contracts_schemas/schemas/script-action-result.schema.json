@@ -265,7 +265,7 @@
     },
     "InputAt": {
       "anyOf": [{ "$ref": "#/$defs/Timestamp" }, { "type": "null" }],
-      "description": "Version 2: when the action sent its input to the device (the first of several clicks or keys). Null when it sent none: a mouseUp with no mouse down, dummy mode, or a failure before the input."
+      "description": "Version 2: when the action sent its input to the device (the first of several clicks or keys). Null when it sent none: a mouseUp with no mouse down, a keyboard action on a file device, or a failure before the input."
     },
     "KeyboardFields": {
       "type": "object",
