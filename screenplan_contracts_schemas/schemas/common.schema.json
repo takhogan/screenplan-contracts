@@ -6,8 +6,8 @@
   "$defs": {
     "SystemName": {
       "type": "string",
-      "enum": ["python", "adb", "kvm", "none"],
-      "description": "Target execution system for a Script/ScriptAction."
+      "enum": ["python", "adb", "kvm", "ios", "none"],
+      "description": "Target execution system for a Script/ScriptAction. Matches the prefix of the device id the action was recorded against: adb for avd:, bluestacks: and adb: devices, kvm for pikvm:, ios for an iPhone or iPad attached by USB (ios:<udid>), and python for the host desktop."
     },
     "RunStatus": {
       "type": "string",
