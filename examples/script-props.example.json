@@ -1,0 +1,27 @@
+{
+  "targetSystem": "python",
+  "width": 1920,
+  "height": 1080,
+  "scriptMode": "prod",
+  "deploymentToLibrary": false,
+  "shortDescription": "Opens an application in the VDI by name and waits for its window. Run it when a task needs an app open.",
+  "description": "Starts with a VDI session open on any screen. Presses Win+R, types the name, presses Enter and waits for the app's window. Leaves the app's window in front.",
+  "scriptReference": null,
+  "actionGroupCounter": 12,
+  "rowIDCounter": 3,
+  "agentTool": {
+    "name": "open_app",
+    "description": "Opens an application in the VDI by name (Win+R) and waits for its window.",
+    "inputs": {
+      "name": { "type": "string", "description": "What Win+R takes: notepad, excel, a .exe path." }
+    },
+    "outputs": {
+      "opened": { "type": "boolean", "description": "The app's window was detected." },
+      "title": { "type": "string", "description": "The window title read from the screen." }
+    },
+    "effects": "changes-device",
+    "repeatable": true,
+    "precondition": "VDI_EnsureSession",
+    "timeoutSeconds": 120
+  }
+}
