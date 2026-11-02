@@ -94,6 +94,14 @@
         "height": { "type": "number" },
         "scriptMode": { "$ref": "common.schema.json#/$defs/ScriptModePropEnum" },
         "deploymentToLibrary": { "type": "boolean" },
+        "shortDescription": {
+          "description": "One to three lines: what the script does and when to run it. Shown to agents in list_scripts, so they can pick a script without reading it.",
+          "type": "string"
+        },
+        "description": {
+          "description": "The longer account an agent reads before running the script: the state it expects to start from, the steps it takes from there, and the state it leaves the device in.",
+          "type": "string"
+        },
         "scriptReference": {
           "description": "Embedded scriptReference props for nested scripts. TODO: tighten once ScriptReference shape is stable.",
           "type": ["object", "null"]
