@@ -173,8 +173,16 @@
                 "type": "string",
                 "description": "A vocabulary entry key: template md5 plus a hash of its detect parameters."
               },
+              "action": {
+                "type": "string",
+                "description": "{script}:{actionGroup} of the first detect that uses the template, keyed as the run's own detects are."
+              },
               "score": {
                 "type": "number"
+              },
+              "matched": {
+                "type": "boolean",
+                "description": "Whether the detect would have matched: the score met its threshold."
               },
               "box": {
                 "anyOf": [
