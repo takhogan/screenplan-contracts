@@ -67,6 +67,10 @@
           "type": "number",
           "description": "completed.txt's mtime, in seconds: with extractor, what makes this table current."
         },
+        "return_code": {
+          "type": ["integer", "null"],
+          "description": "The run's return code, from completed.txt; null for an unfinished run. 0 marks the runs the run comparison takes as its baseline (UI_MAPPER.md §4.1)."
+        },
         "result_version": {
           "type": "integer",
           "description": "The highest result-file version in the run. Below 2, captures have no captured_at and times are proxies."
