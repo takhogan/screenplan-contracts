@@ -279,7 +279,7 @@
     },
     "placement": {
       "type": "object",
-      "description": "How a capture is placed on the states (UI_MAPPER.md §3.7): the tile-change threshold, the temperature dividing the observation log-likelihood, and the fingerprint grid [rows, cols, thumb, thumb] the medians are in.",
+      "description": "How a capture is placed on the states (UI_MAPPER.md §3.7): the tile-change threshold, the temperature dividing the observation log-likelihood, and the fingerprint grid [rows, cols, thumb, thumb] the medians are in, or [rows, cols, thumb + 1, thumb] when each tile also holds its colour (a last row of chroma values).",
       "required": [
         "floor",
         "temperature",

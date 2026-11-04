@@ -138,7 +138,7 @@
         },
         "fingerprint": {
           "type": "object",
-          "description": "The coarse visual fingerprint (§3.2): mean grey per tile.",
+          "description": "The coarse visual fingerprint (§3.2): per tile, thumb x thumb grey values and, with chroma, its mean colour.",
           "required": [
             "cols",
             "rows",
@@ -154,11 +154,15 @@
             },
             "tiles": {
               "type": "string",
-              "description": "Base64 of rows x cols x thumb x thumb uint8 grey values, row-major."
+              "description": "Base64 of uint8 values, row-major by tile: each tile's thumb x thumb grey values, then its chroma values (Cr, Cb about 128, scaled by the mapper's chroma gain)."
             },
             "thumb": {
               "type": "integer",
               "description": "Pixels per tile side in tiles. Default 2."
+        },
+        "chroma": {
+          "type": "integer",
+          "description": "Colour values per tile after the grey ones: 0 (grey only, the default) or thumb (Cr and Cb when thumb is 2)."
             }
           }
         },
