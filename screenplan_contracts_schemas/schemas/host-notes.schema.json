@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://screenplan.local/schemas/host-notes.schema.json",
   "title": "HostNotes",
-  "description": "A host's (or one of its devices') notes: what an agent must know about the machine before it acts on it, such as how typing reaches it, which shortcuts it drops and what else runs there. One document per host serial, and optionally one per device of a host. Stored by the backend per account (script-studio-backend-vercel utils/host-notes-store.ts), read and written through the controller's MCP tools list_hosts, read_host_notes and update_host_notes. The summary is kept apart from the body: list_hosts and an agent's first capture_screen, test_actions or run_script on a host carry the summary only. The limits are in x-limits, the one place both the backend and the controller read them from (@screenplan/contracts HOST_NOTES_LIMITS). A write over a limit is refused, never truncated: a dropped line could be the hazard.",
+  "description": "A host's (or one of its devices') notes: what an agent must know about the machine before it acts on it, such as how typing reaches it, which shortcuts it drops and what else runs there. One document per host serial, and optionally one per device of a host. Stored by the backend per account (script-studio-backend-vercel utils/host-notes-store.ts): each version whole in the private script-studio-data bucket, written once, and only a pointer (summary, version, author, time) in Redis; read and written through the controller's MCP tools list_hosts, read_host_notes and update_host_notes. The summary is kept apart from the body: list_hosts and an agent's first capture_screen, test_actions or run_script on a host carry the summary only. The limits are in x-limits, the one place both the backend and the controller read them from (@screenplan/contracts HOST_NOTES_LIMITS). A write over a limit is refused, never truncated: a dropped line could be the hazard.",
   "x-limits": {
     "summaryMaxLines": 3,
     "summaryMaxLineChars": 120,
@@ -12,9 +12,18 @@
   },
   "type": "object",
   "additionalProperties": false,
-  "required": ["doc", "summary", "body", "version", "updatedAt", "updatedBy"],
+  "required": [
+    "doc",
+    "summary",
+    "body",
+    "version",
+    "updatedAt",
+    "updatedBy"
+  ],
   "properties": {
-    "doc": { "$ref": "#/$defs/HostNotesDocId" },
+    "doc": {
+      "$ref": "#/$defs/HostNotesDocId"
+    },
     "summary": {
       "type": "string",
       "maxLength": 362,
@@ -24,13 +33,28 @@
       "type": "string",
       "description": "The full notes, Markdown, in sections headed `## {section}`. Summary and body together are at most x-limits.documentMaxBytes bytes of UTF-8."
     },
-    "version": { "type": "integer", "minimum": 1, "description": "1 for the first write, one more for each write after it." },
-    "updatedAt": { "type": "string", "format": "date-time" },
-    "updatedBy": { "$ref": "#/$defs/HostNotesAuthor" },
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "1 for the first write, one more for each write after it."
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedBy": {
+      "$ref": "#/$defs/HostNotesAuthor"
+    },
     "history": {
       "type": "array",
-      "items": { "$ref": "#/$defs/HostNotesChange" },
-      "description": "The latest changes, newest first, at most x-limits.historyKept."
+      "items": {
+        "$ref": "#/$defs/HostNotesChange"
+      },
+      "description": "The latest changes, newest first, this one included, at most x-limits.historyKept. Every version stays readable whole, by its number."
+    },
+    "change": {
+      "$ref": "#/$defs/HostNotesChange",
+      "description": "The change that made this version."
     }
   },
   "$defs": {
@@ -48,35 +72,81 @@
     "HostNotesChange": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["version", "at", "by", "mode"],
+      "required": [
+        "version",
+        "at",
+        "by",
+        "mode"
+      ],
       "properties": {
-        "version": { "type": "integer", "minimum": 1 },
-        "at": { "type": "string", "format": "date-time" },
-        "by": { "$ref": "#/$defs/HostNotesAuthor" },
-        "mode": { "type": "string", "enum": ["append", "replace"] },
-        "section": { "type": ["string", "null"], "description": "The section written, or null for the whole body (or the summary alone)." },
-        "summaryChanged": { "type": "boolean" },
-        "message": { "type": ["string", "null"], "maxLength": 200, "description": "Why, in the writer's words." },
-        "bytes": { "type": "integer", "minimum": 0, "description": "The document's size after the change." },
-        "previous": {
-          "type": ["object", "null"],
-          "additionalProperties": false,
-          "required": ["summary", "body"],
-          "properties": { "summary": { "type": "string" }, "body": { "type": "string" } },
-          "description": "The summary and body before the change; null on the first write. Kept on the store, left out of read_host_notes' history head."
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "by": {
+          "$ref": "#/$defs/HostNotesAuthor"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "append",
+            "replace"
+          ]
+        },
+        "section": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The section written, or null for the whole body (or the summary alone)."
+        },
+        "summaryChanged": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 200,
+          "description": "Why, in the writer's words."
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "The document's size after the change."
         }
       }
     },
     "HostNotesPointer": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["doc", "updatedAt", "summary"],
+      "required": [
+        "doc",
+        "updatedAt",
+        "summary"
+      ],
       "description": "What list_hosts, capture_screen's devices and an agent's first contact with a host carry: the summary and where the rest is, never the body.",
       "properties": {
-        "doc": { "$ref": "#/$defs/HostNotesDocId" },
-        "updatedAt": { "type": "string", "format": "date-time" },
-        "summary": { "type": "string", "maxLength": 362 },
-        "summaryTruncated": { "type": "boolean", "description": "True when the stored summary was over the limits (stored before them, or written another way) and this one was cut to fit." }
+        "doc": {
+          "$ref": "#/$defs/HostNotesDocId"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 362
+        },
+        "summaryTruncated": {
+          "type": "boolean",
+          "description": "True when the stored summary was over the limits (stored before them, or written another way) and this one was cut to fit."
+        }
       }
     }
   }

@@ -14,8 +14,7 @@
       "section": null,
       "summaryChanged": true,
       "message": "keepAlive.ps1 Esc",
-      "bytes": 330,
-      "previous": { "summary": "", "body": "## Typing into the Citrix VDI\n\nkeyboardAction keyPress doubles characters through Citrix. A codeBlock that calls pydirectinput.press per character works.\n" }
+      "bytes": 330
     },
     {
       "version": 1,
@@ -25,8 +24,17 @@
       "section": null,
       "summaryChanged": false,
       "message": null,
-      "bytes": 151,
-      "previous": null
+      "bytes": 151
     }
-  ]
+  ],
+  "change": {
+    "version": 2,
+    "at": "2026-11-04T21:10:00.000Z",
+    "by": "mcp:02/claude-code",
+    "mode": "append",
+    "section": null,
+    "summaryChanged": true,
+    "message": "keepAlive.ps1 Esc",
+    "bytes": 330
+  }
 }
