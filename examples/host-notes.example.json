@@ -1,0 +1,40 @@
+{
+  "doc": "host/03",
+  "summary": "Citrix VDI: type with a codeBlock calling pydirectinput, not keyPress (it doubles keys). No Ctrl shortcuts reach it.\nkeepAlive.ps1 sends Esc about every 60 s: dismisses menus and dialogs mid-step.",
+  "body": "## Typing into the Citrix VDI\n\nkeyboardAction keyPress doubles characters through Citrix. A codeBlock that calls pydirectinput.press per character works.\n",
+  "version": 2,
+  "updatedAt": "2026-11-04T21:10:00.000Z",
+  "updatedBy": "mcp:02/claude-code",
+  "history": [
+    {
+      "version": 2,
+      "at": "2026-11-04T21:10:00.000Z",
+      "by": "mcp:02/claude-code",
+      "mode": "append",
+      "section": null,
+      "summaryChanged": true,
+      "message": "keepAlive.ps1 Esc",
+      "bytes": 330
+    },
+    {
+      "version": 1,
+      "at": "2026-11-04T20:00:00.000Z",
+      "by": "mcp:02/claude-code",
+      "mode": "replace",
+      "section": null,
+      "summaryChanged": false,
+      "message": null,
+      "bytes": 151
+    }
+  ],
+  "change": {
+    "version": 2,
+    "at": "2026-11-04T21:10:00.000Z",
+    "by": "mcp:02/claude-code",
+    "mode": "append",
+    "section": null,
+    "summaryChanged": true,
+    "message": "keepAlive.ps1 Esc",
+    "bytes": 330
+  }
+}
