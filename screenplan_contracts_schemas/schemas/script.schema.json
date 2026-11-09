@@ -167,6 +167,11 @@
           "minimum": 1,
           "maximum": 7200,
           "default": 600
+        },
+        "okOutput": {
+          "description": "The output that says whether the call did what it is for, such as ok, ready or opened: true is an ok outcome, anything else a failed one. A member must have one to be promoted from a protocol step to a typed tool (docs/agent-toolkits-plan.md §14.4). It must name an output of outputs and of outputs.json, of type boolean.",
+          "type": "string",
+          "minLength": 1
         }
       }
     },

@@ -22,6 +22,7 @@
     "effects": "changes-device",
     "repeatable": true,
     "precondition": "VDI_EnsureSession",
-    "timeoutSeconds": 120
+    "timeoutSeconds": 120,
+    "okOutput": "opened"
   }
 }
