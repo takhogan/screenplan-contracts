@@ -75,6 +75,7 @@
 
     "logAction":         { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "log-output.txt" }, "supporting_files": [] },
     "jsonFileAction":    { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "json-operation.txt" }, "supporting_files": [] },
+    "dataPersistenceAction": { "pre_file": { "file_type": "text", "presence": "always", "name_suffix": "inputs.txt" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "post.txt" }, "supporting_files": [] },
     "fileIOAction":      { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "file-io.txt" }, "supporting_files": [] },
     "shellScript":       { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "shell-output.txt" }, "supporting_files": [] },
     "codeBlock":         { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "code-output.txt" }, "supporting_files": [] },

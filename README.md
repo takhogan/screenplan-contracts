@@ -16,7 +16,7 @@ packages/
 | Schema                                  | Used by                                                | Notes |
 |-----------------------------------------|--------------------------------------------------------|------|
 | `script.schema.json`                    | script-studio (author) ↔ ScriptEngine (execute)        | `Script` document with action rows. `ScriptProps.agentTool` (`$defs/AgentToolManifest`) is the manifest that serves a script to agents as a typed tool. |
-| `script-action.schema.json`             | script-studio ↔ ScriptEngine                           | Common envelope for the 41 action subtypes. Per-subtype `actionData` is open today (TODO). |
+| `script-action.schema.json`             | script-studio ↔ ScriptEngine                           | Common envelope for the 42 action subtypes. Per-subtype `actionData` is open today (TODO). |
 | `script-status.schema.json`             | Script-Engine-Controller ↔ script-studio               | Entry shape of `running_scripts.json` / `completed_scripts.json`. |
 | `event-status.schema.json`              | Script-Engine-Controller ↔ script-studio               | Entry shape of `running_events.json` / `completed_events.json`. Each event is a `sequence` tree. |
 | `script-action-log.schema.json`         | ScriptEngine (write) → script-studio (read)            | Per-action `action-log.json` produced by `ScriptActionLog._flush`. |
@@ -109,7 +109,7 @@ filesystem path tricks (they're inside the wheel).
 
 ## Per-action artifact contract (Group C)
 
-`schemas/script-action-artifacts.json` declares, for each of the 41 action
+`schemas/script-action-artifacts.json` declares, for each of the 42 action
 subtypes, the predictable set of files ScriptEngine attaches to the
 `ScriptActionLog`:
 

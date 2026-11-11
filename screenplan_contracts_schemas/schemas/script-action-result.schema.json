@@ -296,7 +296,7 @@
           "type": "string",
           "enum": [
             "calendarAction", "codeBlock", "conditionalStatement", "contextSwitchAction",
-            "countToThresholdAction", "databaseCRUD", "exceptionAction", "fileIOAction",
+            "countToThresholdAction", "databaseCRUD", "dataPersistenceAction", "exceptionAction", "fileIOAction",
             "forLoopAction", "imageTransformationAction", "interactApplicationAction", "jsonFileAction",
             "keyboardAction", "logAction", "matchMergeAction", "randomVariable", "returnStatement",
             "scriptReference", "searchPatternContinueAction", "searchPatternEndAction",
