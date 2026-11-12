@@ -1,10 +1,10 @@
 {
   "format": "screenplan.ui-graph",
   "version": 0,
-  "workspace": "WAO",
+  "workspace": "ExampleGame",
   "app": {
-    "key": "wao",
-    "label": "WAO",
+    "key": "examplegame",
+    "label": "ExampleGame",
     "source": "label",
     "scripts": [
       "Example"

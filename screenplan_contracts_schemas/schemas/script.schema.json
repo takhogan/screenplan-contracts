@@ -117,7 +117,7 @@
           "minimum": 0
         },
         "app": {
-          "description": "Optional: which app the script drives, as its author names it (e.g. \"WAO\"). Scripts with the same app share one UI graph in their workspace (UI_MAPPER.md §2). Absent or empty: the mapper infers the app. A label, not an identifier: matched after trimming, ignoring case.",
+          "description": "Optional: which app the script drives, as its author names it (e.g. \"ExampleGame\"). Scripts with the same app share one UI graph in their workspace (UI_MAPPER.md §2). Absent or empty: the mapper infers the app. A label, not an identifier: matched after trimming, ignoring case.",
           "type": "string",
           "maxLength": 100
         },

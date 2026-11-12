@@ -5,7 +5,7 @@
   "run": {
     "folder": "00012-Example-2026-11-01 17-00-00",
     "host": "MacBook-02",
-    "workspace": "WAO",
+    "workspace": "ExampleGame",
     "root": "Example",
     "device": {
       "id": "avd:Small_Phone_API_34",
@@ -13,7 +13,7 @@
       "sim": false
     },
     "apps": {
-      "Example": "WAO"
+      "Example": "ExampleGame"
     },
     "completed_mtime": 1793638900.5,
     "result_version": 2

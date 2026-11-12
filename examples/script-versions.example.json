@@ -1,8 +1,8 @@
 {
-  "root": "BlueStacks_WAO_DirectClaimDailyTaskRewards",
-  "workspace": "WAO",
+  "root": "BlueStacks_ExampleGame_DirectClaimDailyTaskRewards",
+  "workspace": "ExampleGame",
   "versions": {
-    "BlueStacks_WAO_DirectClaimDailyTaskRewards": {
+    "BlueStacks_ExampleGame_DirectClaimDailyTaskRewards": {
       "commit": "6b0c6f1d2a3e4f5061728394a5b6c7d8e9f00112",
       "scriptVersionId": "0d5f0a8e-7c39-4d0e-9a51-0f2e8a3c1b7d",
       "version": "4"
