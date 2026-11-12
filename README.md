@@ -22,7 +22,7 @@ packages/
 | `script-action-log.schema.json`         | ScriptEngine (write) → script-studio (read)            | Per-action `action-log.json` produced by `ScriptActionLog._flush`. |
 | `script-action-artifacts.schema.json`   | both                                                   | Schema for the per-action artifact spec. |
 | `script-action-artifacts.json`          | both                                                   | Canonical mapping `actionName → { pre_file, post_file, supporting_files, attributes }`. |
-| `common.schema.json`                    | -                                                      | Enums and small `$defs` (`SystemName`, `RunStatus`, `FileType`, …). |
+| `common.schema.json`                    | -                                                      | Enums and small `$defs` (`SystemName`, `RunStatus`, `FileType`, …), and the device-slot shapes (`SlotName`, `ActionTarget`, `DeviceSlotEntry`, `DeviceBindings`; interface version 23). |
 | `host-notes.schema.json`                | script-studio-backend-vercel (store) ↔ Script-Engine-Controller (MCP tools) | A host's or device's notes: a short hazards summary kept apart from a Markdown body, with history. `x-limits` holds the summary and size limits both sides enforce (`HOST_NOTES_LIMITS` in @screenplan/contracts). |
 
 ## Conventions
