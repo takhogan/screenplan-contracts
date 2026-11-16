@@ -1,5 +1,5 @@
 {
-  "targetSystem": "python",
+  "targetSystem": "desktop0",
   "width": 1920,
   "height": 1080,
   "scriptMode": "prod",
@@ -9,6 +9,9 @@
   "scriptReference": null,
   "actionGroupCounter": 12,
   "rowIDCounter": 3,
+  "devices": [
+    { "slot": "desktop0", "description": "The VDI client window on the host or a PiKVM'd PC" }
+  ],
   "agentTool": {
     "name": "open_app",
     "description": "Opens an application in the VDI by name (Win+R) and waits for its window.",

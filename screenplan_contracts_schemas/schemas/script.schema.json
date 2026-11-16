@@ -89,7 +89,7 @@
       "required": ["targetSystem", "width", "height", "scriptMode", "deploymentToLibrary"],
       "additionalProperties": true,
       "properties": {
-        "targetSystem": { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem": { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "width": { "type": "number" },
         "height": { "type": "number" },
         "scriptMode": { "$ref": "common.schema.json#/$defs/ScriptModePropEnum" },
@@ -121,7 +121,12 @@
           "type": "string",
           "maxLength": 100
         },
-        "agentTool": { "$ref": "#/$defs/AgentToolManifest" }
+        "agentTool": { "$ref": "#/$defs/AgentToolManifest" },
+        "devices": {
+          "description": "Interface version 23+: the device slots the script's actions use (and the parent slots its scriptReference deviceMaps use), in slot order, kept in step with the actions by @screenplan/script-vcs syncDeviceSlots. Listed means required: every slot except device0 and desktop0 must be bound when a run starts. host and none are never listed.",
+          "type": "array",
+          "items": { "$ref": "common.schema.json#/$defs/DeviceSlotEntry" }
+        }
       }
     },
     "AgentToolManifest": {

@@ -41,6 +41,12 @@
       "type": ["object", "string", "null"],
       "additionalProperties": true
     },
+    "device_bindings": {
+      "description": "Device slots: the run's bindings, slot to device id ({ \"phone0\": \"avd:Pixel_7\" }). The controller passes each as --device slot=id. device_details, when set alongside, is a bare value for an older controller (its type's default slot).",
+      "type": ["object", "null"],
+      "propertyNames": { "$ref": "common.schema.json#/$defs/SlotName" },
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
     "system_script": { "type": "boolean" },
     "args": {
       "type": "array",
