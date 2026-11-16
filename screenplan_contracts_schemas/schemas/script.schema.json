@@ -17,7 +17,11 @@
   ],
   "additionalProperties": false,
   "properties": {
-    "scriptName": { "type": "string" },
+    "scriptName": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]{0,99}$",
+      "description": "A ScreenPlan name: a letter followed by letters, digits or _ (up to 100), not a Python keyword (isScreenPlanName in @screenplan/script-vcs, screenplan_contracts.names). Checked where a name is created or changed; scripts saved under an older name keep it until renamed."
+    },
     "actionRows": {
       "type": "array",
       "items": { "$ref": "#/$defs/ScriptActionRow" }

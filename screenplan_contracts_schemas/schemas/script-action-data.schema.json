@@ -287,7 +287,7 @@
       "required": ["targetSystem", "scriptName"],
       "properties": {
         "targetSystem":           { "$ref": "common.schema.json#/$defs/SystemName" },
-        "scriptName":             { "type": "string" },
+        "scriptName":             { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,99}$", "description": "The called script: a ScreenPlan name (see script.schema.json scriptName)." },
         "scriptAttributes":       { "type": "array", "items": { "type": "string", "enum": ["searchAreaErrorHandler", "searchAreaObjectHandler", "searchAreaExcluded"] } },
         "branchingBehavior":      { "type": "string", "enum": ["firstMatch", "attemptAllBranches"] },
         "runMode":                { "type": "string", "enum": ["run", "runOne", "runToFailure"] },
