@@ -1,0 +1,59 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "loop-count-not-written",
+        "line": 4,
+        "column": 14,
+        "endLine": 4,
+        "endColumn": 26,
+        "message": "A loop's count must be a number written here; for a count decided while running, loop inside a script (a scriptReference with runMode run)."
+      },
+      {
+        "code": "loop-too-long",
+        "line": 6,
+        "column": 14,
+        "endLine": 6,
+        "endColumn": 23,
+        "message": "This loop runs 51 times: at most 50."
+      },
+      {
+        "code": "wrong-argument-type",
+        "line": 8,
+        "column": 27,
+        "endLine": 8,
+        "endColumn": 28,
+        "message": "`step` of `range()` must be a number other than 0."
+      },
+      {
+        "code": "loop-else",
+        "line": 10,
+        "column": 5,
+        "endLine": 10,
+        "endColumn": 8,
+        "message": "A loop can't have an `else`."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 14,
+        "column": 9,
+        "endLine": 14,
+        "endColumn": 13,
+        "message": "Unpacking in a `for` isn't supported."
+      },
+      {
+        "code": "loop-count-not-written",
+        "line": 16,
+        "column": 14,
+        "endLine": 16,
+        "endColumn": 19,
+        "message": "A loop's count must be a number written here; for a count decided while running, loop inside a script (a scriptReference with runMode run)."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}

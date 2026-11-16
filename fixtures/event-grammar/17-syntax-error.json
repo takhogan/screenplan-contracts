@@ -1,0 +1,19 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "syntax-error",
+        "line": 2,
+        "column": 31,
+        "endLine": 2,
+        "endColumn": 32,
+        "message": "Syntax error: expected ':'."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}

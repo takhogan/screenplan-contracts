@@ -1,0 +1,79 @@
+{
+  "result": {
+    "ok": true,
+    "grammar": 2,
+    "errors": [],
+    "warnings": [],
+    "unchecked": [],
+    "outline": [
+      {
+        "type": "sequence",
+        "kind": "with",
+        "name": "target_host('DESKTOP-01'), target_device('phone0', 'emulator-5554')",
+        "line": 2,
+        "context": [
+          {
+            "name": "target_host",
+            "args": "'DESKTOP-01'"
+          },
+          {
+            "name": "target_device",
+            "args": "'phone0', 'emulator-5554'"
+          }
+        ],
+        "steps": [
+          {
+            "type": "command",
+            "line": 3,
+            "name": "delay_start",
+            "args": "0, 240"
+          },
+          {
+            "type": "command",
+            "line": 4,
+            "name": "start_device",
+            "args": "'phone0'"
+          },
+          {
+            "type": "script",
+            "line": 6,
+            "call": "Default.ExampleGame_ToLoadingScreen",
+            "workspace": "Default",
+            "script": "ExampleGame_ToLoadingScreen",
+            "inputs": []
+          },
+          {
+            "type": "script",
+            "line": 7,
+            "call": "Default.ExampleGame_DoHourlyTasks",
+            "workspace": "Default",
+            "script": "ExampleGame_DoHourlyTasks",
+            "inputs": []
+          },
+          {
+            "type": "sequence",
+            "kind": "finally",
+            "name": "onDestroy",
+            "line": 9,
+            "steps": [
+              {
+                "type": "script",
+                "line": 9,
+                "call": "Default.ExampleGame_Close",
+                "workspace": "Default",
+                "script": "ExampleGame_Close",
+                "inputs": []
+              },
+              {
+                "type": "command",
+                "line": 10,
+                "name": "stop_device",
+                "args": "'phone0'"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

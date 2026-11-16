@@ -1,0 +1,136 @@
+{
+  "result": {
+    "ok": true,
+    "grammar": 2,
+    "errors": [],
+    "warnings": [],
+    "unchecked": [],
+    "outline": [
+      {
+        "type": "variable",
+        "line": 2,
+        "name": "items",
+        "value": "['a', 'b', 'c']"
+      },
+      {
+        "type": "variable",
+        "line": 3,
+        "name": "settings",
+        "value": "{'speed': 2, 'mode': 'fast'}"
+      },
+      {
+        "type": "variable",
+        "line": 4,
+        "name": "pause",
+        "value": "random.randint(10, 20) * 2 + math.floor(math.pi)"
+      },
+      {
+        "type": "variable",
+        "line": 5,
+        "name": "first",
+        "value": "items[0] if len(items) > 0 else None"
+      },
+      {
+        "type": "variable",
+        "line": 6,
+        "name": "part",
+        "value": "items[1:]"
+      },
+      {
+        "type": "variable",
+        "line": 7,
+        "name": "later",
+        "value": "datetime.datetime.now() + datetime.timedelta(minutes=5)"
+      },
+      {
+        "type": "variable",
+        "line": 8,
+        "name": "label",
+        "value": "str(round(max(1.5, min(3, 2)), 1)) + '-' + random.choice(items)"
+      },
+      {
+        "type": "variable",
+        "line": 9,
+        "name": "weekday",
+        "value": "datetime.datetime.now().weekday()"
+      },
+      {
+        "type": "variable",
+        "line": 10,
+        "name": "ok",
+        "value": "not (pause > 100) and 'a' in items"
+      },
+      {
+        "type": "sequence",
+        "kind": "with",
+        "name": "target_host('DESKTOP-01'), timeout(hours=1, minutes=30)",
+        "line": 11,
+        "context": [
+          {
+            "name": "target_host",
+            "args": "'DESKTOP-01'"
+          },
+          {
+            "name": "timeout",
+            "args": "hours=1, minutes=30"
+          }
+        ],
+        "steps": [
+          {
+            "type": "sequence",
+            "kind": "with",
+            "name": "target_device('emulator-5554'), restart_device_on_crash('emulator-5554')",
+            "line": 12,
+            "context": [
+              {
+                "name": "target_device",
+                "args": "'emulator-5554'"
+              },
+              {
+                "name": "restart_device_on_crash",
+                "args": "'emulator-5554'"
+              }
+            ],
+            "steps": [
+              {
+                "type": "script",
+                "line": 13,
+                "call": "Default.Run",
+                "workspace": "Default",
+                "script": "Run",
+                "inputs": [
+                  "pause",
+                  "first",
+                  "part",
+                  "later",
+                  "label",
+                  "weekday",
+                  "ok",
+                  "speed"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "command",
+            "line": 14,
+            "name": "dropout_chance",
+            "args": "0.2"
+          },
+          {
+            "type": "command",
+            "line": 15,
+            "name": "wait_until",
+            "args": "minutes=45"
+          },
+          {
+            "type": "command",
+            "line": 16,
+            "name": "run_event",
+            "args": "'Daily/Reports', region='eu'"
+          }
+        ]
+      }
+    ]
+  }
+}

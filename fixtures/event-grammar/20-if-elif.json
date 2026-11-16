@@ -1,0 +1,110 @@
+{
+  "result": {
+    "ok": true,
+    "grammar": 2,
+    "errors": [],
+    "warnings": [],
+    "unchecked": [],
+    "outline": [
+      {
+        "type": "variable",
+        "line": 2,
+        "name": "hour",
+        "value": "datetime.datetime.now().hour"
+      },
+      {
+        "type": "sequence",
+        "kind": "with",
+        "name": "target_host('DESKTOP-01')",
+        "line": 3,
+        "context": [
+          {
+            "name": "target_host",
+            "args": "'DESKTOP-01'"
+          }
+        ],
+        "steps": [
+          {
+            "type": "command",
+            "line": 4,
+            "name": "if",
+            "condition": "hour < 12",
+            "branches": [
+              {
+                "type": "sequence",
+                "kind": "branch",
+                "name": "if hour < 12",
+                "line": 4,
+                "steps": [
+                  {
+                    "type": "script",
+                    "line": 5,
+                    "call": "Default.Morning",
+                    "workspace": "Default",
+                    "script": "Morning",
+                    "inputs": []
+                  }
+                ]
+              },
+              {
+                "type": "sequence",
+                "kind": "branch",
+                "name": "elif 12 <= hour < 18",
+                "line": 6,
+                "steps": [
+                  {
+                    "type": "script",
+                    "line": 7,
+                    "call": "Default.Afternoon",
+                    "workspace": "Default",
+                    "script": "Afternoon",
+                    "inputs": []
+                  }
+                ]
+              },
+              {
+                "type": "sequence",
+                "kind": "branch",
+                "name": "elif hour == 18 or hour == 19",
+                "line": 8,
+                "steps": []
+              },
+              {
+                "type": "sequence",
+                "kind": "branch",
+                "name": "else",
+                "line": 11,
+                "steps": [
+                  {
+                    "type": "command",
+                    "line": 11,
+                    "name": "if",
+                    "condition": "random.random() < 0.5",
+                    "branches": [
+                      {
+                        "type": "sequence",
+                        "kind": "branch",
+                        "name": "if random.random() < 0.5",
+                        "line": 11,
+                        "steps": [
+                          {
+                            "type": "script",
+                            "line": 12,
+                            "call": "Default.Evening",
+                            "workspace": "Default",
+                            "script": "Evening",
+                            "inputs": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

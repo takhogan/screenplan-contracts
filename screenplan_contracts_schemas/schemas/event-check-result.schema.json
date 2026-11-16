@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://screenplan.local/schemas/event-check-result.schema.json",
+  "title": "EventCheckResult",
+  "description": "What the scheduler grammar checker answers for an event's text, the same from every entry point: the controller's MCP tool check_event, the studio editor, the backend's refusal of an event with errors (HTTP 400, {error: 'invalid-event', result}), ScriptEngine's calendarAction and the two CLIs. Produced by screenplan_contracts.event_grammar (Python) and @screenplan/script-actions scheduler-grammar-v2 (TypeScript), which agree on the conformance corpus in fixtures/event-grammar/. Each code, with its severity and message template, is listed in event-grammar-builtins.json. Lines are 1-based; columns are 1-based and counted in Unicode code points; the end is exclusive.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ok", "grammar", "errors", "warnings", "unchecked", "outline"],
+  "properties": {
+    "ok": { "type": "boolean", "description": "True when there are no errors; warnings don't block." },
+    "grammar": { "type": "integer", "enum": [1, 2], "description": "1 for a text without the grammar 2 header that doesn't look like grammar 2 (answered with one error, grammar-1-not-accepted), else 2." },
+    "errors": { "type": "array", "items": { "$ref": "#/$defs/Diagnostic" } },
+    "warnings": { "type": "array", "items": { "$ref": "#/$defs/Diagnostic" } },
+    "unchecked": {
+      "type": "array",
+      "description": "Checks the context level couldn't run (a host that didn't answer, a source that couldn't be read): skipped, never guessed.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["code", "message"],
+        "properties": {
+          "code": { "type": "string" },
+          "message": { "type": "string" }
+        }
+      }
+    },
+    "outline": {
+      "type": "array",
+      "description": "What the event will run, in order: empty when the grammar level found errors.",
+      "items": { "$ref": "#/$defs/Step" }
+    }
+  },
+  "$defs": {
+    "Diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "line", "column", "endLine", "endColumn", "message"],
+      "properties": {
+        "code": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "description": "Stable kebab-case code, the same in TypeScript and Python (event-grammar-builtins.json diagnostics)." },
+        "line": { "type": "integer", "minimum": 1 },
+        "column": { "type": "integer", "minimum": 1 },
+        "endLine": { "type": "integer", "minimum": 1 },
+        "endColumn": { "type": "integer", "minimum": 1 },
+        "message": { "type": "string" },
+        "fix": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["replace", "label"],
+          "description": "When there is exactly one obvious correction: the text that replaces the diagnostic's range.",
+          "properties": {
+            "replace": { "type": "string" },
+            "label": { "type": "string" }
+          }
+        }
+      }
+    },
+    "Step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "line"],
+      "properties": {
+        "type": { "type": "string", "enum": ["script", "command", "variable", "sequence"] },
+        "line": { "type": "integer", "minimum": 1, "description": "The line of the statement (for an else branch or a finally block, of its first statement)." },
+        "kind": { "type": "string", "enum": ["with", "def", "for", "iteration", "branch", "finally"], "description": "For a sequence: what made it." },
+        "name": { "type": "string", "description": "A command's built-in, a variable's name, or a sequence's header as written (onDestroy for the finally block)." },
+        "call": { "type": "string", "description": "A script step's Workspace.Script." },
+        "workspace": { "type": "string" },
+        "script": { "type": "string" },
+        "inputs": { "type": "array", "items": { "type": "string" }, "description": "The keyword arguments a script call passes: all it receives." },
+        "args": { "type": "string", "description": "A command's or a def call's arguments, as written." },
+        "value": { "type": "string", "description": "A variable's value, as written." },
+        "condition": { "type": "string", "description": "An if command's condition, as written." },
+        "branches": { "type": "array", "items": { "$ref": "#/$defs/Step" } },
+        "context": {
+          "type": "array",
+          "description": "A with sequence's contexts, in order.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "args"],
+            "properties": {
+              "name": { "type": "string" },
+              "args": { "type": "string" }
+            }
+          }
+        },
+        "parallel": { "type": "boolean", "description": "A with sequence whose contexts include parallel()." },
+        "steps": { "type": "array", "items": { "$ref": "#/$defs/Step" } }
+      }
+    }
+  }
+}

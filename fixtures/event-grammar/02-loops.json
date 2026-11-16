@@ -1,0 +1,325 @@
+{
+  "result": {
+    "ok": true,
+    "grammar": 2,
+    "errors": [],
+    "warnings": [],
+    "unchecked": [],
+    "outline": [
+      {
+        "type": "sequence",
+        "kind": "with",
+        "name": "target_host('DESKTOP-01')",
+        "line": 2,
+        "context": [
+          {
+            "name": "target_host",
+            "args": "'DESKTOP-01'"
+          }
+        ],
+        "steps": [
+          {
+            "type": "sequence",
+            "kind": "for",
+            "name": "for region in ['eu', 'us']",
+            "line": 3,
+            "steps": [
+              {
+                "type": "sequence",
+                "kind": "iteration",
+                "name": "region = 'eu'",
+                "line": 3,
+                "steps": [
+                  {
+                    "type": "variable",
+                    "line": 3,
+                    "name": "region",
+                    "value": "'eu'"
+                  },
+                  {
+                    "type": "script",
+                    "line": 4,
+                    "call": "Default.DailyReport",
+                    "workspace": "Default",
+                    "script": "DailyReport",
+                    "inputs": [
+                      "region"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "sequence",
+                "kind": "iteration",
+                "name": "region = 'us'",
+                "line": 3,
+                "steps": [
+                  {
+                    "type": "variable",
+                    "line": 3,
+                    "name": "region",
+                    "value": "'us'"
+                  },
+                  {
+                    "type": "script",
+                    "line": 4,
+                    "call": "Default.DailyReport",
+                    "workspace": "Default",
+                    "script": "DailyReport",
+                    "inputs": [
+                      "region"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "sequence",
+            "kind": "for",
+            "name": "for i in range(3)",
+            "line": 6,
+            "steps": [
+              {
+                "type": "sequence",
+                "kind": "iteration",
+                "name": "i = 0",
+                "line": 6,
+                "steps": [
+                  {
+                    "type": "variable",
+                    "line": 6,
+                    "name": "i",
+                    "value": "0"
+                  },
+                  {
+                    "type": "script",
+                    "line": 7,
+                    "call": "Default.CollectRewards",
+                    "workspace": "Default",
+                    "script": "CollectRewards",
+                    "inputs": []
+                  },
+                  {
+                    "type": "command",
+                    "line": 8,
+                    "name": "delay_start",
+                    "args": "30, 90"
+                  }
+                ]
+              },
+              {
+                "type": "sequence",
+                "kind": "iteration",
+                "name": "i = 1",
+                "line": 6,
+                "steps": [
+                  {
+                    "type": "variable",
+                    "line": 6,
+                    "name": "i",
+                    "value": "1"
+                  },
+                  {
+                    "type": "script",
+                    "line": 7,
+                    "call": "Default.CollectRewards",
+                    "workspace": "Default",
+                    "script": "CollectRewards",
+                    "inputs": []
+                  },
+                  {
+                    "type": "command",
+                    "line": 8,
+                    "name": "delay_start",
+                    "args": "30, 90"
+                  }
+                ]
+              },
+              {
+                "type": "sequence",
+                "kind": "iteration",
+                "name": "i = 2",
+                "line": 6,
+                "steps": [
+                  {
+                    "type": "variable",
+                    "line": 6,
+                    "name": "i",
+                    "value": "2"
+                  },
+                  {
+                    "type": "script",
+                    "line": 7,
+                    "call": "Default.CollectRewards",
+                    "workspace": "Default",
+                    "script": "CollectRewards",
+                    "inputs": []
+                  },
+                  {
+                    "type": "command",
+                    "line": 8,
+                    "name": "delay_start",
+                    "args": "30, 90"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "sequence",
+            "kind": "for",
+            "name": "for n in range(-2, 4, 3)",
+            "line": 10,
+            "steps": [
+              {
+                "type": "sequence",
+                "kind": "iteration",
+                "name": "n = -2",
+                "line": 10,
+                "steps": [
+                  {
+                    "type": "variable",
+                    "line": 10,
+                    "name": "n",
+                    "value": "-2"
+                  },
+                  {
+                    "type": "sequence",
+                    "kind": "for",
+                    "name": "for t in ('a', 'b')",
+                    "line": 11,
+                    "steps": [
+                      {
+                        "type": "sequence",
+                        "kind": "iteration",
+                        "name": "t = 'a'",
+                        "line": 11,
+                        "steps": [
+                          {
+                            "type": "variable",
+                            "line": 11,
+                            "name": "t",
+                            "value": "'a'"
+                          },
+                          {
+                            "type": "script",
+                            "line": 12,
+                            "call": "Default.Pair",
+                            "workspace": "Default",
+                            "script": "Pair",
+                            "inputs": [
+                              "n",
+                              "t"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "sequence",
+                        "kind": "iteration",
+                        "name": "t = 'b'",
+                        "line": 11,
+                        "steps": [
+                          {
+                            "type": "variable",
+                            "line": 11,
+                            "name": "t",
+                            "value": "'b'"
+                          },
+                          {
+                            "type": "script",
+                            "line": 12,
+                            "call": "Default.Pair",
+                            "workspace": "Default",
+                            "script": "Pair",
+                            "inputs": [
+                              "n",
+                              "t"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "sequence",
+                "kind": "iteration",
+                "name": "n = 1",
+                "line": 10,
+                "steps": [
+                  {
+                    "type": "variable",
+                    "line": 10,
+                    "name": "n",
+                    "value": "1"
+                  },
+                  {
+                    "type": "sequence",
+                    "kind": "for",
+                    "name": "for t in ('a', 'b')",
+                    "line": 11,
+                    "steps": [
+                      {
+                        "type": "sequence",
+                        "kind": "iteration",
+                        "name": "t = 'a'",
+                        "line": 11,
+                        "steps": [
+                          {
+                            "type": "variable",
+                            "line": 11,
+                            "name": "t",
+                            "value": "'a'"
+                          },
+                          {
+                            "type": "script",
+                            "line": 12,
+                            "call": "Default.Pair",
+                            "workspace": "Default",
+                            "script": "Pair",
+                            "inputs": [
+                              "n",
+                              "t"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "sequence",
+                        "kind": "iteration",
+                        "name": "t = 'b'",
+                        "line": 11,
+                        "steps": [
+                          {
+                            "type": "variable",
+                            "line": 11,
+                            "name": "t",
+                            "value": "'b'"
+                          },
+                          {
+                            "type": "script",
+                            "line": 12,
+                            "call": "Default.Pair",
+                            "workspace": "Default",
+                            "script": "Pair",
+                            "inputs": [
+                              "n",
+                              "t"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "try-not-at-top",
+        "line": 4,
+        "column": 9,
+        "endLine": 4,
+        "endColumn": 12,
+        "message": "`try`/`finally` goes at the top level or directly inside top-level `with` blocks."
+      },
+      {
+        "code": "second-try",
+        "line": 8,
+        "column": 5,
+        "endLine": 8,
+        "endColumn": 8,
+        "message": "An event has at most one `try`/`finally`."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 8,
+        "column": 5,
+        "endLine": 8,
+        "endColumn": 8,
+        "message": "`else` on a `try` isn't supported."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 10,
+        "column": 5,
+        "endLine": 10,
+        "endColumn": 11,
+        "message": "`except` isn't supported: only `try`/`finally` for now; failure handling comes later."
+      },
+      {
+        "code": "second-try",
+        "line": 14,
+        "column": 1,
+        "endLine": 14,
+        "endColumn": 4,
+        "message": "An event has at most one `try`/`finally`."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}

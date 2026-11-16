@@ -1,0 +1,43 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "not-allowed-in-parallel",
+        "line": 15,
+        "column": 9,
+        "endLine": 15,
+        "endColumn": 27,
+        "message": "`delay_start()` isn't allowed inside `with parallel()`."
+      },
+      {
+        "code": "not-allowed-in-parallel",
+        "line": 16,
+        "column": 9,
+        "endLine": 16,
+        "endColumn": 17,
+        "message": "`helper()` isn't allowed inside `with parallel()`."
+      },
+      {
+        "code": "not-allowed-in-parallel",
+        "line": 17,
+        "column": 9,
+        "endLine": 17,
+        "endColumn": 13,
+        "message": "A nested `with` isn't allowed inside `with parallel()`."
+      },
+      {
+        "code": "not-allowed-in-parallel",
+        "line": 19,
+        "column": 9,
+        "endLine": 19,
+        "endColumn": 12,
+        "message": "`try` isn't allowed inside `with parallel()`."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}

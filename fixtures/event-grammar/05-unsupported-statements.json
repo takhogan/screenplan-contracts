@@ -1,0 +1,155 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "unsupported-statement",
+        "line": 2,
+        "column": 1,
+        "endLine": 2,
+        "endColumn": 7,
+        "message": "`import` isn't supported: events use only the built-ins, random, math and datetime."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 3,
+        "column": 1,
+        "endLine": 3,
+        "endColumn": 5,
+        "message": "`import` isn't supported: events use only the built-ins, random, math and datetime."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 4,
+        "column": 1,
+        "endLine": 4,
+        "endColumn": 6,
+        "message": "`while` isn't supported: use a `for` with a written count, or loop inside a script (a scriptReference with runMode run)."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 6,
+        "column": 1,
+        "endLine": 6,
+        "endColumn": 6,
+        "message": "`class` isn't supported."
+      },
+      {
+        "code": "expression-statement",
+        "line": 9,
+        "column": 1,
+        "endLine": 9,
+        "endColumn": 2,
+        "message": "An expression on its own line does nothing: a line calls a script, a built-in or a sequence."
+      },
+      {
+        "code": "expression-statement",
+        "line": 10,
+        "column": 1,
+        "endLine": 10,
+        "endColumn": 16,
+        "message": "An expression on its own line does nothing: a line calls a script, a built-in or a sequence."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 11,
+        "column": 1,
+        "endLine": 11,
+        "endColumn": 7,
+        "message": "Augmented assignment (`x += …`) isn't supported: write `x = x + …`."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 12,
+        "column": 1,
+        "endLine": 12,
+        "endColumn": 10,
+        "message": "Assigning several names at once (`a = b = …`) isn't supported."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 13,
+        "column": 1,
+        "endLine": 13,
+        "endColumn": 5,
+        "message": "Unpacking (`a, b = …`) isn't supported."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 14,
+        "column": 1,
+        "endLine": 14,
+        "endColumn": 7,
+        "message": "Assigning to an attribute isn't supported."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 15,
+        "column": 1,
+        "endLine": 15,
+        "endColumn": 4,
+        "message": "`del` isn't supported."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 16,
+        "column": 1,
+        "endLine": 16,
+        "endColumn": 7,
+        "message": "`assert` isn't supported."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 17,
+        "column": 1,
+        "endLine": 17,
+        "endColumn": 6,
+        "message": "`raise` isn't supported."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 18,
+        "column": 1,
+        "endLine": 18,
+        "endColumn": 7,
+        "message": "`global` isn't supported."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 19,
+        "column": 1,
+        "endLine": 19,
+        "endColumn": 9,
+        "message": "`continue` isn't supported."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 20,
+        "column": 1,
+        "endLine": 20,
+        "endColumn": 7,
+        "message": "`return` isn't supported."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 21,
+        "column": 1,
+        "endLine": 21,
+        "endColumn": 11,
+        "message": "A decorator isn't supported."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 24,
+        "column": 1,
+        "endLine": 24,
+        "endColumn": 6,
+        "message": "`async` isn't supported."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}

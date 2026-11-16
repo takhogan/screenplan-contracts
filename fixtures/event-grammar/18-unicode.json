@@ -1,0 +1,35 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "undefined-name",
+        "line": 3,
+        "column": 35,
+        "endLine": 3,
+        "endColumn": 39,
+        "message": "`café` isn't set in this event."
+      },
+      {
+        "code": "undefined-name",
+        "line": 4,
+        "column": 31,
+        "endLine": 4,
+        "endColumn": 35,
+        "message": "`nope` isn't set in this event."
+      },
+      {
+        "code": "undefined-name",
+        "line": 4,
+        "column": 47,
+        "endLine": 4,
+        "endColumn": 52,
+        "message": "`nope2` isn't set in this event."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}

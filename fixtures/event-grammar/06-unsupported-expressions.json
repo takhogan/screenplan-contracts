@@ -1,0 +1,107 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "unsupported-expression",
+        "line": 4,
+        "column": 5,
+        "endLine": 4,
+        "endColumn": 16,
+        "message": "`lambda` isn't supported in an expression."
+      },
+      {
+        "code": "unsupported-expression",
+        "line": 5,
+        "column": 6,
+        "endLine": 5,
+        "endColumn": 12,
+        "message": "`:=` isn't supported in an expression."
+      },
+      {
+        "code": "unsupported-expression",
+        "line": 6,
+        "column": 5,
+        "endLine": 6,
+        "endColumn": 24,
+        "message": "A comprehension isn't supported in an expression."
+      },
+      {
+        "code": "unsupported-expression",
+        "line": 7,
+        "column": 5,
+        "endLine": 7,
+        "endColumn": 11,
+        "message": "A set isn't supported in an expression."
+      },
+      {
+        "code": "unsupported-expression",
+        "line": 8,
+        "column": 5,
+        "endLine": 8,
+        "endColumn": 11,
+        "message": "A bytes literal isn't supported in an expression."
+      },
+      {
+        "code": "unsupported-expression",
+        "line": 9,
+        "column": 5,
+        "endLine": 9,
+        "endColumn": 7,
+        "message": "A complex number isn't supported in an expression."
+      },
+      {
+        "code": "unsupported-expression",
+        "line": 10,
+        "column": 5,
+        "endLine": 10,
+        "endColumn": 10,
+        "message": "The `|` operator isn't supported in an expression."
+      },
+      {
+        "code": "unsupported-expression",
+        "line": 11,
+        "column": 5,
+        "endLine": 11,
+        "endColumn": 7,
+        "message": "The `~` operator isn't supported in an expression."
+      },
+      {
+        "code": "unknown-function",
+        "line": 12,
+        "column": 5,
+        "endLine": 12,
+        "endColumn": 18,
+        "message": "`values.copy()` can't be called in an expression: the functions are len, str, int, float, min, max, round, random.random, random.randint, random.choice, math.*, datetime.datetime.now and datetime.timedelta."
+      },
+      {
+        "code": "unsupported-expression",
+        "line": 13,
+        "column": 6,
+        "endLine": 13,
+        "endColumn": 13,
+        "message": "`*` unpacking isn't supported in an expression."
+      },
+      {
+        "code": "unsupported-expression",
+        "line": 14,
+        "column": 8,
+        "endLine": 14,
+        "endColumn": 13,
+        "message": "`**` unpacking isn't supported in an expression."
+      },
+      {
+        "code": "unsupported-expression",
+        "line": 15,
+        "column": 5,
+        "endLine": 15,
+        "endColumn": 8,
+        "message": "`...` isn't supported in an expression."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}

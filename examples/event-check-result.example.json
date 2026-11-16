@@ -1,0 +1,273 @@
+{
+  "ok": false,
+  "grammar": 2,
+  "errors": [
+    {
+      "code": "name-hides-workspace",
+      "line": 2,
+      "column": 1,
+      "endLine": 2,
+      "endColumn": 4,
+      "message": "`ops` is also a workspace: an event name can't hide one."
+    },
+    {
+      "code": "unknown-workspace",
+      "line": 8,
+      "column": 5,
+      "endLine": 8,
+      "endColumn": 15,
+      "message": "There is no workspace `Nope`."
+    },
+    {
+      "code": "unknown-event-parameter",
+      "line": 10,
+      "column": 44,
+      "endLine": 10,
+      "endColumn": 50,
+      "message": "The saved event 'Folder/Title' has no parameter `size`."
+    }
+  ],
+  "warnings": [
+    {
+      "code": "unused-variable",
+      "line": 3,
+      "column": 1,
+      "endLine": 3,
+      "endColumn": 7,
+      "message": "`unused` is set but never used."
+    },
+    {
+      "code": "device-not-attached",
+      "line": 4,
+      "column": 57,
+      "endLine": 4,
+      "endColumn": 72,
+      "message": "'emulator-9999' isn't attached to DESKTOP-01."
+    },
+    {
+      "code": "unknown-script-input",
+      "line": 5,
+      "column": 5,
+      "endLine": 5,
+      "endColumn": 42,
+      "message": "`Default.Search` doesn't declare an input `extra`: declare it in the script, or drop it from the call."
+    },
+    {
+      "code": "missing-script-input",
+      "line": 6,
+      "column": 5,
+      "endLine": 6,
+      "endColumn": 21,
+      "message": "`Default.Search` needs the input `query`, which this call doesn't pass."
+    },
+    {
+      "code": "script-not-found",
+      "line": 7,
+      "column": 5,
+      "endLine": 7,
+      "endColumn": 22,
+      "message": "`Default.Missing` isn't on any host."
+    },
+    {
+      "code": "script-not-deployed",
+      "line": 9,
+      "column": 5,
+      "endLine": 9,
+      "endColumn": 22,
+      "message": "`Default.NotHere` is not deployed to DESKTOP-01."
+    },
+    {
+      "code": "unknown-saved-event",
+      "line": 11,
+      "column": 15,
+      "endLine": 11,
+      "endColumn": 31,
+      "message": "There is no saved event 'Folder/Missing'."
+    },
+    {
+      "code": "unknown-host",
+      "line": 12,
+      "column": 18,
+      "endLine": 12,
+      "endColumn": 32,
+      "message": "'UNKNOWN-HOST' isn't a host or a host mapping."
+    },
+    {
+      "code": "no-target-host",
+      "line": 16,
+      "column": 1,
+      "endLine": 16,
+      "endColumn": 40,
+      "message": "Part of this event has no `target_host`, so it runs on every host's scheduler."
+    },
+    {
+      "code": "device-not-attached",
+      "line": 16,
+      "column": 24,
+      "endLine": 16,
+      "endColumn": 39,
+      "message": "'emulator-0000' isn't attached to any host."
+    }
+  ],
+  "unchecked": [
+    {
+      "code": "host-unreachable",
+      "message": "DESKTOP-03 didn't answer: its scripts and devices weren't checked."
+    },
+    {
+      "code": "context-unavailable",
+      "message": "The saved events couldn't be read, so run_event calls weren't checked."
+    }
+  ],
+  "outline": [
+    {
+      "type": "variable",
+      "line": 2,
+      "name": "ops",
+      "value": "1"
+    },
+    {
+      "type": "variable",
+      "line": 3,
+      "name": "unused",
+      "value": "'x'"
+    },
+    {
+      "type": "sequence",
+      "kind": "with",
+      "name": "target_host('DESKTOP-01'), target_device('phone0', 'emulator-9999')",
+      "line": 4,
+      "context": [
+        {
+          "name": "target_host",
+          "args": "'DESKTOP-01'"
+        },
+        {
+          "name": "target_device",
+          "args": "'phone0', 'emulator-9999'"
+        }
+      ],
+      "steps": [
+        {
+          "type": "script",
+          "line": 5,
+          "call": "Default.Search",
+          "workspace": "Default",
+          "script": "Search",
+          "inputs": [
+            "query",
+            "extra"
+          ]
+        },
+        {
+          "type": "script",
+          "line": 6,
+          "call": "Default.Search",
+          "workspace": "Default",
+          "script": "Search",
+          "inputs": []
+        },
+        {
+          "type": "script",
+          "line": 7,
+          "call": "Default.Missing",
+          "workspace": "Default",
+          "script": "Missing",
+          "inputs": []
+        },
+        {
+          "type": "script",
+          "line": 8,
+          "call": "Nope.Run",
+          "workspace": "Nope",
+          "script": "Run",
+          "inputs": []
+        },
+        {
+          "type": "script",
+          "line": 9,
+          "call": "Default.NotHere",
+          "workspace": "Default",
+          "script": "NotHere",
+          "inputs": []
+        },
+        {
+          "type": "command",
+          "line": 10,
+          "name": "run_event",
+          "args": "'Folder/Title', region='eu', size=2"
+        },
+        {
+          "type": "command",
+          "line": 11,
+          "name": "run_event",
+          "args": "'Folder/Missing'"
+        }
+      ]
+    },
+    {
+      "type": "sequence",
+      "kind": "with",
+      "name": "target_host('UNKNOWN-HOST')",
+      "line": 12,
+      "context": [
+        {
+          "name": "target_host",
+          "args": "'UNKNOWN-HOST'"
+        }
+      ],
+      "steps": [
+        {
+          "type": "script",
+          "line": 13,
+          "call": "Default.Search",
+          "workspace": "Default",
+          "script": "Search",
+          "inputs": [
+            "query"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "sequence",
+      "kind": "with",
+      "name": "target_host('office')",
+      "line": 14,
+      "context": [
+        {
+          "name": "target_host",
+          "args": "'office'"
+        }
+      ],
+      "steps": [
+        {
+          "type": "script",
+          "line": 15,
+          "call": "Default.Search",
+          "workspace": "Default",
+          "script": "Search",
+          "inputs": [
+            "query"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "command",
+      "line": 16,
+      "name": "start_device",
+      "args": "'phone1', 'emulator-0000'"
+    },
+    {
+      "type": "script",
+      "line": 17,
+      "call": "Default.Search",
+      "workspace": "Default",
+      "script": "Search",
+      "inputs": [
+        "query"
+      ]
+    }
+  ]
+}

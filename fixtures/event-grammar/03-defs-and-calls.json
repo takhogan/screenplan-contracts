@@ -1,0 +1,148 @@
+{
+  "result": {
+    "ok": true,
+    "grammar": 2,
+    "errors": [],
+    "warnings": [],
+    "unchecked": [],
+    "outline": [
+      {
+        "type": "sequence",
+        "kind": "with",
+        "name": "target_host(['DESKTOP-01', 'DESKTOP-02'])",
+        "line": 11,
+        "context": [
+          {
+            "name": "target_host",
+            "args": "['DESKTOP-01', 'DESKTOP-02']"
+          }
+        ],
+        "steps": [
+          {
+            "type": "sequence",
+            "kind": "def",
+            "name": "twice",
+            "line": 12,
+            "args": "",
+            "steps": [
+              {
+                "type": "sequence",
+                "kind": "def",
+                "name": "session",
+                "line": 8,
+                "args": "rounds=2",
+                "steps": [
+                  {
+                    "type": "command",
+                    "line": 3,
+                    "name": "start_device",
+                    "args": "'phone0'"
+                  },
+                  {
+                    "type": "script",
+                    "line": 4,
+                    "call": "Default.Play",
+                    "workspace": "Default",
+                    "script": "Play",
+                    "inputs": [
+                      "rounds",
+                      "label"
+                    ]
+                  },
+                  {
+                    "type": "command",
+                    "line": 5,
+                    "name": "stop_device",
+                    "args": "'phone0'"
+                  }
+                ]
+              },
+              {
+                "type": "sequence",
+                "kind": "def",
+                "name": "session",
+                "line": 9,
+                "args": "label='second'",
+                "steps": [
+                  {
+                    "type": "command",
+                    "line": 3,
+                    "name": "start_device",
+                    "args": "'phone0'"
+                  },
+                  {
+                    "type": "script",
+                    "line": 4,
+                    "call": "Default.Play",
+                    "workspace": "Default",
+                    "script": "Play",
+                    "inputs": [
+                      "rounds",
+                      "label"
+                    ]
+                  },
+                  {
+                    "type": "command",
+                    "line": 5,
+                    "name": "stop_device",
+                    "args": "'phone0'"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "sequence",
+            "kind": "with",
+            "name": "timeout(minutes=30), restart_device_on_crash()",
+            "line": 13,
+            "context": [
+              {
+                "name": "timeout",
+                "args": "minutes=30"
+              },
+              {
+                "name": "restart_device_on_crash",
+                "args": ""
+              }
+            ],
+            "steps": [
+              {
+                "type": "sequence",
+                "kind": "def",
+                "name": "session",
+                "line": 14,
+                "args": "",
+                "steps": [
+                  {
+                    "type": "command",
+                    "line": 3,
+                    "name": "start_device",
+                    "args": "'phone0'"
+                  },
+                  {
+                    "type": "script",
+                    "line": 4,
+                    "call": "Default.Play",
+                    "workspace": "Default",
+                    "script": "Play",
+                    "inputs": [
+                      "rounds",
+                      "label"
+                    ]
+                  },
+                  {
+                    "type": "command",
+                    "line": 5,
+                    "name": "stop_device",
+                    "args": "'phone0'"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

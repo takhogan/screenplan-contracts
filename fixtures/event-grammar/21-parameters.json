@@ -1,0 +1,19 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "parameter-not-assigned",
+        "line": 7,
+        "column": 13,
+        "endLine": 7,
+        "endColumn": 42,
+        "message": "`parameter()` is written as `name = parameter(…)`, outside any `def`."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}

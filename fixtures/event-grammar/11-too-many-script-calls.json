@@ -1,0 +1,19 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "too-many-script-calls",
+        "line": 1,
+        "column": 1,
+        "endLine": 1,
+        "endColumn": 31,
+        "message": "This event runs 501 script calls once its loops are unrolled: at most 500."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}

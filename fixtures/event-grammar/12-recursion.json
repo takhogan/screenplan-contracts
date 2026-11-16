@@ -1,0 +1,35 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "recursive-sequence",
+        "line": 3,
+        "column": 5,
+        "endLine": 3,
+        "endColumn": 8,
+        "message": "`a()` calls itself through `b()`: a sequence can't recurse."
+      },
+      {
+        "code": "recursive-sequence",
+        "line": 6,
+        "column": 5,
+        "endLine": 6,
+        "endColumn": 8,
+        "message": "`b()` calls itself through `a()`: a sequence can't recurse."
+      },
+      {
+        "code": "recursive-sequence",
+        "line": 9,
+        "column": 5,
+        "endLine": 9,
+        "endColumn": 8,
+        "message": "`c()` calls itself: a sequence can't recurse."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}

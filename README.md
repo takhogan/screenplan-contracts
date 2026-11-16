@@ -24,6 +24,8 @@ packages/
 | `script-action-artifacts.json`          | both                                                   | Canonical mapping `actionName → { pre_file, post_file, supporting_files, attributes }`. |
 | `common.schema.json`                    | -                                                      | Enums and small `$defs` (`SystemName`, `RunStatus`, `FileType`, …). |
 | `host-notes.schema.json`                | script-studio-backend-vercel (store) ↔ Script-Engine-Controller (MCP tools) | A host's or device's notes: a short hazards summary kept apart from a Markdown body, with history. `x-limits` holds the summary and size limits both sides enforce (`HOST_NOTES_LIMITS` in @screenplan/contracts). |
+| `event-check-result.schema.json`        | every scheduler grammar checker entry point (MCP `check_event`, studio, backend, CLIs) | The result of checking an event's text (scheduler grammar 2): errors, warnings, unchecked, outline. |
+| `event-grammar-builtins.json`           | both grammar checkers, the studio editor, the docs | The grammar 2 built-in registry: built-ins, allowed modules and functions, slots, limits, and every diagnostic code with its message template. Not a schema. |
 
 ## Conventions
 
@@ -139,3 +141,13 @@ match the spec.
   data — newer code should write objects only.
 - Python validation uses `jsonschema.RefResolver`, which is deprecated. Migrate
   to `referencing` when convenient.
+
+## Fixtures shared by two implementations
+
+- `fixtures/screenplan-names.json`: the ScreenPlan name rule, read by
+  `@screenplan/script-vcs` (`isScreenPlanName`) and `screenplan_contracts.names`.
+- `fixtures/event-grammar/`: the scheduler grammar 2 conformance corpus, read by
+  `@screenplan/script-actions` (`checkEvent`) and `screenplan_contracts.event_grammar`
+  ([its README](fixtures/event-grammar/README.md)).
+
+Both suites find this folder beside them, or through `CONTRACTS_DIR` (a worktree).

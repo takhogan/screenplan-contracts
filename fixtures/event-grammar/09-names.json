@@ -1,0 +1,175 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "name-hides-workspace",
+        "line": 2,
+        "column": 1,
+        "endLine": 2,
+        "endColumn": 8,
+        "message": "`Default` is also a workspace: an event name can't hide one."
+      },
+      {
+        "code": "reserved-name",
+        "line": 3,
+        "column": 1,
+        "endLine": 3,
+        "endColumn": 4,
+        "message": "`len` is a built-in name: pick another name."
+      },
+      {
+        "code": "bad-workspace-name",
+        "line": 4,
+        "column": 1,
+        "endLine": 4,
+        "endColumn": 8,
+        "message": "`default` isn't a workspace name: a workspace name starts with a capital letter, followed by letters, digits or `_`.",
+        "fix": {
+          "replace": "Default",
+          "label": "did you mean Default?"
+        }
+      },
+      {
+        "code": "bad-script-name",
+        "line": 5,
+        "column": 9,
+        "endLine": 5,
+        "endColumn": 14,
+        "message": "`match` can't be called from an event: rename this script to call it from an event."
+      },
+      {
+        "code": "bad-script-name",
+        "line": 6,
+        "column": 9,
+        "endLine": 6,
+        "endColumn": 16,
+        "message": "`_hidden` can't be called from an event: rename this script to call it from an event."
+      },
+      {
+        "code": "positional-argument",
+        "line": 7,
+        "column": 13,
+        "endLine": 7,
+        "endColumn": 14,
+        "message": "`Default.Run()` takes keyword arguments only: inputs have no order."
+      },
+      {
+        "code": "not-a-script-call",
+        "line": 8,
+        "column": 1,
+        "endLine": 8,
+        "endColumn": 6,
+        "message": "A script is called as `Workspace.Script()`."
+      },
+      {
+        "code": "not-a-script-call",
+        "line": 9,
+        "column": 1,
+        "endLine": 9,
+        "endColumn": 7,
+        "message": "A script is called as `Workspace.Script()`."
+      },
+      {
+        "code": "reserved-name",
+        "line": 12,
+        "column": 5,
+        "endLine": 12,
+        "endColumn": 17,
+        "message": "`start_device` is a built-in name: pick another name."
+      },
+      {
+        "code": "duplicate-def",
+        "line": 18,
+        "column": 5,
+        "endLine": 18,
+        "endColumn": 8,
+        "message": "`seq` is defined twice."
+      },
+      {
+        "code": "def-parameter",
+        "line": 21,
+        "column": 11,
+        "endLine": 21,
+        "endColumn": 12,
+        "message": "A sequence's parameters are `name=default`: `a` needs a default."
+      },
+      {
+        "code": "def-parameter",
+        "line": 24,
+        "column": 11,
+        "endLine": 24,
+        "endColumn": 15,
+        "message": "A sequence's parameters are `name=default`: `*args`, `**kwargs`, `/` and `*` aren't allowed."
+      },
+      {
+        "code": "positional-argument",
+        "line": 27,
+        "column": 5,
+        "endLine": 27,
+        "endColumn": 6,
+        "message": "`seq()` takes keyword arguments only: pass a sequence's parameters by name."
+      },
+      {
+        "code": "unknown-keyword",
+        "line": 28,
+        "column": 5,
+        "endLine": 28,
+        "endColumn": 12,
+        "message": "`seq()` has no parameter `depth`."
+      },
+      {
+        "code": "undefined-name",
+        "line": 29,
+        "column": 5,
+        "endLine": 29,
+        "endColumn": 12,
+        "message": "`missing` isn't set in this event."
+      },
+      {
+        "code": "unknown-function",
+        "line": 30,
+        "column": 5,
+        "endLine": 30,
+        "endColumn": 16,
+        "message": "`os.getcwd()` can't be called in an expression: the functions are len, str, int, float, min, max, round, random.random, random.randint, random.choice, math.*, datetime.datetime.now and datetime.timedelta."
+      },
+      {
+        "code": "unknown-function",
+        "line": 31,
+        "column": 5,
+        "endLine": 31,
+        "endColumn": 18,
+        "message": "`Default.Run()` can't be called in an expression: the functions are len, str, int, float, min, max, round, random.random, random.randint, random.choice, math.*, datetime.datetime.now and datetime.timedelta."
+      },
+      {
+        "code": "statement-as-value",
+        "line": 32,
+        "column": 5,
+        "endLine": 32,
+        "endColumn": 10,
+        "message": "`seq()` is a statement and gives no value."
+      },
+      {
+        "code": "unknown-function",
+        "line": 33,
+        "column": 5,
+        "endLine": 33,
+        "endColumn": 14,
+        "message": "`open()` can't be called in an expression: the functions are len, str, int, float, min, max, round, random.random, random.randint, random.choice, math.*, datetime.datetime.now and datetime.timedelta."
+      },
+      {
+        "code": "misplaced-def",
+        "line": 35,
+        "column": 5,
+        "endLine": 35,
+        "endColumn": 8,
+        "message": "A `def` goes at the top level."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}

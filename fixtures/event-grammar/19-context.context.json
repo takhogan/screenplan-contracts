@@ -1,0 +1,23 @@
+{
+  "workspaces": {
+    "Default": {
+      "scripts": {
+        "Search": { "inputs": [{ "name": "query", "required": true }], "hosts": ["DESKTOP-01", "DESKTOP-02"] },
+        "NotHere": { "hosts": ["DESKTOP-02"] }
+      }
+    },
+    "Ops": { "scripts": {} }
+  },
+  "hosts": {
+    "DESKTOP-01": { "devices": ["emulator-5554"] },
+    "DESKTOP-02": { "devices": ["emulator-5556"] }
+  },
+  "hostMappings": ["office"],
+  "controlBoardEvents": {
+    "Folder/Title": { "parameters": ["region"] }
+  },
+  "unchecked": [
+    { "code": "host-unreachable", "message": "DESKTOP-03 didn't answer: its scripts and devices weren't checked." },
+    { "code": "context-unavailable", "message": "The saved events couldn't be read, so run_event calls weren't checked." }
+  ]
+}

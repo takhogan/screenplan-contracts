@@ -1,0 +1,167 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "too-many-arguments",
+        "line": 4,
+        "column": 23,
+        "endLine": 4,
+        "endColumn": 24,
+        "message": "`delay_start()` takes at most 2 positional arguments."
+      },
+      {
+        "code": "missing-argument",
+        "line": 5,
+        "column": 5,
+        "endLine": 5,
+        "endColumn": 19,
+        "message": "`delay_start()` needs `max_seconds`."
+      },
+      {
+        "code": "unknown-keyword",
+        "line": 6,
+        "column": 23,
+        "endLine": 6,
+        "endColumn": 32,
+        "message": "`delay_start()` has no parameter `seconds`."
+      },
+      {
+        "code": "missing-argument",
+        "line": 7,
+        "column": 5,
+        "endLine": 7,
+        "endColumn": 34,
+        "message": "`delay_start()` needs `max_seconds`."
+      },
+      {
+        "code": "duplicate-argument",
+        "line": 7,
+        "column": 20,
+        "endLine": 7,
+        "endColumn": 33,
+        "message": "`delay_start()` gets `min_seconds` twice."
+      },
+      {
+        "code": "wrong-argument-type",
+        "line": 8,
+        "column": 17,
+        "endLine": 8,
+        "endColumn": 23,
+        "message": "`min_seconds` of `delay_start()` must be a number."
+      },
+      {
+        "code": "argument-must-be-literal",
+        "line": 9,
+        "column": 15,
+        "endLine": 9,
+        "endColumn": 19,
+        "message": "`path` of `run_event()` must be written here, as a literal."
+      },
+      {
+        "code": "bad-slot",
+        "line": 10,
+        "column": 17,
+        "endLine": 10,
+        "endColumn": 23,
+        "message": "'auto' isn't a slot: a slot is a kind and a number, like phone0 or desktop1."
+      },
+      {
+        "code": "wrong-argument-type",
+        "line": 11,
+        "column": 18,
+        "endLine": 11,
+        "endColumn": 19,
+        "message": "`slot` of `start_device()` must be a string."
+      },
+      {
+        "code": "wrong-argument-type",
+        "line": 12,
+        "column": 22,
+        "endLine": 12,
+        "endColumn": 25,
+        "message": "`p` of `dropout_chance()` must be a number."
+      },
+      {
+        "code": "missing-argument",
+        "line": 13,
+        "column": 5,
+        "endLine": 13,
+        "endColumn": 17,
+        "message": "`wait_until()` needs `hours` or `minutes`."
+      },
+      {
+        "code": "duration-string",
+        "line": 14,
+        "column": 16,
+        "endLine": 14,
+        "endColumn": 23,
+        "message": "Durations are `hours=`/`minutes=` keywords, never a string like '1h30m'.",
+        "fix": {
+          "replace": "hours=1, minutes=30",
+          "label": "write hours=1, minutes=30"
+        }
+      },
+      {
+        "code": "duration-string",
+        "line": 15,
+        "column": 18,
+        "endLine": 15,
+        "endColumn": 25,
+        "message": "Durations are `hours=`/`minutes=` keywords, never a string like '0h45m'.",
+        "fix": {
+          "replace": "minutes=45",
+          "label": "write minutes=45"
+        }
+      },
+      {
+        "code": "wrong-argument-type",
+        "line": 17,
+        "column": 22,
+        "endLine": 17,
+        "endColumn": 23,
+        "message": "`names` of `target_host()` must be a string or a list of strings."
+      },
+      {
+        "code": "wrong-argument-type",
+        "line": 19,
+        "column": 22,
+        "endLine": 19,
+        "endColumn": 39,
+        "message": "`names` of `target_host()` must be a string or a list of strings."
+      },
+      {
+        "code": "wrong-argument-type",
+        "line": 21,
+        "column": 18,
+        "endLine": 21,
+        "endColumn": 34,
+        "message": "`kind` of `parameter()` must be one of 'input', 'select', 'multiple_select'.",
+        "fix": {
+          "replace": "'multiple_select'",
+          "label": "did you mean 'multiple_select'?"
+        }
+      },
+      {
+        "code": "missing-argument",
+        "line": 22,
+        "column": 8,
+        "endLine": 22,
+        "endColumn": 27,
+        "message": "`parameter()` needs `options`."
+      },
+      {
+        "code": "too-many-arguments",
+        "line": 23,
+        "column": 27,
+        "endLine": 23,
+        "endColumn": 32,
+        "message": "`parameter()` takes at most 1 positional argument."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "unknown-builtin",
+        "line": 5,
+        "column": 1,
+        "endLine": 5,
+        "endColumn": 12,
+        "message": "`startDevice` isn't a built-in.",
+        "fix": {
+          "replace": "start_device",
+          "label": "did you mean start_device?"
+        }
+      },
+      {
+        "code": "unknown-builtin",
+        "line": 6,
+        "column": 1,
+        "endLine": 6,
+        "endColumn": 11,
+        "message": "`targetHost` isn't a built-in.",
+        "fix": {
+          "replace": "target_host",
+          "label": "did you mean target_host?"
+        }
+      },
+      {
+        "code": "unknown-builtin",
+        "line": 7,
+        "column": 1,
+        "endLine": 7,
+        "endColumn": 13,
+        "message": "`setWorkspace` isn't a built-in: call scripts as `Workspace.Script()`."
+      },
+      {
+        "code": "unknown-builtin",
+        "line": 8,
+        "column": 1,
+        "endLine": 8,
+        "endColumn": 12,
+        "message": "`stop_devise` isn't a built-in.",
+        "fix": {
+          "replace": "stop_device",
+          "label": "did you mean stop_device?"
+        }
+      },
+      {
+        "code": "undefined-sequence",
+        "line": 9,
+        "column": 1,
+        "endLine": 9,
+        "endColumn": 8,
+        "message": "`cleanup()` calls a sequence this event doesn't define."
+      },
+      {
+        "code": "undefined-sequence",
+        "line": 10,
+        "column": 1,
+        "endLine": 10,
+        "endColumn": 7,
+        "message": "`prepar()` calls a sequence this event doesn't define.",
+        "fix": {
+          "replace": "prepare",
+          "label": "did you mean prepare?"
+        }
+      },
+      {
+        "code": "value-as-statement",
+        "line": 11,
+        "column": 1,
+        "endLine": 11,
+        "endColumn": 11,
+        "message": "`len()` gives a value: use it in an assignment or an argument."
+      },
+      {
+        "code": "context-as-statement",
+        "line": 12,
+        "column": 1,
+        "endLine": 12,
+        "endColumn": 12,
+        "message": "`target_host()` sets context for a block: write `with target_host(…):`."
+      },
+      {
+        "code": "parameter-not-assigned",
+        "line": 13,
+        "column": 1,
+        "endLine": 13,
+        "endColumn": 19,
+        "message": "`parameter()` is written as `name = parameter(…)`, outside any `def`."
+      },
+      {
+        "code": "value-as-statement",
+        "line": 14,
+        "column": 1,
+        "endLine": 14,
+        "endColumn": 16,
+        "message": "`random.random()` gives a value: use it in an assignment or an argument."
+      },
+      {
+        "code": "statement-as-context",
+        "line": 15,
+        "column": 6,
+        "endLine": 15,
+        "endColumn": 18,
+        "message": "`start_device()` isn't a context: call it on its own line."
+      },
+      {
+        "code": "unknown-builtin",
+        "line": 17,
+        "column": 6,
+        "endLine": 17,
+        "endColumn": 9,
+        "message": "`foo` isn't a built-in: the contexts are target_host, target_device, timeout, parallel and restart_device_on_crash."
+      },
+      {
+        "code": "unsupported-statement",
+        "line": 19,
+        "column": 6,
+        "endLine": 19,
+        "endColumn": 15,
+        "message": "A `with` on something other than a context isn't supported."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}

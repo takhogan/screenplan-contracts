@@ -1,0 +1,235 @@
+{
+  "about": "Scheduler grammar 2: every built-in an event can call, the modules and functions its expressions can use, the slot names, the limits, and every diagnostic the grammar checker answers with its message template. Read by both validators (screenplan_contracts.event_grammar and @screenplan/script-actions scheduler-grammar-v2), the studio editor and the generated docs. Every name here starts with a lowercase letter, so no capitalized workspace name can ever collide with one (workspace docs/specs/scheduler-python-grammar.md, \"Names\"). Adding a built-in is an entry here plus its handler in the scheduler.",
+  "version": 1,
+  "header": "# ScreenPlan event (grammar 2)",
+  "limits": {
+    "maxLoopIterations": 50,
+    "maxScriptCalls": 500
+  },
+  "slots": {
+    "kinds": ["device", "phone", "tablet", "desktop"],
+    "pattern": "^(device|phone|tablet|desktop)[0-9]+$",
+    "about": "A slot is a kind and a number (device-slots spec): device0, phone0, phone1, tablet0, desktop0, desktop1…"
+  },
+  "builtins": [
+    {
+      "name": "target_host",
+      "kind": "context",
+      "params": [
+        { "name": "names", "type": "string|strings", "required": true, "completes": "host", "doc": "A host name or host-mapping keyword, or a list of them." }
+      ],
+      "help": "The block runs only on these hosts. Outside any target_host, an event runs on every host's scheduler. A target_host inside another one replaces it.",
+      "example": "with target_host('DESKTOP-01'):\n    Default.DailyReport()",
+      "grammar1": "targetHost"
+    },
+    {
+      "name": "target_device",
+      "kind": "context",
+      "params": [
+        { "name": "slot", "type": "string", "required": true, "completes": "slot", "slot": true, "doc": "The slot to bind (phone0, desktop1…)." },
+        { "name": "name", "type": "string", "required": false, "completes": "device", "doc": "The device to bind it to." }
+      ],
+      "oneArgument": "name",
+      "help": "Binds a slot to a device for the scripts in the block. With one argument, the device binds its default slot.",
+      "example": "with target_device('phone0', 'emulator-5554'):\n    Default.CollectRewards()",
+      "grammar1": "targetDevice"
+    },
+    {
+      "name": "timeout",
+      "kind": "context",
+      "params": [
+        { "name": "hours", "type": "number", "required": false, "keywordOnly": true, "completes": "number", "doc": "Hours." },
+        { "name": "minutes", "type": "number", "required": false, "keywordOnly": true, "completes": "number", "doc": "Minutes." }
+      ],
+      "atLeastOne": true,
+      "duration": true,
+      "help": "Scripts started in the block get at most this long, and never run past the event's end.",
+      "example": "with timeout(minutes=30):\n    Default.DailyReport()",
+      "grammar1": "setTimeout"
+    },
+    {
+      "name": "parallel",
+      "kind": "context",
+      "params": [],
+      "help": "Scripts in the block start without waiting for each other; the block ends when all of them have. Directly inside: script calls, start_device, stop_device, assignments, extend_end, and if/for blocks made of those.",
+      "example": "with parallel():\n    Default.ReportA()\n    Default.ReportB()",
+      "grammar1": "parallelScript"
+    },
+    {
+      "name": "restart_device_on_crash",
+      "kind": "context",
+      "params": [
+        { "name": "name", "type": "string", "required": false, "completes": "device", "doc": "The device to restart; any device when left out." }
+      ],
+      "help": "Scripts in the block restart that device (any device with no argument) when they crash.",
+      "example": "with restart_device_on_crash('emulator-5554'):\n    Default.CollectRewards()",
+      "grammar1": "restartDeviceOnCrash"
+    },
+    {
+      "name": "start_device",
+      "kind": "statement",
+      "params": [
+        { "name": "slot", "type": "string", "required": true, "completes": "slot", "slot": true, "doc": "The slot to start." },
+        { "name": "name", "type": "string", "required": false, "completes": "device", "doc": "The device to bind it to first." }
+      ],
+      "help": "Starts the device in that slot, binding it first when a name is given.",
+      "example": "start_device('phone0', 'emulator-5554')",
+      "grammar1": "startDevice"
+    },
+    {
+      "name": "stop_device",
+      "kind": "statement",
+      "params": [
+        { "name": "slot", "type": "string", "required": true, "completes": "slot", "slot": true, "doc": "The slot to stop." },
+        { "name": "name", "type": "string", "required": false, "completes": "device", "doc": "The device to bind it to first." }
+      ],
+      "help": "Stops the device in that slot.",
+      "example": "stop_device('phone0')",
+      "grammar1": "stopDevice"
+    },
+    {
+      "name": "delay_start",
+      "kind": "statement",
+      "params": [
+        { "name": "min_seconds", "type": "number", "required": true, "completes": "seconds", "doc": "The shortest wait, in seconds." },
+        { "name": "max_seconds", "type": "number", "required": true, "completes": "seconds", "doc": "The longest wait, in seconds." }
+      ],
+      "help": "Waits a random time in that range.",
+      "example": "delay_start(0, 240)",
+      "grammar1": "delayStart"
+    },
+    {
+      "name": "wait_until",
+      "kind": "statement",
+      "params": [
+        { "name": "hours", "type": "number", "required": false, "keywordOnly": true, "completes": "number", "doc": "Hours after the event's start." },
+        { "name": "minutes", "type": "number", "required": false, "keywordOnly": true, "completes": "number", "doc": "Minutes after the event's start." }
+      ],
+      "atLeastOne": true,
+      "duration": true,
+      "help": "Waits until that long after the event's start.",
+      "example": "wait_until(minutes=30)",
+      "grammar1": "waitUntil"
+    },
+    {
+      "name": "extend_end",
+      "kind": "statement",
+      "params": [
+        { "name": "min_seconds", "type": "number", "required": true, "completes": "seconds", "doc": "The least extra time, in seconds." },
+        { "name": "max_seconds", "type": "number", "required": true, "completes": "seconds", "doc": "The most extra time, in seconds." }
+      ],
+      "help": "Moves the event's end later by a random amount in that range.",
+      "example": "extend_end(600, 900)",
+      "grammar1": "extendEnd"
+    },
+    {
+      "name": "dropout_chance",
+      "kind": "statement",
+      "params": [
+        { "name": "p", "type": "number", "required": true, "completes": "number", "doc": "The probability, from 0 to 1." }
+      ],
+      "help": "With probability p, skips the rest of the current sequence (the whole event at the top level, the rest of the iteration in a loop).",
+      "example": "dropout_chance(0.2)",
+      "grammar1": "dropoutChance"
+    },
+    {
+      "name": "run_event",
+      "kind": "statement",
+      "params": [
+        { "name": "path", "type": "string", "required": true, "literal": true, "completes": "controlBoardEvent", "doc": "The saved Control Board event, Folder/Title." }
+      ],
+      "extraKeywords": true,
+      "help": "Runs a saved Control Board event here, in its own scope. Keyword arguments set its parameter() values. The calling event's context applies to it.",
+      "example": "run_event('Daily/Reports', region='eu')",
+      "grammar1": "runEvent"
+    },
+    {
+      "name": "parameter",
+      "kind": "expression",
+      "params": [
+        { "name": "kind", "type": "string", "required": true, "literal": true, "enum": ["input", "select", "multiple_select"], "completes": "parameterKind", "doc": "input, select or multiple_select." },
+        { "name": "default", "type": "any", "required": false, "keywordOnly": true, "doc": "The value a scheduled run uses (input)." },
+        { "name": "options", "type": "list", "required": false, "keywordOnly": true, "doc": "The choices (select, multiple_select)." }
+      ],
+      "help": "A Control Board run asks for the value; the panel replaces the call with the chosen literal. A scheduled run uses default, the first option, or []. Written as name = parameter(…).",
+      "example": "region = parameter('select', options=['eu', 'us'])",
+      "grammar1": "parameter"
+    }
+  ],
+  "grammar1Removed": {
+    "setWorkspace": "call scripts as `Workspace.Script()`",
+    "onDestroy": "write `try:` … `finally:`",
+    "onInit": "write its lines first",
+    "onError": "it never ran in grammar 1"
+  },
+  "functions": [
+    { "name": "len", "doc": "The length of a list, tuple, dict or string." },
+    { "name": "str", "doc": "A value as a string." },
+    { "name": "int", "doc": "A value as a whole number." },
+    { "name": "float", "doc": "A value as a number." },
+    { "name": "min", "doc": "The smallest value." },
+    { "name": "max", "doc": "The largest value." },
+    { "name": "round", "doc": "A number rounded." }
+  ],
+  "loopFunction": { "name": "range", "doc": "range(N), range(start, stop) or range(start, stop, step), each a number written in the event: only as the count of a for loop." },
+  "modules": [
+    { "name": "random", "attributes": ["random", "randint", "choice"], "doc": "random.random(), random.randint(a, b), random.choice(list)." },
+    { "name": "math", "attributes": "*", "doc": "Any function or constant of Python's math module." },
+    { "name": "datetime", "attributes": ["datetime", "timedelta"], "calls": ["datetime.datetime.now", "datetime.timedelta"], "doc": "datetime.datetime.now() and datetime.timedelta(…), and the attributes and methods of what they return." }
+  ],
+  "diagnostics": [
+    { "code": "grammar-1-not-accepted", "severity": "error", "level": "grammar", "message": "This event has no `# ScreenPlan event (grammar 2)` header, so it reads as grammar 1, which isn't accepted here." },
+    { "code": "missing-header", "severity": "error", "level": "grammar", "message": "The first line must be `# ScreenPlan event (grammar 2)`." },
+    { "code": "syntax-error", "severity": "error", "level": "grammar", "message": "Syntax error: {detail}." },
+    { "code": "unsupported-statement", "severity": "error", "level": "grammar", "message": "{construct} isn't supported{hint}." },
+    { "code": "unsupported-expression", "severity": "error", "level": "grammar", "message": "{construct} isn't supported in an expression{hint}." },
+    { "code": "expression-statement", "severity": "error", "level": "grammar", "message": "An expression on its own line does nothing: a line calls a script, a built-in or a sequence." },
+    { "code": "unknown-builtin", "severity": "error", "level": "grammar", "message": "`{name}` isn't a built-in{hint}." },
+    { "code": "undefined-sequence", "severity": "error", "level": "grammar", "message": "`{name}()` calls a sequence this event doesn't define." },
+    { "code": "context-as-statement", "severity": "error", "level": "grammar", "message": "`{name}()` sets context for a block: write `with {name}(…):`." },
+    { "code": "statement-as-context", "severity": "error", "level": "grammar", "message": "`{name}()` isn't a context: call it on its own line." },
+    { "code": "value-as-statement", "severity": "error", "level": "grammar", "message": "`{name}()` gives a value: use it in an assignment or an argument." },
+    { "code": "statement-as-value", "severity": "error", "level": "grammar", "message": "`{name}()` is a statement and gives no value." },
+    { "code": "unknown-function", "severity": "error", "level": "grammar", "message": "`{name}()` can't be called in an expression: the functions are len, str, int, float, min, max, round, random.random, random.randint, random.choice, math.*, datetime.datetime.now and datetime.timedelta." },
+    { "code": "too-many-arguments", "severity": "error", "level": "grammar", "message": "`{name}()` takes at most {count} positional argument{plural}." },
+    { "code": "missing-argument", "severity": "error", "level": "grammar", "message": "`{name}()` needs `{param}`." },
+    { "code": "unknown-keyword", "severity": "error", "level": "grammar", "message": "`{name}()` has no parameter `{keyword}`." },
+    { "code": "duplicate-argument", "severity": "error", "level": "grammar", "message": "`{name}()` gets `{param}` twice." },
+    { "code": "wrong-argument-type", "severity": "error", "level": "grammar", "message": "`{param}` of `{name}()` must be {expected}." },
+    { "code": "argument-must-be-literal", "severity": "error", "level": "grammar", "message": "`{param}` of `{name}()` must be written here, as a literal." },
+    { "code": "duration-string", "severity": "error", "level": "grammar", "message": "Durations are `hours=`/`minutes=` keywords, never a string like '{value}'." },
+    { "code": "bad-slot", "severity": "error", "level": "grammar", "message": "'{value}' isn't a slot: a slot is a kind and a number, like phone0 or desktop1." },
+    { "code": "positional-argument", "severity": "error", "level": "grammar", "message": "`{name}()` takes keyword arguments only: {why}." },
+    { "code": "bad-workspace-name", "severity": "error", "level": "grammar", "message": "`{name}` isn't a workspace name: a workspace name starts with a capital letter, followed by letters, digits or `_`." },
+    { "code": "bad-script-name", "severity": "error", "level": "grammar", "message": "`{name}` can't be called from an event: rename this script to call it from an event." },
+    { "code": "not-a-script-call", "severity": "error", "level": "grammar", "message": "A script is called as `Workspace.Script()`." },
+    { "code": "undefined-name", "severity": "error", "level": "grammar", "message": "`{name}` isn't set in this event." },
+    { "code": "reserved-name", "severity": "error", "level": "grammar", "message": "`{name}` is a built-in name: pick another name." },
+    { "code": "name-hides-workspace", "severity": "error", "level": "grammar", "message": "`{name}` is also a workspace: an event name can't hide one." },
+    { "code": "duplicate-def", "severity": "error", "level": "grammar", "message": "`{name}` is defined twice." },
+    { "code": "misplaced-def", "severity": "error", "level": "grammar", "message": "A `def` goes at the top level." },
+    { "code": "def-parameter", "severity": "error", "level": "grammar", "message": "A sequence's parameters are `name=default`: {why}." },
+    { "code": "loop-count-not-written", "severity": "error", "level": "grammar", "message": "A loop's count must be a number written here; for a count decided while running, loop inside a script (a scriptReference with runMode run)." },
+    { "code": "loop-too-long", "severity": "error", "level": "grammar", "message": "This loop runs {count} times: at most 50." },
+    { "code": "loop-else", "severity": "error", "level": "grammar", "message": "A loop can't have an `else`." },
+    { "code": "too-many-script-calls", "severity": "error", "level": "grammar", "message": "This event runs {count} script calls once its loops are unrolled: at most 500." },
+    { "code": "recursive-sequence", "severity": "error", "level": "grammar", "message": "`{name}()` calls itself{via}: a sequence can't recurse." },
+    { "code": "try-not-at-top", "severity": "error", "level": "grammar", "message": "`try`/`finally` goes at the top level or directly inside top-level `with` blocks." },
+    { "code": "second-try", "severity": "error", "level": "grammar", "message": "An event has at most one `try`/`finally`." },
+    { "code": "not-allowed-in-parallel", "severity": "error", "level": "grammar", "message": "{construct} isn't allowed inside `with parallel()`." },
+    { "code": "parameter-not-assigned", "severity": "error", "level": "grammar", "message": "`parameter()` is written as `name = parameter(…)`, outside any `def`." },
+    { "code": "unknown-workspace", "severity": "error", "level": "context", "message": "There is no workspace `{name}`." },
+    { "code": "unknown-event-parameter", "severity": "error", "level": "context", "message": "The saved event '{path}' has no parameter `{keyword}`." },
+    { "code": "script-not-found", "severity": "warning", "level": "context", "message": "`{call}` isn't on any host." },
+    { "code": "script-not-deployed", "severity": "warning", "level": "context", "message": "`{call}` is not deployed to {host}." },
+    { "code": "unknown-host", "severity": "warning", "level": "context", "message": "'{host}' isn't a host or a host mapping." },
+    { "code": "device-not-attached", "severity": "warning", "level": "context", "message": "'{device}' isn't attached to {where}." },
+    { "code": "no-target-host", "severity": "warning", "level": "context", "message": "Part of this event has no `target_host`, so it runs on every host's scheduler." },
+    { "code": "unused-variable", "severity": "warning", "level": "context", "message": "`{name}` is set but never used." },
+    { "code": "unknown-script-input", "severity": "warning", "level": "context", "message": "`{call}` doesn't declare an input `{keyword}`: declare it in the script, or drop it from the call." },
+    { "code": "missing-script-input", "severity": "warning", "level": "context", "message": "`{call}` needs the input `{input}`, which this call doesn't pass." },
+    { "code": "unknown-saved-event", "severity": "warning", "level": "context", "message": "There is no saved event '{path}'." },
+    { "code": "host-unreachable", "severity": "unchecked", "level": "context", "message": "{host} didn't answer: its scripts and devices weren't checked." },
+    { "code": "context-unavailable", "severity": "unchecked", "level": "context", "message": "{what} couldn't be read, so {checks} weren't checked." }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "missing-header",
+        "line": 1,
+        "column": 1,
+        "endLine": 1,
+        "endColumn": 30,
+        "message": "The first line must be `# ScreenPlan event (grammar 2)`.",
+        "fix": {
+          "replace": "# ScreenPlan event (grammar 2)",
+          "label": "fix the header"
+        }
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": [
+      {
+        "type": "sequence",
+        "kind": "with",
+        "name": "target_host('DESKTOP-01')",
+        "line": 2,
+        "context": [
+          {
+            "name": "target_host",
+            "args": "'DESKTOP-01'"
+          }
+        ],
+        "steps": [
+          {
+            "type": "script",
+            "line": 3,
+            "call": "Default.Run",
+            "workspace": "Default",
+            "script": "Run",
+            "inputs": []
+          }
+        ]
+      }
+    ]
+  }
+}
