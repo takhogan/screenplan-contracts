@@ -1,0 +1,9 @@
+DEVICES={"first":"DESKTOP-01<>bluestacks:One","second":"DESKTOP-01<>bluestacks:Two"}
+targetDevice=DEVICES[ACCOUNT]
+targetDevice('phone0', targetDevice)
+startDevice('phone0')
+Prepare
+Report
+stopDevice('phone0')
+onDestroy:
+    stopDevice('phone0')
