@@ -1,0 +1,8 @@
+parameter(query, input, 'cats')
+parameter('region', 'select', ['eu', 'us'])
+parameter(days, multipleSelect, ['mon', 'tue'])
+targetHost('DESKTOP-01')
+Search
+cleanup
+cleanup:
+    Close

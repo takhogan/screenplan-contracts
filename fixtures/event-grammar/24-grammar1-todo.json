@@ -1,0 +1,50 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "grammar-1-todo",
+        "line": 4,
+        "column": 5,
+        "endLine": 4,
+        "endColumn": 114,
+        "message": "The grammar 1 converter couldn't translate this line: write it in grammar 2, then delete the `# TODO(grammar 1):` comment."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": [
+      {
+        "type": "sequence",
+        "kind": "with",
+        "name": "target_host('DESKTOP-01')",
+        "line": 2,
+        "context": [
+          {
+            "name": "target_host",
+            "args": "'DESKTOP-01'"
+          }
+        ],
+        "steps": [
+          {
+            "type": "script",
+            "line": 3,
+            "call": "Default.Search",
+            "workspace": "Default",
+            "script": "Search",
+            "inputs": []
+          },
+          {
+            "type": "script",
+            "line": 5,
+            "call": "Default.Report",
+            "workspace": "Default",
+            "script": "Report",
+            "inputs": []
+          }
+        ]
+      }
+    ]
+  }
+}

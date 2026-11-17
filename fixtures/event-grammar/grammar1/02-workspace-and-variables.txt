@@ -1,0 +1,11 @@
+targetHost('DESKTOP-01')
+query='cats'
+"count"=3
+Search
+setWorkspace('ACG')
+Report
+region = 'eu' if count > 2 else 'us'
+setWorkspace('')
+DailyReport
+setWorkspace('Default')
+Search
