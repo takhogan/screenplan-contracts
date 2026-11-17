@@ -1,5 +1,5 @@
 targetHost(['DESKTOP-01', 'DESKTOP-02'])
-targetDevice('bluestacks:Pie64')
+targetDevice('phone0', 'bluestacks:Pie64')
 restartDeviceOnCrash()
 OpenGame
 timeout('2h0m')

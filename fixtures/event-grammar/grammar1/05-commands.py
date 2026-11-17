@@ -4,12 +4,12 @@ with target_host('DESKTOP-01'):
     extend_end(900, 900)
     dropout_chance(0.2)
     wait_until(hours=1, minutes=15)
-    start_device('phone0')
-    start_device('phone0', 'avd:Pixel_7')
-    start_device('desktop0', 'DESKTOP-01<>pikvm:office')
+    # TODO(grammar 1): startDevice('auto') -- the one-argument form no longer runs, nor does this event today: write start_device('phone0'), checking the slot
+    # TODO(grammar 1): startDevice('avd:Pixel_7') -- the one-argument form no longer runs, nor does this event today: write start_device('phone0', 'avd:Pixel_7'), checking the slot
+    # TODO(grammar 1): startDevice('DESKTOP-01<>pikvm:office') -- the one-argument form no longer runs, nor does this event today: write start_device('desktop0', 'DESKTOP-01<>pikvm:office'), checking the slot
     start_device('phone1', 'adb:emulator-5556')
     stop_device('phone1')
-    # TODO(grammar 1): targetDevice(emu) -- `emu` isn't set in this event.
-    with target_device('DESKTOP-01<>emulator'):
-        stop_device('phone0')
-        run_event('Daily/Morning run')
+    # TODO(grammar 1): targetDevice(emu) -- the one-argument form no longer runs, nor does this event today: write with target_device('phone0', emu):, checking the slot
+    # TODO(grammar 1): targetDevice('DESKTOP-01<>emulator') -- the one-argument form no longer runs, nor does this event today: write with target_device('phone0', 'DESKTOP-01<>emulator'):, checking the slot
+    # TODO(grammar 1): stopDevice(auto) -- the one-argument form no longer runs, nor does this event today: write stop_device('phone0'), checking the slot
+    run_event('Daily/Morning run')

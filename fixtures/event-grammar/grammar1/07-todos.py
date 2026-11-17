@@ -7,4 +7,4 @@ with target_host('DESKTOP-01'):
     # TODO(grammar 1): My-Script -- rename this script to call it from an event
     # TODO(grammar 1): Report -- the workspace `ops` isn't a ScreenPlan name: rename it to call its scripts from an event
     # TODO(grammar 1): Report -- the workspace is set from a value only known when the event runs
-    # TODO(grammar 1): startDevice('DESKTOP-01<>emulator') -- the device name has no device-type prefix (a device mapping keyword?): name the slot
+    # TODO(grammar 1): startDevice('DESKTOP-01<>emulator') -- the one-argument form no longer runs, nor does this event today: write start_device('phone0', 'DESKTOP-01<>emulator'), checking the slot

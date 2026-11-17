@@ -3,9 +3,9 @@ level=3
 dropoutChance(0.1)
 Play
 onInit:
-    startDevice('adb:emulator-5554')
+    startDevice('phone0', 'adb:emulator-5554')
 onDestroy:
     Close
-    stopDevice('auto')
+    stopDevice('phone0')
 onError:
     Recover

@@ -27,10 +27,9 @@
       "kind": "context",
       "params": [
         { "name": "slot", "type": "string", "required": true, "completes": "slot", "slot": true, "doc": "The slot to bind (phone0, desktop1…)." },
-        { "name": "name", "type": "string", "required": false, "completes": "device", "doc": "The device to bind it to." }
+        { "name": "name", "type": "string", "required": true, "completes": "device", "doc": "The device to bind it to." }
       ],
-      "oneArgument": "name",
-      "help": "Binds a slot to a device for the scripts in the block. With one argument, the device binds its default slot.",
+      "help": "Binds a slot to a device for the scripts in the block: always both, the slot and the device (the one-argument form no longer runs).",
       "example": "with target_device('phone0', 'emulator-5554'):\n    Default.CollectRewards()",
       "grammar1": "targetDevice"
     },

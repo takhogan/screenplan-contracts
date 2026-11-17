@@ -1,0 +1,43 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "bad-slot",
+        "line": 4,
+        "column": 18,
+        "endLine": 4,
+        "endColumn": 31,
+        "message": "'avd:Pixel_7' isn't a slot: a slot is a kind and a number, like phone0 or desktop1."
+      },
+      {
+        "code": "missing-argument",
+        "line": 5,
+        "column": 10,
+        "endLine": 5,
+        "endColumn": 40,
+        "message": "`target_device()` needs `name`."
+      },
+      {
+        "code": "bad-slot",
+        "line": 5,
+        "column": 24,
+        "endLine": 5,
+        "endColumn": 39,
+        "message": "'emulator-5554' isn't a slot: a slot is a kind and a number, like phone0 or desktop1."
+      },
+      {
+        "code": "missing-argument",
+        "line": 7,
+        "column": 10,
+        "endLine": 7,
+        "endColumn": 33,
+        "message": "`target_device()` needs `name`."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}
