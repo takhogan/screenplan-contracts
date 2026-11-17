@@ -27,5 +27,9 @@ To change the corpus: edit or add the `.py`, run the Python suite with
 review the diff of the `.json`, then run the TypeScript suite, which must
 agree without changes of its own.
 
-Not here yet: grammar 1 events with their expected grammar 2 conversion (the
-converter is a later rollout step).
+`grammar1/`: grammar 1 events (`NAME.txt`) with their expected grammar 2
+conversion (`NAME.py`) by `convertGrammar1` in `@screenplan/script-actions`
+(spec "The converter (grammar 1 to 2)"). The TypeScript suite converts each
+`.txt` and compares; `UPDATE_GRAMMAR1=1` rewrites the `.py` files (review the
+diff). Both suites check every `.py`: it passes the checker apart from its
+`# TODO(grammar 1):` lines, each one `grammar-1-todo` error.

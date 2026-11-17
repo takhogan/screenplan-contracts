@@ -180,6 +180,7 @@
   "diagnostics": [
     { "code": "grammar-1-not-accepted", "severity": "error", "level": "grammar", "message": "This event has no `# ScreenPlan event (grammar 2)` header, so it reads as grammar 1, which isn't accepted here." },
     { "code": "missing-header", "severity": "error", "level": "grammar", "message": "The first line must be `# ScreenPlan event (grammar 2)`." },
+    { "code": "grammar-1-todo", "severity": "error", "level": "grammar", "message": "The grammar 1 converter couldn't translate this line: write it in grammar 2, then delete the `# TODO(grammar 1):` comment." },
     { "code": "syntax-error", "severity": "error", "level": "grammar", "message": "Syntax error: {detail}." },
     { "code": "unsupported-statement", "severity": "error", "level": "grammar", "message": "{construct} isn't supported{hint}." },
     { "code": "unsupported-expression", "severity": "error", "level": "grammar", "message": "{construct} isn't supported in an expression{hint}." },

@@ -1,0 +1,11 @@
+targetHost('DESKTOP-01')
+files=os.listdir('.')
+t='0h30m'
+timeout(t)
+if(len(files) > 2, Report)
+My-Script
+setWorkspace('ops')
+Report
+setWorkspace(ws)
+Report
+startDevice('DESKTOP-01<>emulator')

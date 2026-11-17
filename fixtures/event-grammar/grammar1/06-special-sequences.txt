@@ -1,0 +1,11 @@
+targetHost('DESKTOP-01')
+level=3
+dropoutChance(0.1)
+Play
+onInit:
+    startDevice('adb:emulator-5554')
+onDestroy:
+    Close
+    stopDevice('auto')
+onError:
+    Recover
