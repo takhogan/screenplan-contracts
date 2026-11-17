@@ -7,7 +7,35 @@
     "SystemName": {
       "type": "string",
       "enum": ["python", "adb", "kvm", "ios", "none"],
-      "description": "Target execution system for a Script/ScriptAction. Matches the prefix of the device id the action was recorded against: adb for avd:, bluestacks: and adb: devices, kvm for pikvm:, ios for an iPhone or iPad attached by USB (ios:<udid>), and python for the host desktop."
+      "description": "The driver types of interface version 22 and earlier, which actionData.targetSystem held before device slots (v23, see ActionTarget). Matches the prefix of the device id the action was recorded against: adb for avd:, bluestacks: and adb: devices, kvm for pikvm:, ios for an iPhone or iPad attached by USB (ios:<udid>), and python for the host desktop. Still the engine's device types (DeviceController.device_id_to_device_type)."
+    },
+    "SlotName": {
+      "type": "string",
+      "pattern": "^(device|desktop|phone|tablet)[0-9]+$",
+      "description": "A device slot (interface version 23+): a kind plus an index, device0, desktop0, phone1, tablet0... The kind is a hint for what to bind there (device: any; desktop: the host or a PiKVM; phone and tablet: adb or iOS devices). The run binds each slot to a real device. device0 and desktop0, left unbound, are the host's own desktop; every other slot a script lists must be bound when the run starts."
+    },
+    "ActionTarget": {
+      "description": "actionData.targetSystem. From interface version 23, the slot the action acts on (SlotName), 'host' (always this controller's own screen, never bound), 'none' (no device) or '' (= device0). Up to version 22, a SystemName driver type; readers migrate those (python and kvm to desktop0, or python to host in a script that mixes python and kvm; adb and ios to phone0).",
+      "anyOf": [
+        { "$ref": "#/$defs/SlotName" },
+        { "type": "string", "enum": ["host", "none", ""] },
+        { "$ref": "#/$defs/SystemName" }
+      ]
+    },
+    "DeviceSlotEntry": {
+      "type": "object",
+      "required": ["slot"],
+      "additionalProperties": true,
+      "properties": {
+        "slot": { "$ref": "#/$defs/SlotName" },
+        "description": { "type": "string", "description": "A hint for whoever binds the slot: 'the Android phone with the app signed in'." }
+      }
+    },
+    "DeviceBindings": {
+      "type": "object",
+      "description": "A run's device bindings, slot to device id: { \"phone0\": \"avd:Pixel_7\", \"desktop0\": \"pikvm:office-pc\" }. A value is a device id, 'host' (the host's own desktop) or file:<path> (a still image). The slots host and none cannot be bound.",
+      "propertyNames": { "$ref": "#/$defs/SlotName" },
+      "additionalProperties": { "type": "string", "minLength": 1 }
     },
     "RunStatus": {
       "type": "string",

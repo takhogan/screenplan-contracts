@@ -34,7 +34,15 @@
       "type": "string",
       "description": "Format: `<actionName>-<actionGroup>`."
     },
-    "target_system": { "$ref": "common.schema.json#/$defs/SystemName" },
+    "target_system": { "$ref": "common.schema.json#/$defs/ActionTarget" },
+    "device_slot": {
+      "type": ["string", "null"],
+      "description": "The slot the action resolved to after its script's deviceMaps (phone0, desktop0, host), or null for an action that needs no device. Absent in logs from before device slots."
+    },
+    "device_id": {
+      "type": ["string", "null"],
+      "description": "The device that slot was bound to for the run ('host' for the host's own desktop), or null for an action that needs no device. Absent in logs from before device slots."
+    },
     "script_name": { "type": ["string", "null"] },
     "script_log_folder": { "type": ["string", "null"] },
     "script_counter": { "type": "integer" },

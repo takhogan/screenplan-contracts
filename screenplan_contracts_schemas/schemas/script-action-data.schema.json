@@ -150,7 +150,7 @@
       "required": ["targetSystem"],
       "allOf": [{ "$ref": "#/$defs/DetectTypeData" }, { "$ref": "#/$defs/RandomVariableTypeData" }],
       "properties": {
-        "targetSystem":     { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":     { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "targetContext":    { "$ref": "#/$defs/TargetContext" },
         "pointList":        { "type": "array", "items": { "$ref": "#/$defs/Point2D" } },
         "icon":             { "$ref": "#/$defs/ImageRef" },
@@ -167,7 +167,7 @@
       "required": ["targetSystem"],
       "allOf": [{ "$ref": "#/$defs/DetectTypeData" }],
       "properties": {
-        "targetSystem":    { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":    { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "targetContext":   { "$ref": "#/$defs/TargetContext" },
         "pointList":       { "type": "array", "items": { "$ref": "#/$defs/Point2D" } },
         "icon":            { "$ref": "#/$defs/ImageRef" },
@@ -182,7 +182,7 @@
       "required": ["targetSystem"],
       "allOf": [{ "$ref": "#/$defs/DetectTypeData" }],
       "properties": {
-        "targetSystem":  { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":  { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "targetContext": { "$ref": "#/$defs/TargetContext" },
         "location":      { "$ref": "#/$defs/Point2D" },
         "searchArea":    { "$ref": "#/$defs/Rect2D" },
@@ -197,7 +197,7 @@
       "additionalProperties": true,
       "required": ["targetSystem", "condition"],
       "properties": {
-        "targetSystem":      { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":      { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "condition":         { "type": "string" },
         "conditionLanguage": { "$ref": "#/$defs/ProgrammingLanguage" }
       }
@@ -213,7 +213,7 @@
       "additionalProperties": true,
       "required": ["targetSystem", "shellScript"],
       "properties": {
-        "targetSystem":           { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":           { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "cwd":                    { "type": "string" },
         "shellScript":            { "type": "string" },
         "awaitScript":            { "type": "boolean" },
@@ -228,7 +228,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem": { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem": { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "logType":      { "type": "string", "enum": ["logVariable", "logImage"] },
         "logValue":     { "type": "string" },
         "logFile":      { "type": "string" }
@@ -240,7 +240,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":    { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":    { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "inputExpression": { "type": ["string", "number"] }
       }
     },
@@ -250,7 +250,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":       { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":       { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "outputVarName":      { "type": "string" },
         "inputExpression":    { "type": "string" },
         "expressionLanguage": { "$ref": "#/$defs/ProgrammingLanguage" },
@@ -264,7 +264,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":   { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":   { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "timeActionType": { "type": "string", "enum": ["getCurrentDateTime"] },
         "timezone":       { "type": "string", "enum": ["local", "utc"] },
         "outputVarName":  { "type": "string" }
@@ -277,7 +277,7 @@
       "required": ["targetSystem"],
       "allOf": [{ "$ref": "#/$defs/RandomVariableTypeData" }],
       "properties": {
-        "targetSystem": { "$ref": "common.schema.json#/$defs/SystemName" }
+        "targetSystem": { "$ref": "common.schema.json#/$defs/ActionTarget" }
       }
     },
 
@@ -286,7 +286,7 @@
       "additionalProperties": true,
       "required": ["targetSystem", "scriptName"],
       "properties": {
-        "targetSystem":           { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":           { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "scriptName":             { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,99}$", "description": "The called script: a ScreenPlan name (see script.schema.json scriptName)." },
         "scriptAttributes":       { "type": "array", "items": { "type": "string", "enum": ["searchAreaErrorHandler", "searchAreaObjectHandler", "searchAreaExcluded"] } },
         "branchingBehavior":      { "type": "string", "enum": ["firstMatch", "attemptAllBranches"] },
@@ -295,6 +295,12 @@
         "scriptMaxActionAttempts":{ "type": ["string", "number"] },
         "onOutOfActionAttempts":  { "type": "string" },
         "libraryScript":          { "type": "boolean" },
+        "deviceMap":              {
+          "type": "object",
+          "description": "Interface version 23+: which parent slot each of the child script's slots runs on, { childSlot: parentSlot }, e.g. { \"device0\": \"tablet0\" }. A child slot it leaves out maps to the parent slot of the same name. A parent slot may be 'host'; a child's host is never mapped. The parent slots it uses count as used by the parent (props.devices).",
+          "propertyNames": { "$ref": "common.schema.json#/$defs/SlotName" },
+          "additionalProperties": { "anyOf": [{ "$ref": "common.schema.json#/$defs/SlotName" }, { "const": "host" }] }
+        },
         "postActionDelay":        { "type": ["string", "number"] }
       }
     },
@@ -305,7 +311,7 @@
       "required": ["targetSystem"],
       "allOf": [{ "$ref": "#/$defs/DetectTypeData" }],
       "properties": {
-        "targetSystem":    { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":    { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "targetContext":   { "$ref": "#/$defs/TargetContext" },
         "pointList":       { "type": "array", "items": { "$ref": "#/$defs/Point2D" } },
         "icon":             { "$ref": "#/$defs/ImageRef" },
@@ -321,7 +327,7 @@
       "required": ["targetSystem"],
       "allOf": [{ "$ref": "#/$defs/DetectTypeData" }],
       "properties": {
-        "targetSystem":  { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":  { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "targetContext": { "$ref": "#/$defs/TargetContext" },
         "searchArea":    { "$ref": "#/$defs/Rect2D" },
         "maxMatches":    { "type": ["integer", "string"] },
@@ -336,7 +342,7 @@
       "required": ["targetSystem"],
       "allOf": [{ "$ref": "#/$defs/RandomVariableTypeData" }],
       "properties": {
-        "targetSystem":       { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":       { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "keyboardExpression": { "type": "string" },
         "keyboardActionType": { "type": "string", "enum": ["keyPress", "keyDown", "keyUp", "hotkey"] },
         "postActionDelay":    { "type": ["string", "number"] }
@@ -350,7 +356,7 @@
       "additionalProperties": true,
       "required": ["targetSystem", "searchPatternID"],
       "properties": {
-        "targetSystem":               { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":               { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "searchPatternID":            { "type": "string" },
         "searchPatterns":             { "type": "array", "items": { "type": "string" } },
         "searchPatternProbabilities": { "type": "array", "items": { "type": "number" } },
@@ -367,7 +373,7 @@
       "additionalProperties": true,
       "required": ["targetSystem", "searchPatternID"],
       "properties": {
-        "targetSystem":         { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":         { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "searchPatternID":      { "type": "string" },
         "gridMode":             { "type": "string", "enum": ["training", "active", "inactive"] },
         "recordSearchAreaMap":  { "type": "boolean" }
@@ -381,7 +387,7 @@
       "additionalProperties": true,
       "required": ["targetSystem", "searchPatternID"],
       "properties": {
-        "targetSystem":           { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":           { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "searchPatternID":        { "type": "string" },
         "gridMode":               { "type": "string", "enum": ["training", "active", "inactive"] },
         "generateSearchAreaMap":  { "type": "boolean" }
@@ -393,7 +399,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":      { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":      { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "randomizerBehavior":{ "type": "string", "enum": ["randomizer", "randomQueue"] },
         "preferences":       { "type": "string" }
       }
@@ -404,7 +410,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem": { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem": { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "mode":         { "type": "string", "enum": ["read", "write"] },
         "fileName":     { "type": "string" },
         "varName":      { "type": "string" },
@@ -417,7 +423,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":     { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":     { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "exceptionMessage": { "type": "string" },
         "takeScreenshot":   { "type": "boolean" },
         "exceptionID":      { "type": "string" },
@@ -430,7 +436,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":         { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":         { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "inputExpression":      { "type": "string" },
         "maxNavigateAttempts":  { "type": ["integer", "string"] }
       }
@@ -441,7 +447,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":        { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":        { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "targetContext":       { "$ref": "#/$defs/TargetContext" },
         "inputExpression":     { "type": "string" },
         "outputVarName":       { "type": "string" },
@@ -483,7 +489,7 @@
       "type": "object",
       "additionalProperties": true,
       "properties": {
-        "targetSystem":         { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":         { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "subject":              { "type": "string" },
         "messagingProvider":    { "type": "string", "enum": ["viber", "email"] },
         "inputExpression":      { "type": "string" },
@@ -497,7 +503,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":          { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":          { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "codeBlock":             { "type": "string" },
         "interpreter":           { "type": "string", "enum": ["python"] },
         "async":                 { "type": "boolean" },
@@ -512,7 +518,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem": { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem": { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "forVariables": { "type": "string" },
         "inVariables":  { "type": "string" },
         "operatorType": { "type": "string", "enum": ["startLoop", "endLoop"] }
@@ -541,7 +547,7 @@
         "adbPort":            { "type": ["string", "number"] },
         "emulatorPath":       { "type": "string" },
         "autoDetectAdbPort":  { "type": "boolean" },
-        "targetSystem":       { "const": "adb" }
+        "targetSystem":       { "anyOf": [{ "const": "adb" }, { "$ref": "common.schema.json#/$defs/SlotName" }], "description": "adb up to interface version 22; from 23 a slot, whose bound device must be an adb device (checked at run start)." }
       }
     },
 
@@ -549,7 +555,7 @@
       "type": "object",
       "additionalProperties": true,
       "properties": {
-        "targetSystem":           { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":           { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "icon":                   { "$ref": "#/$defs/ImageRef" },
         "inputExpression":        { "type": "string" },
         "outputVarName":          { "type": "string" },
@@ -565,7 +571,7 @@
       "type": "object",
       "additionalProperties": true,
       "properties": {
-        "targetSystem":        { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":        { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "returnStatementType": { "type": "string", "enum": ["exitIteration", "exitScript", "exitProgram"] },
         "returnStatus":        { "type": "string", "enum": ["success", "failure"] }
       }
@@ -576,7 +582,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":          { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":          { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "transformationType":    { "type": "string", "enum": ["blur", "binarize", "antialias", "resize", "erode", "dilate", "convertColor"] },
         "inputExpression":       { "type": "string" },
         "outputVarName":         { "type": "string" },
@@ -598,7 +604,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":               { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":               { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "counterVarName":             { "type": "string" },
         "counterThreshold":           { "type": ["string", "number"] },
         "incrementBy":                { "type": ["string", "number"] },
@@ -615,7 +621,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":   { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":   { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "fileActionType": { "type": "string", "enum": ["w", "r", "wb", "rb", "a"] },
         "fileType":       { "type": "string", "enum": ["image", "text", "json", "sqlite"] },
         "inputExpression":{ "type": "string" },
@@ -630,7 +636,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":              { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":              { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "leftInputExpression":       { "type": "string" },
         "rightInputExpression":      { "type": "string" },
         "joinLeftAt":                { "type": "string", "enum": ["angle", "topLeft", "top", "topRight", "right", "bottomRight", "bottom", "bottomLeft", "left"] },
@@ -652,7 +658,7 @@
       "type": "object",
       "additionalProperties": true,
       "properties": {
-        "targetSystem":           { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":           { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "dragMouse":              { "type": "boolean" },
         "releaseMouseOnCompletion":{ "type": "boolean" },
         "sourceDetectTypeData":   { "$ref": "#/$defs/DetectTypeData" },
@@ -669,7 +675,7 @@
       "required": ["targetSystem"],
       "allOf": [{ "$ref": "#/$defs/RandomVariableTypeData" }],
       "properties": {
-        "targetSystem":          { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":          { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "sourceDetectTypeData":  { "$ref": "#/$defs/DetectTypeData" },
         "sourcePointList":       { "type": ["array", "string"], "items": { "$ref": "#/$defs/Point2D" } },
         "clickCount":            { "type": ["integer", "string"] },
@@ -686,7 +692,7 @@
       "type": "object",
       "additionalProperties": true,
       "properties": {
-        "targetSystem":         { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":         { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "promptMethod":         { "type": "string", "enum": ["web"] },
         "promptMessage":        { "type": "string" },
         "promptType":           { "type": "string", "enum": ["text", "yesno", "okcancel"] },
@@ -701,7 +707,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":       { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":       { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "calendarActionType": { "type": "string", "enum": ["create", "update", "delete", "list"] },
         "calendarId":         { "type": "string" },
         "eventTitle":         { "type": "string" },
@@ -719,7 +725,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":           { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":           { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "inputExpression":        { "type": "string" },
         "outputVarName":          { "type": "string" },
         "secretName":             { "type": "string" },
@@ -732,7 +738,7 @@
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
-        "targetSystem":    { "$ref": "common.schema.json#/$defs/SystemName" },
+        "targetSystem":    { "$ref": "common.schema.json#/$defs/ActionTarget" },
         "actionType":      { "type": "string", "enum": ["start", "stop", "list"] },
         "actionPayload":   { "type": "string" },
         "applicationName": { "type": "string" }
