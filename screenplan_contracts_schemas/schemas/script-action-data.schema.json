@@ -733,15 +733,16 @@
       }
     },
 
-    "InteractApplicationActionData": {
+    "InteractDeviceActionData": {
+      "description": "interactDeviceAction: starts or stops an application on the targetSystem device, or the device itself. Up to interface version 23 the action was interactApplicationAction, with actionType start, stop or list; migrateV23ToV24 renames it and maps start to startApplication and stop to stopApplication.",
       "type": "object",
       "additionalProperties": true,
       "required": ["targetSystem"],
       "properties": {
         "targetSystem":    { "$ref": "common.schema.json#/$defs/ActionTarget" },
-        "actionType":      { "type": "string", "enum": ["start", "stop", "list"] },
-        "actionPayload":   { "type": "string" },
-        "applicationName": { "type": "string" }
+        "actionType":      { "type": "string", "enum": ["startApplication", "stopApplication", "startDevice", "stopDevice", "start", "stop", "list"] },
+        "actionPayload":   { "type": "string", "description": "For startApplication: an activity on adb, arguments on a desktop. Unused otherwise." },
+        "applicationName": { "type": "string", "description": "For startApplication and stopApplication: a package on adb, a program or process name on a desktop. Unused for startDevice and stopDevice." }
       }
     }
   }
