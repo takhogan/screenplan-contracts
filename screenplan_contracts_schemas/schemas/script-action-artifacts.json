@@ -93,6 +93,7 @@
     "userPromptAction":             { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "user-prompt.txt" }, "supporting_files": [] },
     "calendarAction":               { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "calendar-operation.txt" }, "supporting_files": [] },
     "userSecretManagementAction":   { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "secret-operation.txt" }, "supporting_files": [] },
+    "interactDeviceAction":         { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "device-operation.txt" }, "supporting_files": [] },
     "interactApplicationAction":    { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "always", "name_suffix": "app-operation.txt" }, "supporting_files": [] },
     "ADBConfigurationAction":       { "pre_file": { "file_type": "text", "presence": "never" }, "post_file": { "file_type": "text", "presence": "optional", "name_suffix": "adb-config.txt" }, "supporting_files": [] }
   }

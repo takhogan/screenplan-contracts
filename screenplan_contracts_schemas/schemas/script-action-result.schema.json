@@ -10,7 +10,7 @@
     { "$ref": "#/$defs/ColorCompareResult" },
     { "$ref": "#/$defs/ImageToTextResult" },
     { "$ref": "#/$defs/KeyboardResult" },
-    { "$ref": "#/$defs/InteractApplicationResult" },
+    { "$ref": "#/$defs/InteractDeviceResult" },
     { "$ref": "#/$defs/OtherActionResult" }
   ],
   "$defs": {
@@ -281,13 +281,13 @@
         "input_at": { "$ref": "#/$defs/InputAt" }
       }
     },
-    "InteractApplicationFields": {
+    "InteractDeviceFields": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "application_action": { "type": "string", "enum": ["start", "stop"] },
-        "application": { "type": "string", "description": "applicationName: a package on adb, a program or process name on a desktop." },
-        "payload": { "type": ["string", "null"], "description": "actionPayload, for start: an activity on adb, arguments on a desktop." },
+        "application_action": { "type": "string", "enum": ["startApplication", "stopApplication", "startDevice", "stopDevice", "start", "stop"], "description": "actionType. start and stop are interactApplicationAction's, in runs of scripts before interface version 24." },
+        "application": { "type": ["string", "null"], "description": "applicationName: a package on adb, a program or process name on a desktop. null for startDevice and stopDevice." },
+        "payload": { "type": ["string", "null"], "description": "actionPayload, for startApplication: an activity on adb, arguments on a desktop." },
         "succeeded": { "type": "boolean" },
         "input_at": { "$ref": "#/$defs/InputAt" }
       }
@@ -373,18 +373,23 @@
         }
       }
     },
-    "InteractApplicationResult": {
+    "InteractDeviceActionName": {
+      "type": "string",
+      "enum": ["interactDeviceAction", "interactApplicationAction"],
+      "description": "interactApplicationAction in runs of scripts before interface version 24."
+    },
+    "InteractDeviceResult": {
       "type": "object",
       "required": ["format", "version", "action", "action_group", "script_counter", "fields"],
       "additionalProperties": false,
       "properties": {
         "format": { "$ref": "#/$defs/Format" }, "version": { "$ref": "#/$defs/Version" },
         "capture": { "$ref": "#/$defs/Capture" },
-        "action": { "const": "interactApplicationAction" },
+        "action": { "$ref": "#/$defs/InteractDeviceActionName" },
         "action_group": { "$ref": "#/$defs/ActionGroup" }, "script_counter": { "$ref": "#/$defs/ScriptCounter" },
         "fields": {
           "description": "Empty in version 1.",
-          "anyOf": [{ "$ref": "#/$defs/InteractApplicationFields" }, { "$ref": "#/$defs/EmptyFields" }]
+          "anyOf": [{ "$ref": "#/$defs/InteractDeviceFields" }, { "$ref": "#/$defs/EmptyFields" }]
         }
       }
     },

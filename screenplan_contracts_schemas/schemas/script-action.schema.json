@@ -67,6 +67,7 @@
         "userPromptAction",
         "calendarAction",
         "userSecretManagementAction",
+        "interactDeviceAction",
         "interactApplicationAction"
       ]
     },
@@ -194,6 +195,7 @@
     { "if": { "properties": { "actionName": { "const": "userPromptAction"        } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/UserPromptActionData" } } } },
     { "if": { "properties": { "actionName": { "const": "calendarAction"          } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/CalendarActionData" } } } },
     { "if": { "properties": { "actionName": { "const": "userSecretManagementAction" } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/UserSecretManagementActionData" } } } },
-    { "if": { "properties": { "actionName": { "const": "interactApplicationAction" } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/InteractApplicationActionData" } } } }
+    { "if": { "properties": { "actionName": { "const": "interactDeviceAction"    } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/InteractDeviceActionData" } } } },
+    { "if": { "properties": { "actionName": { "const": "interactApplicationAction" } } }, "then": { "properties": { "actionData": { "$ref": "script-action-data.schema.json#/$defs/InteractDeviceActionData" } } } }
   ]
 }
