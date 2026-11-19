@@ -24,7 +24,11 @@
       "use_mask": true,
       "resized": false,
       "initial_match_count": 14,
-      "match_count": 1
+      "match_count": 1,
+      "scale_mode": "learned",
+      "scale": [0.6667, 0.6667],
+      "scales_tried": 1,
+      "searched": false
     },
     "matched": true,
     "max_matches": 1,
