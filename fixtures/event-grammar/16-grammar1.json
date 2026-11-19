@@ -9,7 +9,7 @@
         "column": 1,
         "endLine": 1,
         "endColumn": 25,
-        "message": "This event has no `# ScreenPlan event (grammar 2)` header, so it reads as grammar 1, which isn't accepted here."
+        "message": "This event has no `# ScreenPlan event (grammar 2)` header, so it reads as grammar 1, which no longer runs: an event needs the grammar 2 header and grammar 2 text."
       }
     ],
     "warnings": [],

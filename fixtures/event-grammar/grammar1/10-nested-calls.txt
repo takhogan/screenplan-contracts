@@ -1,7 +1,0 @@
-targetHost('DESKTOP-01')
-outer
-outer:
-    mode='fast'
-    inner
-inner:
-    Run

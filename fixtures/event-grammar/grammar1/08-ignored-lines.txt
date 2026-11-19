@@ -1,7 +1,0 @@
-# morning run
-targetHost('DESKTOP-01')
-endExtension(900,900)
-targetDevice('phone0')
-Play
-    parked:
-        Close

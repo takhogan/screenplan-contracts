@@ -1,9 +1,0 @@
-targetHost('DESKTOP-01')
-loop
-step
-extra='x'
-step
-loop:
-    loop
-step:
-    Run
