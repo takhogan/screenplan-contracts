@@ -169,7 +169,21 @@
             "use_mask": { "type": "boolean" },
             "resized": { "type": "boolean", "description": "The search ran on the input resized to the screen the template came from." },
             "initial_match_count": { "type": "integer", "description": "Positions at or above the threshold, before nearby ones were merged." },
-            "match_count": { "type": "integer", "description": "Matches after merging." }
+            "match_count": { "type": "integer", "description": "Matches after merging." },
+            "scale_mode": {
+              "type": "string",
+              "enum": ["same-size", "legacy", "searching", "learned", "exploring"],
+              "description": "How the template's size was chosen: same-size (the capture is the size of the screen the template came from), legacy (another size, matched the old way: the stored size, then the capture stretched to the template's screen), searching (another size, nothing learned yet for the device: other template sizes are searched on a miss), learned (only the scales learned for the device are tried), exploring (learned scales kept missing: likely others are tried)."
+            },
+            "scale": {
+              "type": "array",
+              "items": { "type": "number" },
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "[x, y]: the template's size per its stored size, of the matches, or of the best score on a miss. [1, 1] at the stored size."
+            },
+            "scales_tried": { "type": "integer", "description": "Full-size template matches made (one per scale tried)." },
+            "searched": { "type": "boolean", "description": "A search or an exploration over other template sizes ran." }
           }
         },
         "matched": { "type": "boolean" },
