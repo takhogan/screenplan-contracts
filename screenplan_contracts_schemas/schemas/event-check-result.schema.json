@@ -8,7 +8,7 @@
   "required": ["ok", "grammar", "errors", "warnings", "unchecked", "outline"],
   "properties": {
     "ok": { "type": "boolean", "description": "True when there are no errors; warnings don't block." },
-    "grammar": { "type": "integer", "enum": [1, 2], "description": "1 for a text without the grammar 2 header that doesn't look like grammar 2: it reads as grammar 1, which no longer runs, and is answered with one error, grammar-1-not-accepted, with no fix. Else 2." },
+    "grammar": { "type": "integer", "enum": [1, 2], "description": "Always 2: every event is grammar 2, with or without the optional `# ScreenPlan event (grammar 2)` header. 1 is no longer answered (it was text without the header, read as grammar 1, which no longer runs)." },
     "errors": { "type": "array", "items": { "$ref": "#/$defs/Diagnostic" } },
     "warnings": { "type": "array", "items": { "$ref": "#/$defs/Diagnostic" } },
     "unchecked": {

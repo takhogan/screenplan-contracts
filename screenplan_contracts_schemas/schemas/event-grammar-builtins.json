@@ -177,8 +177,8 @@
     { "name": "datetime", "attributes": ["datetime", "timedelta"], "calls": ["datetime.datetime.now", "datetime.timedelta"], "doc": "datetime.datetime.now() and datetime.timedelta(…), and the attributes and methods of what they return." }
   ],
   "diagnostics": [
-    { "code": "grammar-1-not-accepted", "severity": "error", "level": "grammar", "message": "This event has no `# ScreenPlan event (grammar 2)` header, so it reads as grammar 1, which no longer runs: an event needs the grammar 2 header and grammar 2 text." },
-    { "code": "missing-header", "severity": "error", "level": "grammar", "message": "The first line must be `# ScreenPlan event (grammar 2)`." },
+    { "code": "empty-event", "severity": "error", "level": "grammar", "message": "This event is blank: write what it runs." },
+    { "code": "malformed-header", "severity": "error", "level": "grammar", "message": "The header, when there is one, is exactly `# ScreenPlan event (grammar 2)`." },
     { "code": "grammar-1-todo", "severity": "error", "level": "grammar", "message": "The grammar 1 converter couldn't translate this line: write it in grammar 2, then delete the `# TODO(grammar 1):` comment." },
     { "code": "syntax-error", "severity": "error", "level": "grammar", "message": "Syntax error: {detail}." },
     { "code": "unsupported-statement", "severity": "error", "level": "grammar", "message": "{construct} isn't supported{hint}." },

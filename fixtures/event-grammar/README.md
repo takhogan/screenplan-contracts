@@ -27,9 +27,12 @@ To change the corpus: edit or add the `.py`, run the Python suite with
 review the diff of the `.json`, then run the TypeScript suite, which must
 agree without changes of its own.
 
-Grammar 1 no longer runs (spec "Rollout", step 8). `16-grammar1.py` is a
-grammar 1 event: the checker answers `grammar: 1` with one error,
-`grammar-1-not-accepted`, and no fix. `24-grammar1-todo.py` holds a
+Every event is grammar 2; the `# ScreenPlan event (grammar 2)` header is
+optional (`14-header-missing.py` has none and is valid), but one that is
+there is exact (`15-header-malformed.py`, `malformed-header`). Blank text is
+`empty-event` (`26-empty.py`). Grammar 1 no longer runs (spec "Rollout",
+step 8): `16-grammar1.py` is a grammar 1 event, checked as grammar 2 like any
+other text, so it answers grammar 2's own errors. `24-grammar1-todo.py` holds a
 `# TODO(grammar 1):` comment, which the grammar 2 migration left where it
 couldn't translate a line: an error, `grammar-1-todo`, until someone writes
 that part in grammar 2.

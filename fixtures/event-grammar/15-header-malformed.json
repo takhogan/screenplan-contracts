@@ -4,12 +4,12 @@
     "grammar": 2,
     "errors": [
       {
-        "code": "missing-header",
+        "code": "malformed-header",
         "line": 1,
         "column": 1,
         "endLine": 1,
         "endColumn": 30,
-        "message": "The first line must be `# ScreenPlan event (grammar 2)`.",
+        "message": "The header, when there is one, is exactly `# ScreenPlan event (grammar 2)`.",
         "fix": {
           "replace": "# ScreenPlan event (grammar 2)",
           "label": "fix the header"
