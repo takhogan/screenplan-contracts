@@ -1,21 +1,8 @@
 {
   "result": {
-    "ok": false,
+    "ok": true,
     "grammar": 2,
-    "errors": [
-      {
-        "code": "missing-header",
-        "line": 1,
-        "column": 1,
-        "endLine": 1,
-        "endColumn": 1,
-        "message": "The first line must be `# ScreenPlan event (grammar 2)`.",
-        "fix": {
-          "replace": "# ScreenPlan event (grammar 2)\n",
-          "label": "add the header"
-        }
-      }
-    ],
+    "errors": [],
     "warnings": [],
     "unchecked": [],
     "outline": [

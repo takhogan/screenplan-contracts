@@ -1,15 +1,15 @@
 {
   "result": {
     "ok": false,
-    "grammar": 1,
+    "grammar": 2,
     "errors": [
       {
-        "code": "grammar-1-not-accepted",
-        "line": 1,
-        "column": 1,
-        "endLine": 1,
-        "endColumn": 25,
-        "message": "This event has no `# ScreenPlan event (grammar 2)` header, so it reads as grammar 1, which no longer runs: an event needs the grammar 2 header and grammar 2 text."
+        "code": "syntax-error",
+        "line": 6,
+        "column": 11,
+        "endLine": 6,
+        "endColumn": 12,
+        "message": "Syntax error: invalid syntax."
       }
     ],
     "warnings": [],

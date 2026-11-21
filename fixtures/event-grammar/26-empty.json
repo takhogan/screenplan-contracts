@@ -1,0 +1,19 @@
+{
+  "result": {
+    "ok": false,
+    "grammar": 2,
+    "errors": [
+      {
+        "code": "empty-event",
+        "line": 1,
+        "column": 1,
+        "endLine": 1,
+        "endColumn": 1,
+        "message": "This event is blank: write what it runs."
+      }
+    ],
+    "warnings": [],
+    "unchecked": [],
+    "outline": []
+  }
+}
